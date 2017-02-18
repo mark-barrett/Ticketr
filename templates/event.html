@@ -1,0 +1,13 @@
+<html>
+    <head>
+        <title>Ticketr - {{ event.name }}</title>
+        {% load staticfiles %}
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    </head>
+
+    <body>
+        <h1>{{ event.name }}</h1>
+        <h2>{{ event.category }}</h2>
+        <h3>{{ event.description }}</h3>
+    </body>
+</html>

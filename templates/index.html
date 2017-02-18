@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <title>Ticketr Home</title>
+        {% load staticfiles %}
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    </head>
+    <body>
+    <div class="container">
+        <h1>Welcome to Ticketr</h1>
+            <!-- Get categories-->
+            {% for category in categories %}
+                <h2>{{ category.name }}</h2>
+                {% for event in category.event_set.all %}
+                    <a href="/event/{{ event.id }}">{{ event.name }}</a>
+                {% endfor %}
+            {% endfor %}
+    </div>
+    </body>
+</html>
