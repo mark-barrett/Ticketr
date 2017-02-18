@@ -5,3 +5,4 @@ from .models import *
 
 admin.site.register(Event)
 admin.site.register(Category)
+admin.site.register(EventOwner)

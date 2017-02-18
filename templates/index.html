@@ -5,13 +5,33 @@
         <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     </head>
     <body>
-    <div class="container">
-        <h1>Welcome to Ticketr</h1>
+    {% include 'menu.html' %}
+        <div style="background: url('{% static 'images/background1.png' %}'); background-size: 100% 100%; background-attachment: fixed; height: 275px">
+            <br/><br/><br/><h1 class="text-center" style="color:white;">Sell tickets for an event, resell tickets easily</h1><br/>
+            <p class="lead text-center" style="color: white;"><strong>Event Organisers:</strong> Start selling your tickets with Ticketr now! <a href="">More Information</a><br/><strong>Event Goers:</strong> Can't go to an event? Need to resell your ticket? Put it up for sale here!</p>
+        </div>
+        <div class="container">
+        <h1>Events near you:</h1>
             <!-- Get categories-->
             {% for category in categories %}
                 <h2>{{ category.name }}</h2>
+                <!--List each event in that category-->
                 {% for event in category.event_set.all %}
-                    <a href="/event/{{ event.id }}">{{ event.name }}</a>
+                    <div class="panel panel-default" style="width: 33.3333%;">
+                      <div class="panel-body">
+                          <div style="background: url('{{ event.image }}'); background-size: 100% 100%; height: 200px">
+                              <div class="pull-right">
+                                <p class="lead"><span class="label label-default">&euro;{{ event.ticket_price }}0</span>&nbsp;</p>
+                              </div>
+                          </div><br/>
+                          {{ event.start_date }}, {{ event.start_time }}
+                          <br/>
+                          <strong>{{ event.name }}</strong>
+                          <div class="pull-right">
+                              <a href="/event/{{ event.id }}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-qrcode"></span> Get Tickets</a>
+                          </div>
+                      </div>
+                    </div>
                 {% endfor %}
             {% endfor %}
     </div>
