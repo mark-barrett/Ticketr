@@ -1,32 +1,68 @@
 <html>
-    <head>
-        <title>Ticketr - {{ event.name }}</title>
-        {% load staticfiles %}
-        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    </head>
+   <head>
+      <title>Ticketr - {{ event.name }}</title>
+      {% load staticfiles %}
+      <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+   </head>
+   <body>
+      {% include 'menu.html' %}
+      <div style="background: url('{% static 'images/background1.png' %}'); background-size: 100% 100%; background-attachment: fixed; height: 275px">
+         <div class="container">
+            <br/><br/>
+            <div class="panel panel-default">
+               <div class="panel-body">
+                  <div class="row">
+                     <div class="col-md-2"></div>
+                     <div class="col-md-4"><img src="{{ event.image }}" width="100%" height="237px"></div>
+                     <div class="col-md-4">
+                        <h2>{{ event.name }}</h2>
+                        <p class="lead">by {{ event.event_owner }}<small><br/>{{ event.start_date }}</small></p>
+                        <p><br/>
+                           <strong>&euro;{{ event.ticket_price }}0</strong>
+                        </p>
+                        <a href="#" class="btn btn-success btn-block" role="button">Tickets</a>
+                     </div>
+                     <div class="col-md-2"></div>
+                  </div>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-md-2"></div>
+               <div class="col-md-5">
+                  <h3>Description</h3>
+                  <p>{{ event.description }}</p>
+               </div>
+               <div class="col-md-3">
+                  <h3>Date and Time</h3>
+                  <p>{{ event.start_date }} {{ event.start_time }} - {{ event.end_date }} {{ event.end_time }}</p>
+                  <br/>
+                  <h3>Location</h3>
+                  <p>{{ event.location }}</p>
+               </div>
+               <div class="col-md-2"></div>
+            </div>
+             <div class="row">
+                 <div class="col-md-2"></div>
+                 <div class="col-md-8"><h3>Tickets</h3></div>
+                <div class="col-md-2"></div>
+             </div>
+             <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-4">
+                <p class="lead">From Event:</p>
+                    {% for ticket in tickets %}
+                            <div class="panel panel-primary">
+                                <div class="panel-body"><div class="pull-right"><p>&euro;{{ ticket.price }}</p><a href="#" class="btn btn-success" role="button">Buy</a></div><p><strong>{{ ticket.name }}</strong></p></div>
+                        </div>
+                    {% endfor %}
 
-    <body>
-    {% include 'menu.html' %}
-      <div style="background: url('{% static 'images/background1.png' %}'); background-size: 100% 100%; background-attachment: fixed; height: 375px">
-              <div class="container">
-<br/><br/>
-        <div class="panel panel-default">
-  <div class="panel-body">
-    <div class="row">
-      <div class="col-md-2"></div>
-      <div class="col-md-4"><img src="{{ event.image }}" width="100%" height="227px"></div>
-      <div class="col-md-4"><h1>{{ event.name }}</h1>
-          <p class="lead">by {{ event.event_owner }}<small><br/>{{ event.start_date }}</small></p>
-      <p><br/>
-          <strong>&euro;{{ event.ticket_price }}0</strong></p>
-
-          <a href="#" class="btn btn-success btn-block" role="button">Tickets</a>
+                </div>
+                <div class="col-md-4"><p class="lead">From Resellers:</p></div>
+                <div class="col-md-2"></div>
+             </div>
+             </div>
+            </div>
+         </div>
       </div>
-      <div class="col-md-2"></div>
-    </div></div>
-</div>
-    </div>
-
-      </div>
-    </body>
+   </body>
 </html>

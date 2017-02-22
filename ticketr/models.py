@@ -47,6 +47,25 @@ class Event(models.Model):
 
     ticket_price = models.FloatField(max_length=20, default=0)
 
+    location = models.CharField(max_length=60)
+
     # String function to display event
     def __str__(self):
         return self.name
+
+
+class Ticket(models.Model):
+    name = models.CharField(max_length=32)
+    price = models.DecimalField(decimal_places=2, max_digits=6)
+    quantity = models.IntegerField()
+
+    # Link ticket to an event
+    event = models.ForeignKey(Event)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = 'tickets'
+
+
