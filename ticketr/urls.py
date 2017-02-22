@@ -21,5 +21,6 @@ urlpatterns = [
     # If the user goes to the root directory send them to index (view) #
     url(r'^$', views.index, name='index'),
     # If user goes to event page, include an id to specify the events number #
-    url(r'^event/(?P<id>[0-9]+)$', views.event, name='event')
+    url(r'^event/(?P<id>[0-9]+)$', views.event, name='event'),
+    url(r'^index$', views.index, name='index')
 ]

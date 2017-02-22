@@ -15,25 +15,30 @@
             <!-- Get categories-->
             {% for category in categories %}
                 <h2>{{ category.name }}</h2>
-                <!--List each event in that category-->
-                {% for event in category.event_set.all %}
-                    <div class="panel panel-default" style="width: 33.3333%;">
-                      <div class="panel-body">
-                          <div style="background: url('{{ event.image }}'); background-size: 100% 100%; height: 200px">
-                              <div class="pull-right">
-                                <p class="lead"><span class="label label-default">&euro;{{ event.ticket_price }}0</span>&nbsp;</p>
-                              </div>
-                          </div><br/>
-                          {{ event.start_date }}, {{ event.start_time }}
-                          <br/>
-                          <strong>{{ event.name }}</strong>
-                          <div class="pull-right">
-                              <a href="/event/{{ event.id }}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-qrcode"></span> Get Tickets</a>
-                          </div>
-                      </div>
-                    </div>
+                <div class="row">
+                    <!--List each event in that category-->
+                    {% for event in category.event_set.all %}
+                            <div class="col-md-4">
+                                <div class="panel panel-default">
+                                  <div class="panel-body">
+                                      <div style="background: url('{{ event.image }}'); background-size: 100% 100%; height: 200px">
+                                          <div class="pull-right">
+                                            <p class="lead"><span class="label label-default">&euro;{{ event.ticket_price }}0</span>&nbsp;</p>
+                                          </div>
+                                      </div><br/>
+                                      {{ event.start_date }}, {{ event.start_time }}
+                                      <br/>
+                                      <strong>{{ event.name }}</strong>
+                                      <div class="pull-right">
+                                          <a href="/event/{{ event.id }}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-qrcode"></span> Get Tickets</a>
+                                      </div>
+                                  </div>
+                                </div>
+                            </div>
                 {% endfor %}
+                </div>
             {% endfor %}
+            {% include 'footer.html' %}
     </div>
     </body>
 </html>
