@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     # If user goes to event page, include an id to specify the events number #
     url(r'^event/(?P<id>[0-9]+)$', views.event, name='event'),
-    url(r'^index$', views.index, name='index')
+    url(r'^home/$', views.index, name='index'),
+    url(r'^register/$', views.UserFormView.as_view(), name='register')
 ]

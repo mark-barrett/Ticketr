@@ -1,8 +1,13 @@
 from django.http import HttpResponse
 from django.template import loader
-
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, get_user_model
+from django.views.generic import View
+from .forms import UserForm
 from .models import *
+from django import forms
 
+User = get_user_model()
 
 def index(request):
     # Get the index.html template in the templates folder
@@ -25,3 +30,51 @@ def event(request, id):
     }
     # Return the template as a HttpResponse
     return HttpResponse(template.render(context, request))
+
+
+class UserFormView(View):
+    form_class = UserForm
+    template_name = 'register.html'
+
+    # When data has to be sent using a get
+    def get(self, request):
+        # None = no user data as it stands
+        form = self.form_class(None)
+        return render(request, self.template_name, {'form' : form})
+
+    # When data has been posted. Add to database
+    def post(self, request):
+        # request.POST is where all the posted data is kept
+        form = self.form_class(request.POST)
+
+        # Error check the form
+        if form.is_valid():
+            # Create object from form but don't save in the database
+            user = form.save(commit=False)
+
+            # cleaned data
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            email = form.cleaned_data['email']
+
+            # change the users password
+            user.set_password(password)
+
+            # save to database
+            user.save()
+
+            # returns user objects if the credentials are correct
+            user = authenticate(username=username, password=password)
+
+            # check if we got a user back
+            if user is not None:
+
+                # check if the user is banned/active etc
+                if user.is_active:
+
+                    # login the user and create the session
+                    login(request, user)
+                    # Refer to the user from here as request.user
+                    return redirect('index')
+
+        return render(request, self.template_name, {'form':form})
