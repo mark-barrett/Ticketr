@@ -14,3 +14,12 @@ class UserForm(forms.ModelForm):
         if User.objects.filter(email__iexact=self.cleaned_data['email']):
             raise forms.ValidationError("This email address is already in use. Please supply a different email address.")
         return self.cleaned_data['email']
+
+
+class UserLoginForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput)
+
+    class Meta:
+        model = User
+        fields = ['username', 'password']
+

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ticketr Register</title>
+    <title>Ticketr Login</title>
     {% load staticfiles %}
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 </head>
@@ -12,7 +12,7 @@
 <div class="row"><br/><br/>
   <div class="col-md-3"></div>
   <div class="col-md-6"><div class="panel panel-default">
-      <div class="panel-body"><p class="lead text-center">Register - <small>In 1 easy step</small></p>
+      <div class="panel-body"><p class="lead text-center">Login - <small>Welcome back!</small></p>
       {% if error_message %}
           <p><strong>{{ error_message }}</strong></p>
         {% endif %}
@@ -22,8 +22,8 @@
             <div class="form-group">
                 <div class="row text-center">
   <div class="col-md-3"></div>
-  <div class="col-md-6"><button type="submit" class="btn btn-success btn-block">Register</button>
-  <a href="/login" class="btn btn-info btn-block" role="button">Already have an account? Login now</a>
+  <div class="col-md-6"><button type="submit" class="btn btn-success btn-block">Login</button>
+  <a href="/register" class="btn btn-info btn-block" role="button">Don't have an account? Register now!</a>
   </div>
   <div class="col-md-3"></div>
 </div><br/>
@@ -35,11 +35,5 @@
 
       </div>
 </div></div>
-  <div class="col-md-3"></div>
-</div>
-<div class="container">
-                {% include 'footer.html' %}
-</div>
-    </div>
 </body>
 </html>

@@ -6,8 +6,18 @@
     </head>
     <body>
     {% include 'menu.html' %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" style="margin-bottom: 0;">
+                <p class="text-center">{{ message }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+
         <div style="background: url('{% static 'images/background1.png' %}'); background-size: 100% 100%; background-attachment: fixed; height: 275px">
-            <br/><br/><br/><h1 class="text-center" style="color:white;">Sell tickets for an event, resell tickets easily</h1><br/>
+            <br/><br/><h1 class="text-center" style="color:white;">Sell tickets for an event, resell tickets easily</h1><br/>
             <p class="lead text-center" style="color: white;"><strong>Event Organisers:</strong> Start selling your tickets with Ticketr now! <a href="">More Information</a><br/><strong>Event Goers:</strong> Can't go to an event? Need to resell your ticket? Put it up for sale here!</p>
         </div>
         <div class="container">

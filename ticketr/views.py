@@ -1,13 +1,15 @@
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, get_user_model
+from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.views.generic import View
-from .forms import UserForm
+from .forms import UserForm, UserLoginForm
 from .models import *
 from django import forms
+from django.contrib import messages
 
 User = get_user_model()
+
 
 def index(request):
     # Get the index.html template in the templates folder
@@ -32,6 +34,31 @@ def event(request, id):
     return HttpResponse(template.render(context, request))
 
 
+def logout_user(request):
+    logout(request)
+    messages.success(request, 'Thanks for stopping by, missing you already <3')
+    return redirect('/home')
+
+
+class LoginUserFormView(View):
+    form_class = UserLoginForm
+    template_name = 'login.html'
+
+    def get(self, request):
+        form = self.form_class(None)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            messages.success(request, 'Logged in. Welcome back!')
+            return redirect('index')
+
+
 class UserFormView(View):
     form_class = UserForm
     template_name = 'register.html'
@@ -40,7 +67,7 @@ class UserFormView(View):
     def get(self, request):
         # None = no user data as it stands
         form = self.form_class(None)
-        return render(request, self.template_name, {'form' : form})
+        return render(request, self.template_name, {'form': form})
 
     # When data has been posted. Add to database
     def post(self, request):
@@ -75,6 +102,7 @@ class UserFormView(View):
                     # login the user and create the session
                     login(request, user)
                     # Refer to the user from here as request.user
+                    messages.success(request, 'Registered successfully, you are now logged in!')
                     return redirect('index')
 
         return render(request, self.template_name, {'form':form})

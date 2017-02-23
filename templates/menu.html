@@ -18,8 +18,22 @@
               <li><a href="#">Browse Events</a></li>
               <li><a href="#">Create Event</a></li>
               <li><a href="#">Sell Your Ticket</a></li>
+     {% if user.is_authenticated %}
+     <li class="dropdown">
+         <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> {{ request.user.username }}
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">My Tickets</a></li>
+          <li><a href="#">My Events</a></li>
+          <li><a href="#">Settings</a></li>
+          <li><a href="/logout">Logout</a></li>
+        </ul>
+      </li>
+     {% endif %}
+     {% if user.is_anonymous %}
               <li><a href="../register">Register</a></li>
-              <li><a href="#">Login</a></li>
+              <li><a href="/login">Login</a></li>
+        {% endif %}
  </ul>
         </div>
     </div>
