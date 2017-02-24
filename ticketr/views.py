@@ -3,10 +3,11 @@ from django.template import loader
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.views.generic import View
-from .forms import UserForm, UserLoginForm
+from .forms import UserForm, UserLoginForm, CreateEventForm
 from .models import *
 from django import forms
 from django.contrib import messages
+from django.core.mail import send_mail
 
 User = get_user_model()
 
@@ -27,8 +28,8 @@ def event(request, id):
     template = loader.get_template('event.html')
     context = {
         # Get the event with the id passed as a parameter
-        'event' : Event.objects.get(id=id),
-        'tickets' : Ticket.objects.all().filter(event=id)
+        'event': Event.objects.get(id=id),
+        'tickets': Ticket.objects.all().filter(event=id)
     }
     # Return the template as a HttpResponse
     return HttpResponse(template.render(context, request))
@@ -38,6 +39,19 @@ def logout_user(request):
     logout(request)
     messages.success(request, 'Thanks for stopping by, missing you already <3')
     return redirect('/home')
+
+
+class CreateEventView(View):
+    form_class = CreateEventForm
+    template_name = 'create-event.html'
+
+    def get(self, request):
+        form = self.form_class(None)
+        if request.user.is_authenticated:
+            return render(request, self.template_name, {'form': form})
+        else:
+            messages.success(request, 'You have to login before you can create an event.')
+            return redirect('/login')
 
 
 class LoginUserFormView(View):
@@ -55,7 +69,7 @@ class LoginUserFormView(View):
 
         if user is not None:
             login(request, user)
-            messages.success(request, 'Logged in. Welcome back!')
+            messages.success(request, 'Hey %s welcome back, you are now logged in.' % username)
             return redirect('index')
 
 
@@ -93,16 +107,24 @@ class UserFormView(View):
             # returns user objects if the credentials are correct
             user = authenticate(username=username, password=password)
 
+            """
+            send_mail('Welcome to Ticketr',
+                      'Thank you for registering your account with us, '
+                      'we are more than certain you will love it here!',
+                      'no-reply@ticketr.com',
+                      [email],
+                      fail_silently=False)
+                      """
+
             # check if we got a user back
             if user is not None:
 
                 # check if the user is banned/active etc
                 if user.is_active:
-
                     # login the user and create the session
                     login(request, user)
                     # Refer to the user from here as request.user
                     messages.success(request, 'Registered successfully, you are now logged in!')
                     return redirect('index')
 
-        return render(request, self.template_name, {'form':form})
+        return render(request, self.template_name, {'form': form})

@@ -10,7 +10,7 @@
     {% if messages %}
         {% for message in messages %}
             <div class="alert alert-{{ message.tags }}" style="margin-bottom: 0;">
-                <p class="text-center">{{ message }}</p>
+                <p class="text-center lead" style="color: white;">{{ message }}</p>
             </div>
         {% endfor %}
     {% endif %}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+      <title>Ticketr - Create Event</title>
+      {% load staticfiles %}
+      <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+</head>
+<body>
+{% include 'menu.html' %}
+    <div style="background: url('{% static 'images/background1.png' %}'); background-size: 100% 100%; background-attachment: fixed; height: 275px">
+         <div class="container">
+             <br/><br/>
+             {% if error_message %}
+          <p><strong>{{ error_message }}</strong></p>
+            {% endif %}
+            <div class="panel panel-default">
+               <div class="panel-body">
+                  <div class="row">
+                     <div class="col-md-1"></div>
+                     <div class="col-md-10">
+                         <h2>Create an Event</h2>
+                         <hr/>
+                         <p class="lead">1. Event Details</p>
+        <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% include 'event_form_template.html' %}
+            <div class="form-group">
+                <div class="row text-center">
+  <div class="col-md-3"></div>
+  <div class="col-md-6"><button type="submit" class="btn btn-success btn-block">Create Event</button>
+  </div>
+                     </div>
+                     <div class="col-md-1"></div>
+                  </div>
+               </div>
+            </div>
+               </div></div>
+
+    {% include 'footer.html' %}
+</div>
+</body>
+</html>
