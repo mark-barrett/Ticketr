@@ -48,10 +48,28 @@ class CreateEventView(View):
     def get(self, request):
         form = self.form_class(None)
         if request.user.is_authenticated:
-            return render(request, self.template_name, {'form': form})
+
+            # Now check to make sure the user has created an "Event Organiser" name
+            eo = EventOwner.objects.filter(owner_id=request.user.id)
+
+            # If there has been an event owner made
+            if eo.count() > 0:
+                return render(request, self.template_name, {'form': form})
+
+            # Else send the user to the create event owner
+            else:
+                messages.warning(request, 'You must have an organiser profile setup before creating an event.')
+                return redirect('/create-organiser')
         else:
             messages.success(request, 'You have to login before you can create an event.')
             return redirect('/login')
+
+
+class CreateOrganiserView(View):
+    template_name = 'create-organiser.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
 
 
 class LoginUserFormView(View):

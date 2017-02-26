@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ticketr Create Organiser Profile</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+</head>
+<body>
+{% include 'menu.html' %}
+    <div style="background: url('{% static 'images/background1.png' %}'); background-size: 100% 100%; background-attachment: fixed; height: 275px">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" style="margin-bottom: 0;">
+                <p class="text-center lead" style="color: white;">{{ message }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+<div class="container">
+<div class="row">
+  <div class="col-md-2">
+
+  </div>
+  <div class="col-md-8"><br/><br/>
+      <div class="panel panel-default">
+  <div class="panel-body">
+      <h3>Create an Organiser Profile</h3>
+      <hr/>
+  </div>
+</div>
+  </div>
+  <div class="col-md-2">
+
+  </div>
+</div>
+
+        {% include 'footer.html' %}
+</div>
+</body>
+</html>

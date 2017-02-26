@@ -26,5 +26,6 @@ urlpatterns = [
     url(r'^register/$', views.UserFormView.as_view(), name='register'),
     url(r'^logout/$', views.logout_user, name='logout'),
     url(r'^login/$', views.LoginUserFormView.as_view(), name='login'),
-    url(r'^create-event/$', views.CreateEventView.as_view(), name='create-view')
+    url(r'^create-event/$', views.CreateEventView.as_view(), name='create-view'),
+    url(r'^create-organiser/$', views.CreateOrganiserView.as_view(), name='create-organiser')
 ]

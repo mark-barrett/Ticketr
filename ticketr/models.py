@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 
 from django.db import models
 
+from django.contrib.auth.models import User
+
 from datetime import *
 
 # Create database tables by creating classes that extend the model class
@@ -21,6 +23,7 @@ class Category(models.Model):
 
 class EventOwner(models.Model):
     name = models.CharField(max_length=32)
+    owner = models.ForeignKey(User)
 
     def __str__(self):
         return self.name
