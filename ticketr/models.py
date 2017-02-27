@@ -23,7 +23,11 @@ class Category(models.Model):
 
 class EventOwner(models.Model):
     name = models.CharField(max_length=32)
+    description = models.TextField()
+    website = models.CharField(max_length=64)
+    facebook = models.CharField(max_length=64)
     owner = models.ForeignKey(User)
+    image = models.CharField(max_length=128)
 
     def __str__(self):
         return self.name

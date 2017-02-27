@@ -3,7 +3,7 @@ from django.template import loader
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.views.generic import View
-from .forms import UserForm, UserLoginForm, CreateEventForm
+from .forms import UserForm, UserLoginForm, CreateEventForm, CreateOrganiserProfileForm
 from .models import *
 from django import forms
 from django.contrib import messages
@@ -46,7 +46,7 @@ class CreateEventView(View):
     template_name = 'create-event.html'
 
     def get(self, request):
-        form = self.form_class(None)
+        form = self.form_class(request)
         if request.user.is_authenticated:
 
             # Now check to make sure the user has created an "Event Organiser" name
@@ -66,10 +66,28 @@ class CreateEventView(View):
 
 
 class CreateOrganiserView(View):
+    form_class = CreateOrganiserProfileForm
     template_name = 'create-organiser.html'
 
     def get(self, request):
-        return render(request, self.template_name)
+        form = self.form_class(None)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        name = request.POST['name']
+        description = request.POST['description']
+        website = request.POST['website']
+        facebook = request.POST['facebook']
+        image = request.POST['image']
+
+        eo = EventOwner(name=name, description=description, website=website, facebook=facebook, image=image,
+                        owner=request.user)
+
+        eo.save()
+
+        if eo is not None:
+            messages.success(request, "Created organiser profile successfully!")
+            return redirect('index')
 
 
 class LoginUserFormView(View):
@@ -89,6 +107,25 @@ class LoginUserFormView(View):
             login(request, user)
             messages.success(request, 'Hey %s welcome back, you are now logged in.' % username)
             return redirect('index')
+
+
+class OrganiserProfiles(View):
+
+    def get(self, request):
+        eo = EventOwner.objects.filter(owner_id=request.user.id)
+
+        # Check if there are profiles
+        if eo.count() > 0:
+            # Profiles exists
+            template = loader.get_template('organiser-profiles.html')
+            context = {
+                'profiles': EventOwner.objects.all().filter(owner=request.user)
+            }
+            return HttpResponse(template.render(context, request))
+        else:
+            # If no profiles have been created
+            messages.warning(request, 'You do not have any organiser profiles. Create one first.')
+            return redirect('/create-organiser')
 
 
 class UserFormView(View):

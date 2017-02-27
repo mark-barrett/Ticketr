@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ticketr Create Organiser Profile</title>
+    <title>Ticketr Organiser Profiles</title>
     {% load staticfiles %}
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 </head>
@@ -24,13 +24,23 @@
   <div class="col-md-8"><br/><br/>
       <div class="panel panel-default">
   <div class="panel-body">
-      <h3>Create an Organiser Profile</h3>
+  <div class="pull-right">
+  <a href="/create-organiser" class="btn btn-success" role="button"><span class="glyphicon glyphicon-plus"></span> Create Organiser Profiler</a>
+  </div>
+      <h3>Organiser Profiles</h3>
       <hr/>
-      <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {% include 'event_form_template.html' %}
-          <button type="submit" class="btn btn-success btn-block">Create Organiser Profile</button>
-      </form>
+      {% for profile in profiles %}
+          <div class="row">
+  <div class="col-md-3"><img src="{{ profile.image }}" class="img-circle" alt="{{ profile.name }}" width="150" height="150"></div>
+  <div class="col-md-9"><h3>{{ profile.name }}</h3>
+  {% if profile.facebook is not None %}
+      <a href="{{ profile.facebook }}" class="btn btn-primary" role="button">Facebook</a>
+  {% endif %}
+  {% if profile.website is not None %}
+<a href="{{ profile.website }}" class="btn btn-default" role="button">Website</a>
+  {% endif %}</div>
+</div><br/>
+      {% endfor %}
   </div>
 </div>
   </div>
@@ -39,7 +49,5 @@
   </div>
 </div>
 
-        {% include 'footer.html' %}
-</div>
 </body>
 </html>
