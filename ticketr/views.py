@@ -274,3 +274,14 @@ class UserFormView(View):
                     return redirect('index')
 
         return render(request, self.template_name, {'form': form})
+
+
+def organiser(request, id):
+    template = loader.get_template('organiser.html')
+    context = {
+        # Get the event with the id passed as a parameter
+        'organiser': EventOwner.objects.get(id=id),
+        'events': Event.objects.all().filter(event_owner=id)
+    }
+    # Return the template as a HttpResponse
+    return HttpResponse(template.render(context, request))

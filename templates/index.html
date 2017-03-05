@@ -37,7 +37,7 @@
                                                                                    <div class="pull-right">
                                             <p class="lead"><span class="label label-default">
                                           {% for ticket in event.ticket_set.all %}
-                                            - &euro;{{ ticket.price }}
+                                            &euro;{{ ticket.price }} {% if not forloop.last %} - {% endif %}
                                           {% endfor %}
                                             </span>&nbsp;</p>
                                           </div>

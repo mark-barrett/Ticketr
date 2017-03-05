@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ticketr - {{ organiser.name }}</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+</head>
+<body>
+ {% include 'menu.html' %}
+      <div style="background: url('{% static 'images/background1.png' %}'); background-size: 100% 100%; background-attachment: fixed; height: 275px">
+         <div class="container">
+            <br/><br/>
+            <div class="panel panel-default">
+               <div class="panel-body"><br/>
+                  <div class="row">
+                  <div class="col-md-2"></div>
+                     <div class="col-md-2"><img src="{{ organiser.image }}" class="img-circle" alt="{{ organiser.name }}" width="150" height="150"></div>
+                     <div class="col-md-8"><h2>{{ organiser.name }}</h2>
+                           {% if organiser.facebook is not None %}
+      <a href="{{ organiser.facebook }}" class="btn btn-primary" role="button">Facebook</a>
+  {% endif %}
+  {% if orgraniser.website is not None %}
+<a href="{{ organiser.website }}" class="btn btn-default" role="button">Website</a>
+  {% endif %}<br/><br/><br/>
+                             <br/><br/>
+                     </div>
+                  </div>
+               </div>
+            <div class="col-md-2"></div>
+                <div class="col-md-4"><h3>About:</h3>
+                <p>{{ organiser.description }}</p></div>
+                <div class="col-md-4"><h3>Events:</h3>
+                {% for event in events %}
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                      <div class="row">
+                      <div class="col-md-4">
+                        <img src="{{ event.image }}" height="80px" width="100px">
+                      </div>
+                          <div class="col-md-8"><p><strong>{% if event.name|length > 34 %}
+                                          {{ event.name|truncatechars:35 }}
+                                      {% else %}
+                                      {{ event.name }}
+                                      {% endif %}</strong><br/>{{ event.start_date }}, {{ event.start_time }}</p>                                      <div class="pull-right">
+                                          <a href="/event/{{ event.id }}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-qrcode"></span> Get Tickets</a>
+                                      </div></div>
+
+                      </div>
+                  </div>
+                </div>
+                {% endfor %}
+
+                </div>
+            <div class="col-md-2"></div>
+            </div></div>
+      <div class="container">
+          {% include 'footer.html' %}
+      </div>
+
+      </div>
+</body>
+</html>
