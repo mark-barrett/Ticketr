@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 
 from datetime import *
 
+from django.conf import settings
+
 # Create database tables by creating classes that extend the model class
 from django.forms import ImageField
 
@@ -35,15 +37,15 @@ class EventOwner(models.Model):
 
 class Event(models.Model):
     # Varchar with 32 chars
-    name = models.CharField(max_length=32)
+    name = models.CharField(max_length=64)
     # Give the event a picture
-    image = models.CharField(max_length=128)
+    image = models.CharField(max_length=240)
 
     # Start date and time and end date and time
-    start_date = models.DateField(auto_now_add=True)
-    start_time = models.TimeField(auto_now_add=True)
-    end_date = models.DateField(auto_now_add=True)
-    end_time = models.TimeField(auto_now_add=True)
+    start_date = models.DateField()
+    start_time = models.TimeField()
+    end_date = models.DateField()
+    end_time = models.TimeField()
 
     description = models.TextField()
 
@@ -52,9 +54,15 @@ class Event(models.Model):
 
     event_owner = models.ForeignKey(EventOwner, default=1)
 
-    ticket_price = models.FloatField(max_length=20, default=0)
-
     location = models.CharField(max_length=60)
+
+    privacy = models.CharField(max_length=80)
+
+    resell = models.CharField(max_length=80)
+
+    resell_when = models.CharField(max_length=80)
+
+    resell_amount = models.CharField(max_length=80)
 
     # String function to display event
     def __str__(self):

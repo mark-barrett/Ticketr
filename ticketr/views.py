@@ -8,6 +8,8 @@ from .models import *
 from django import forms
 from django.contrib import messages
 from django.core.mail import send_mail
+from datetime import datetime
+from helper import *
 
 User = get_user_model()
 
@@ -63,6 +65,95 @@ class CreateEventView(View):
         else:
             messages.success(request, 'You have to login before you can create an event.')
             return redirect('/login')
+
+    def post(self, request):
+        name = request.POST['name']
+        location = request.POST['location']
+        start_date = request.POST['start_date']
+        end_date = request.POST['end_date']
+        start_time = request.POST['start_time']
+        end_time = request.POST['end_time']
+        image = request.POST['image']
+        description = request.POST['description']
+        category = request.POST['category']
+        event_owner = request.POST['event_owner']
+        ticket1_name = request.POST['ticket1_name']
+        ticket2_name = request.POST['ticket2_name']
+        ticket3_name = request.POST['ticket3_name']
+        ticket1_price = request.POST['ticket1_price']
+        ticket2_price = request.POST['ticket2_price']
+        ticket3_price = request.POST['ticket3_price']
+        ticket1_qty = request.POST['ticket1_qty']
+        ticket2_qty = request.POST['ticket2_qty']
+        ticket3_qty = request.POST['ticket3_qty']
+        privacy = request.POST['privacy']
+        resell = request.POST['resell']
+        resell_when = request.POST['resell_when']
+        resell_amount = request.POST['resell_amount']
+
+        # Check if privacy is set to which and make appropriate changes
+        if 'Public' in privacy:
+            privacy = 'Public'
+        elif 'Private' in privacy:
+            privacy = 'Private'
+        else:
+            privacy = 'Invite'
+
+        # Figure out if they want to resell or not
+        if 'Yes' in resell:
+            resell = 'Yes'
+        else:
+            resell = 'No'
+
+        # Figure out if when they want to resell
+        if 'no' in resell_when:
+            resell_when = 'No'
+        elif 'anytime' in resell_when:
+            resell_when = 'Anytime'
+        elif 'out' in resell_when:
+            resell_when = 'Sell Out'
+        else:
+            resell_when = 'Amount'
+
+        # Figure out how many tickets they want sold before sale if set
+        if resell_amount is None:
+            resell_amount = 'No'
+
+        event_category = Category.objects.get(id=category)
+        event_owner_object = EventOwner.objects.get(id=event_owner)
+
+        event_temp = Event(name=name, image=image, description=description, location=location, start_date=Helper.date(start_date),
+                           start_time=start_time, end_date=Helper.date(end_date), end_time=end_time, event_owner=event_owner_object,
+                           category=event_category, privacy=privacy, resell=resell, resell_when=resell_when,
+                           resell_amount=resell_amount)
+
+        event_temp.save()
+
+        limit = 3
+        # Now the tickets
+        tickets = [ticket1_name, ticket1_price, ticket1_qty]
+
+        if ticket1_name is not None:
+            tickets.append(ticket2_name)
+            tickets.append(ticket2_price)
+            tickets.append(ticket2_qty)
+            limit = 6
+        if ticket2_name is not None:
+            tickets.append(ticket3_name)
+            tickets.append(ticket3_price)
+            tickets.append(ticket3_qty)
+            limit = 9
+
+        range = 0
+        print tickets
+        while range < limit:
+            ticket = Ticket(name=tickets[range+0], price=tickets[range+1], quantity=tickets[range+2], event=event_temp)
+            ticket.save()
+            range += 3
+
+        if event is not None:
+            messages.success(request, "Nice one! Your event created successfully.")
+            return redirect(index)
 
 
 class CreateOrganiserView(View):

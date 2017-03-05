@@ -1,29 +1,27 @@
 {% for field in form %}
     {% if field.errors %}
         <div class="alert alert-danger">
-          <strong>Error</strong> {{ field.errors }}
+           <strong>Error</strong> {{ field.errors }}
         </div>
     {% endif %}
     {% if 'ticket1_name' in field.label_tag %}
         <p class="lead">2. Tickets</p>
     {% endif%}
-    <div class="row">
-      <div class="col-md-1"></div>
-      <div class="col-md-10">
-          {% if 'ticket' in field.label_tag %}
-              <div class="row">
-            <div class="col-xs-8">
-          {% endif %}
-          <div class="form-group">
-        <label>{{ field.label_tag }}</label>
-        {{ field }}
-      </div>
-      {% if 'ticket' in field.label_tag %}
-          </div>
-          </div>
-          {% endif %}
-
-      </div>
-      <div class="col-md-1"></div>
-    </div>
+    {% if 'id_ticket' in field.label_tag and '_name' in field.label_tag %}
+        <div class="alert alert-success">
+            <p class="text-center"><strong>Ticket</strong></p>
+        </div>
+    {% endif %}
+    <label class="control-label">{{ field.label_tag }}</label>
+      {{ field }}
+    <br/>
+    {% if 'qty' in field.label_tag %}
+        <hr/>
+    {% endif %}
+    {% if 'ticket3_qty' in field.label_tag %}
+        <p class="lead">3. Additional Information</p>
+    {% endif%}
+    {% if 'id_privacy' in field.label_tag %}
+        <p class="lead">4. Reselling Tickets</p>
+    {% endif%}
 {% endfor %}
