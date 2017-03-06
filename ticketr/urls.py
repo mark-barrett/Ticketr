@@ -29,5 +29,6 @@ urlpatterns = [
     url(r'^create-event/$', views.CreateEventView.as_view(), name='create-view'),
     url(r'^create-organiser/$', views.CreateOrganiserView.as_view(), name='create-organiser'),
     url(r'^organiser-profiles/$', views.OrganiserProfiles.as_view(), name='organiser-profiles'),
-    url(r'^organiser/(?P<id>[0-9]+)$', views.organiser, name='organiser')
+    url(r'^organiser/(?P<id>[0-9]+)$', views.organiser, name='organiser'),
+    url(r'^my-events/$', views.MyEvents.as_view(), name='my-events')
 ]

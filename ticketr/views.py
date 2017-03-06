@@ -43,6 +43,41 @@ def logout_user(request):
     return redirect('/home')
 
 
+class MyEvents(View):
+    template_name = loader.get_template('my-events.html')
+
+    def get(self, request):
+        if request.user.is_authenticated:
+
+            # Check if the user has events. If they do return them, else return an notice
+            if EventOwner.objects.filter(owner_id=request.user.id).count() > 0:
+
+                # Get all organisers under this account
+                organisers = EventOwner.objects.all().filter(owner=request.user.id)
+                context = {
+                    'events': Event.objects.all().filter(event_owner=organisers)
+                }
+                return HttpResponse(self.template_name.render(context, request))
+            else:
+                messages.success(request, "You don't have any events yet!")
+        else:
+            return redirect('/login')
+
+    def post(self, request):
+        search_query = request.POST['search']
+
+        # Get all organisers under this account
+        organisers = EventOwner.objects.all().filter(owner=request.user.id)
+        search_context = {
+            'search_events': Event.objects.all().filter(event_owner_id=organisers, name__contains=search_query)
+        }
+
+        if len(search_context) > 0:
+            return HttpResponse(self.template_name.render(search_context, request))
+        else:
+            messages.warning(request, "Cannot find that event!")
+
+
 class CreateEventView(View):
     form_class = CreateEventForm
     template_name = 'create-event.html'
