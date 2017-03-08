@@ -1,3 +1,4 @@
+from django.db.models import Sum
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render, redirect
@@ -55,7 +56,7 @@ class MyEvents(View):
                 # Get all organisers under this account
                 organisers = EventOwner.objects.all().filter(owner=request.user.id)
                 context = {
-                    'events': Event.objects.all().filter(event_owner=organisers)
+                    'events': Event.objects.all().filter(event_owner__in=organisers)
                 }
                 return HttpResponse(self.template_name.render(context, request))
             else:
@@ -69,13 +70,45 @@ class MyEvents(View):
         # Get all organisers under this account
         organisers = EventOwner.objects.all().filter(owner=request.user.id)
         search_context = {
-            'search_events': Event.objects.all().filter(event_owner_id=organisers, name__contains=search_query)
+            'search_events': Event.objects.all().filter(event_owner_id__in=organisers, name__contains=search_query)
         }
 
         if len(search_context) > 0:
             return HttpResponse(self.template_name.render(search_context, request))
         else:
             messages.warning(request, "Cannot find that event!")
+
+
+class ManageEvent(View):
+    template_name = loader.get_template('manage-event.html')
+
+    def get(self, request, id):
+        # Check if user is logged in
+        if request.user.is_authenticated:
+            # Check if the user has access to this event
+            e = Event.objects.get(id=id)
+            # Look at this again. Perhaps figure out another filter method
+            eo = EventOwner.objects.get(owner_id=request.user.id, name=e.event_owner.name)
+            ticketquantity = Ticket.objects.all().filter(event=e).aggregate(Sum('quantity'))
+            sold_ticketquantity = Ticket.objects.all().filter(event=e).aggregate(Sum('quantity_sold'))
+
+            percentage = (float(sold_ticketquantity['quantity_sold__sum']) / float(ticketquantity['quantity__sum']))
+            percentage *= 100
+
+            context = {
+                # We want all categories objects to be sent
+                'event': Event.objects.get(id=id),
+                'ticketquantity': ticketquantity,
+                'sold_ticketquantity': sold_ticketquantity,
+                'percentage': percentage
+            }
+
+            if eo.owner==request.user:
+                return HttpResponse(self.template_name.render(context, request))
+            else:
+                return redirect('/myevents')
+        else:
+            return redirect('/login')
 
 
 class CreateEventView(View):
@@ -127,11 +160,11 @@ class CreateEventView(View):
         resell_amount = request.POST['resell_amount']
 
         # Check if privacy is set to which and make appropriate changes
-        if 'Public' in privacy:
+        if 'select1' in privacy:
             privacy = 'Public'
-        elif 'Private' in privacy:
+        elif 'select2' in privacy:
             privacy = 'Private'
-        else:
+        elif 'select3' in privacy:
             privacy = 'Invite'
 
         # Figure out if they want to resell or not
@@ -182,7 +215,7 @@ class CreateEventView(View):
         range = 0
         print tickets
         while range < limit:
-            ticket = Ticket(name=tickets[range+0], price=tickets[range+1], quantity=tickets[range+2], event=event_temp)
+            ticket = Ticket(name=tickets[range+0]+"#ENAME-"+name+"#EVENT_ID-"+str(event_temp.id), price=tickets[range+1], quantity=tickets[range+2], event=event_temp)
             ticket.save()
             range += 3
 
@@ -309,6 +342,12 @@ class UserFormView(View):
                     return redirect('index')
 
         return render(request, self.template_name, {'form': form})
+
+
+class BuyTicket(View):
+    def get(self, request, event_id, ticket_id):
+        print "Event:"+event_id
+        print "Ticket:"+ticket_id
 
 
 def organiser(request, id):

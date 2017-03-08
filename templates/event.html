@@ -2,6 +2,7 @@
    <head>
       <title>Ticketr - {{ event.name }}</title>
       {% load staticfiles %}
+       {% load ticket_extras %}
       <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
    </head>
    <div>
@@ -52,7 +53,7 @@
                 <p class="lead">From Event:</p>
                     {% for ticket in tickets %}
                             <div class="panel panel-primary">
-                                <div class="panel-body"><div class="pull-right"><p>&euro;{{ ticket.price }}</p><a href="#" class="btn btn-success" role="button">Buy</a></div><p><strong>{{ ticket.name }}</strong></p></div>
+                                <div class="panel-body"><div class="pull-right"><p>&euro;{{ ticket.price }}</p><a href="/buy-ticket/{{ event.id }}/{{ ticket.id }}" class="btn btn-success" role="button">Buy</a></div><p><strong>{{ ticket.name|remove_key:"#ENAME-" }}</strong></p></div>
                         </div>
                     {% endfor %}
 

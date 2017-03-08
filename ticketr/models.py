@@ -73,6 +73,7 @@ class Ticket(models.Model):
     name = models.CharField(max_length=32)
     price = models.DecimalField(decimal_places=2, max_digits=6)
     quantity = models.IntegerField()
+    quantity_sold = models.IntegerField(default=0)
 
     # Link ticket to an event
     event = models.ForeignKey(Event)
@@ -82,5 +83,3 @@ class Ticket(models.Model):
 
     class Meta:
         verbose_name_plural = 'tickets'
-
-

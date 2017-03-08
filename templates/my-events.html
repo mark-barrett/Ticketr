@@ -41,9 +41,9 @@
   <div class="panel-body">      <div class="row">
           <div class="col-md-8"><p class="lead">{{ search_event.name }}<br/>
   <small>{{ search_event.start_date }}, {{ search_event.start_time }}</small></p>
-      <a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-cog"></span> Manage</a>
+      <a href="/manage-event/{{ search_event.id }}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-cog"></span> Manage</a>
       <a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
-      <a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-share"></span> View</a>
+      <a href="/event/{{ event.id }}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-share"></span> View</a>
           </div>
                     <div class="col-md-4">
 <p class="lead">Organiser: <span class="label label-default">{{ search_event.event_owner }}</span></p>
@@ -60,9 +60,9 @@
           <div class="col-md-8">
       <p class="lead">{{ event.name }}<br/>
   <small>{{ event.start_date }}, {{ event.start_time }}</small></p>
-      <a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-cog"></span> Manage</a>
+      <a href="/manage-event/{{ event.id }}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-cog"></span> Manage</a>
       <a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
-      <a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-share"></span> View</a>
+      <a href="/event/{{ event.id }}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-share"></span> View</a>
               </div>
           <div class="col-md-4">
 <p class="lead">Organiser: <span class="label label-default">{{ event.event_owner }}</span></p>
