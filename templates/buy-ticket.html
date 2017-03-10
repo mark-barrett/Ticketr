@@ -1,0 +1,90 @@
+<html>
+   <head>
+      <title>Ticketr - Buy Ticket</title>
+      {% load staticfiles %}
+       {% load ticket_extras %}
+      <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<body>
+ {% include 'menu.html' %}
+     {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" style="margin-bottom: 0;">
+                <p class="text-center lead" style="color: white;">{{ message }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+ <div class="container">
+     <div class="row">
+         <div class="col-md-1">
+
+         </div>
+         <div class="col-md-7">
+             <h3>{{ event.name }}</h3>
+             <p class="lead">{{ event.location }} - {{ event.start_date }}, {{ event.start_time }}<br/>
+             <small>{{ event.event_owner}} </small></p>
+            <div class="panel panel-default">
+              <div class="panel-heading">Buy Ticket</div>
+              <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th>Quantity</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>1</td>
+                            <td>{{ ticket.name|remove_key:"#ENAME-" }}</td>
+                            <td>€{{ ticket.price }}</td>
+                          </tr>
+                        <tr>
+                            <td></td>
+                            <td>Booking Fee:</td>
+                            <td>+ €2.50</td>
+                        </tr>
+                        </tbody>
+                      </table>
+              </div>
+            </div>
+         </div>
+         <div class="col-md-3"><br/><br/><br/><br/><br/><br/><br/><br/>
+            <div class="panel panel-default">
+              <div class="panel-heading">Ticket(s) will be held for:</div>
+                <div class="panel-body"><p class="lead"><span id="time">05:00</span></p></div>
+            </div>
+         </div>
+         <div class="col-md-1">
+
+         </div>
+     </div>
+<script>
+    function startTimer(duration, display) {
+    var timer = duration, minutes, seconds;
+    setInterval(function () {
+        minutes = parseInt(timer / 60, 10)
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = minutes + ":" + seconds;
+
+        if (--timer < 0) {
+            window.location="/ticket-timeout/{{ token }}";
+                alert("The timer set for purchasing this ticket has expired. This ticket has now been released to the public to purchase again.");
+        }
+    }, 1000);
+}
+
+window.onload = function () {
+    var fiveMinutes = 5,
+        display = document.querySelector('#time');
+    startTimer(fiveMinutes, display);
+};
+</script>
+   {% include 'footer.html' %}
+ </div>
+</body>
+</html>

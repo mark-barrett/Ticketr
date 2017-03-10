@@ -7,6 +7,13 @@
    </head>
    <div>
       {% include 'menu.html' %}
+       {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" style="margin-bottom: 0;">
+                <p class="text-center lead" style="color: white;">{{ message }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
       <div style="background: url('{% static 'images/background1.png' %}'); background-size: 100% 100%; background-attachment: fixed; height: 275px">
          <div class="container">
             <br/><br/>
@@ -53,7 +60,19 @@
                 <p class="lead">From Event:</p>
                     {% for ticket in tickets %}
                             <div class="panel panel-primary">
-                                <div class="panel-body"><div class="pull-right"><p>&euro;{{ ticket.price }}</p><a href="/buy-ticket/{{ event.id }}/{{ ticket.id }}" class="btn btn-success" role="button">Buy</a></div><p><strong>{{ ticket.name|remove_key:"#ENAME-" }}</strong></p></div>
+                                <div class="panel-body">
+                                    <div class="pull-right">
+                                    <div class="pull-right">
+                                        <p>&euro;{{ ticket.price }}</p>
+                                    </div><br/>
+                                        {% if ticket.quantity == ticket.quantity_sold %}
+                                            <p class="lead"><span class="label label-default">Sold Out</span></p>
+                                        {% else %}
+                                        <a href="/buy-ticket/{{ event.id }}/{{ ticket.id }}" class="btn btn-success" role="button">Buy</a>
+                                        {% endif %}
+                                    </div>
+                                    <p><strong>{{ ticket.name|remove_key:"#ENAME-" }}</strong></p>
+                                </div>
                         </div>
                     {% endfor %}
 

@@ -11,6 +11,7 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from datetime import datetime
 from helper import *
+import string, random
 
 User = get_user_model()
 
@@ -345,9 +346,60 @@ class UserFormView(View):
 
 
 class BuyTicket(View):
+    template = loader.get_template('buy-ticket.html')
+
     def get(self, request, event_id, ticket_id):
-        print "Event:"+event_id
-        print "Ticket:"+ticket_id
+        ticket = Ticket.objects.get(id=ticket_id)
+
+        if ticket.quantity == ticket.quantity_sold:
+            messages.warning(request, "Sorry, that ticket is sold out, choose another.")
+            return redirect('/event/'+event_id)
+        else:
+            # First we need to add the ticket to the queue.
+            # Generate a token
+            while True:
+                token = Helper.token_generator(64, "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+                try:
+                    db_token = TicketQueue.objects.get(token=token)
+                except TicketQueue.DoesNotExist:
+                    break
+
+            # Now that we have a token, lets put a ticket in the queue for the user
+            queued_ticket = TicketQueue(ticket=ticket, token=token)
+            queued_ticket.save()
+
+            '''
+            Now that we have that done we can remove a ticket that is for sale by adding to the
+            ticket sold value on the ticket model
+            '''
+            ticket.quantity_sold += 1
+            ticket.save()
+
+            context = {
+                'event': Event.objects.get(id=event_id),
+                'ticket': ticket,
+                'token': token
+            }
+            return HttpResponse(self.template.render(context, request))
+
+
+class TicketTimeout(View):
+
+    def get(self, request, queue_token):
+        if queue_token is not None:
+            # Get ticket on queue
+            ticket = TicketQueue.objects.get(token=queue_token)
+
+            # Get the ticket from the database to say that there is an availible ticket
+            db_ticket = Ticket.objects.get(id=ticket.ticket.id)
+            db_ticket.quantity_sold -= 1
+            db_ticket.save()
+
+            # Delete the queued ticket
+            ticket.delete()
+            return redirect('index')
+        else:
+            return redirect('index')
 
 
 def organiser(request, id):
@@ -359,3 +411,4 @@ def organiser(request, id):
     }
     # Return the template as a HttpResponse
     return HttpResponse(template.render(context, request))
+

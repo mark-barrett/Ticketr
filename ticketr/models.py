@@ -70,7 +70,7 @@ class Event(models.Model):
 
 
 class Ticket(models.Model):
-    name = models.CharField(max_length=32)
+    name = models.CharField(max_length=64)
     price = models.DecimalField(decimal_places=2, max_digits=6)
     quantity = models.IntegerField()
     quantity_sold = models.IntegerField(default=0)
@@ -83,3 +83,11 @@ class Ticket(models.Model):
 
     class Meta:
         verbose_name_plural = 'tickets'
+
+
+class TicketQueue(models.Model):
+    ticket = models.ForeignKey(Ticket)
+    token = models.CharField(max_length=64)
+
+    def __str__(self):
+        return self.token
