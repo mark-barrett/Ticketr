@@ -88,6 +88,8 @@ class Ticket(models.Model):
 class TicketQueue(models.Model):
     ticket = models.ForeignKey(Ticket)
     token = models.CharField(max_length=64)
+    ticket_quantity = models.IntegerField()
+    time_inserted = models.TimeField(auto_now_add=True)
 
     def __str__(self):
         return self.token

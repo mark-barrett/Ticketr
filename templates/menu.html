@@ -5,7 +5,11 @@
             <a class="brand" href="#">
             <!-- UNCOMMENT THE CSS VALUES TO TEST OTHER DIMENTIONS -->
             <!-- <img src="http://placehold.it/150x80&text=Logo" alt=""> -->
-                <a href="../home"><img src={% static "images/logo.png" %} alt="" height="44"></a>
+                {% if 'buy-ticket' in request.path %}
+                <a href="../../home"><img src={% static "images/logo.png" %} alt="" height="44"></a>
+                    {% else %}
+                    <a href="../home"><img src={% static "images/logo.png" %} alt="" height="44"></a>
+                {% endif %}
             </a>
  <ul class="nav navbar-nav navbar-right">
 

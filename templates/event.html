@@ -62,13 +62,38 @@
                             <div class="panel panel-primary">
                                 <div class="panel-body">
                                     <div class="pull-right">
+
                                     <div class="pull-right">
+
                                         <p>&euro;{{ ticket.price }}</p>
+                                        {% if ticket.quantity != ticket.quantity_sold %}
+                                            <form name="buy-ticket" action="/buy-ticket/" method="post">
+                                         <div class="form-group">
+                                          <label for="sel1">Quantity:</label>
+                                          <select class="form-control" id="sel1" name="ticket_quantity">
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                          <option>5</option>
+                                          <option>6</option>
+                                          <option>7</option>
+                                          <option>8</option>
+                                              <option>9</option>
+                                              <option>10</option>
+
+                                          </select>
+                                        </div>
+                                        {% endif %}
                                     </div><br/>
                                         {% if ticket.quantity == ticket.quantity_sold %}
                                             <p class="lead"><span class="label label-default">Sold Out</span></p>
                                         {% else %}
-                                        <a href="/buy-ticket/{{ event.id }}/{{ ticket.id }}" class="btn btn-success" role="button">Buy</a>
+                                            <input type="hidden" name="event_id" value="{{ event.id }}">
+                                            <input type="hidden" name="ticket_id" value="{{ ticket.id }}">
+                                            {% csrf_token %}
+                                        <input type="submit" class="btn btn-success" value="Buy">
+                                            </form>
                                         {% endif %}
                                     </div>
                                     <p><strong>{{ ticket.name|remove_key:"#ENAME-" }}</strong></p>

@@ -22,8 +22,11 @@
              <h3>{{ event.name }}</h3>
              <p class="lead">{{ event.location }} - {{ event.start_date }}, {{ event.start_time }}<br/>
              <small>{{ event.event_owner}} </small></p>
+             <div class="alert alert-warning">
+                 <strong>Warning!</strong> If you navigate away from this page, your ticket(s) will be released to the general public for sale. This may prevent you from getting a ticket, especially if the event sells out. The tickets will be released once the timer runs out aswell.
+            </div><br/>
             <div class="panel panel-default">
-              <div class="panel-heading">Buy Ticket</div>
+              <div class="panel-heading">Buy Ticket(s)</div>
               <div class="panel-body">
                     <table class="table">
                         <thead>
@@ -31,28 +34,64 @@
                             <th>Quantity</th>
                             <th>Name</th>
                             <th>Price</th>
+                              <th>Sub Total</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
-                            <td>1</td>
+                            <td>{{ quantity }}</td>
                             <td>{{ ticket.name|remove_key:"#ENAME-" }}</td>
-                            <td>€{{ ticket.price }}</td>
+                            <td>&euro;{{ ticket.price }}</td>
+                              <td>&euro;{{ subtotal }}</td>
                           </tr>
                         <tr>
                             <td></td>
+                            <td></td>
                             <td>Booking Fee:</td>
-                            <td>+ €2.50</td>
+                            <td>&euro;{{ fees }}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td><strong>Total:</strong></td>
+                            <td>&euro;{{ total }}</td>
                         </tr>
                         </tbody>
                       </table>
               </div>
             </div>
+             {% if user.is_anonymous %}
+             <div class="panel panel-default">
+              <div class="panel-heading">Register account</div>
+                <div class="panel-body">
+
+                </div>
+            </div>
+             {% else %}
+             <div class="panel panel-default">
+              <div class="panel-heading">Account Details</div>
+                <div class="panel-body">
+                    <p><strong>Username:</strong><br/>{{ user.username }} <small>Not you? <a href="logout">(Logout)</a></small></p>
+                </div>
+            </div>
+             {% endif %}
+
          </div>
-         <div class="col-md-3"><br/><br/><br/><br/><br/><br/><br/><br/>
+         <br/>
+         <div class="col-md-3"><img src="{{ event.image }}" width="100%" height="150px">
+             <br/><br/>
             <div class="panel panel-default">
               <div class="panel-heading">Ticket(s) will be held for:</div>
                 <div class="panel-body"><p class="lead"><span id="time">05:00</span></p></div>
+            </div>
+             <div class="panel panel-default">
+              <div class="panel-heading">Where and When:</div>
+                <div class="panel-body">{{ event.location }}<br/><br/>{{ event.start_time }} - {{ event.start_date }}<br/>{{ event.end_time }} - {{ event.end_date }}</div>
+            </div>
+             <div class="panel panel-default">
+              <div class="panel-heading">Organiser:</div>
+                <div class="panel-body"><a href="" class="btn btn-default" role="button">Organiser Profile</a><br/><br/>
+                <a href="#" class="btn btn-default" role="button">Contact Organiser</a></div>
             </div>
          </div>
          <div class="col-md-1">
@@ -73,16 +112,24 @@
 
         if (--timer < 0) {
             window.location="/ticket-timeout/{{ token }}";
-                alert("The timer set for purchasing this ticket has expired. This ticket has now been released to the public to purchase again.");
         }
     }, 1000);
 }
 
 window.onload = function () {
-    var fiveMinutes = 5,
+    var fiveMinutes = 60 * 5,
         display = document.querySelector('#time');
     startTimer(fiveMinutes, display);
 };
+
+window.addEventListener("beforeunload", function (e) {
+      $.ajax({
+        url: '/ticket-timeout/{{ token }}',
+        type: 'GET',
+        async: false,
+        timeout: 4000
+    });
+});
 </script>
    {% include 'footer.html' %}
  </div>

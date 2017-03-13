@@ -11,7 +11,7 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from datetime import datetime
 from helper import *
-import string, random
+from django.views.decorators.csrf import csrf_exempt
 
 User = get_user_model()
 
@@ -348,39 +348,62 @@ class UserFormView(View):
 class BuyTicket(View):
     template = loader.get_template('buy-ticket.html')
 
-    def get(self, request, event_id, ticket_id):
+    def post(self, request):
+        event_id = request.POST['event_id']
+        ticket_id = request.POST['ticket_id']
+        ticket_quantity = int(request.POST['ticket_quantity'])
+
         ticket = Ticket.objects.get(id=ticket_id)
 
         if ticket.quantity == ticket.quantity_sold:
             messages.warning(request, "Sorry, that ticket is sold out, choose another.")
-            return redirect('/event/'+event_id)
+            return redirect('/event/' + event_id)
         else:
-            # First we need to add the ticket to the queue.
-            # Generate a token
-            while True:
-                token = Helper.token_generator(64, "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-                try:
-                    db_token = TicketQueue.objects.get(token=token)
-                except TicketQueue.DoesNotExist:
-                    break
+            # Check to see if there is enough availible tickets
+            if (ticket.quantity - ticket.quantity_sold) >= ticket_quantity:
+                # First we need to add the ticket to the queue.
+                # Generate a token
+                while True:
+                    token = Helper.token_generator(64, "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+                    try:
+                        db_token = TicketQueue.objects.get(token=token)
+                    except TicketQueue.DoesNotExist:
+                        break
 
-            # Now that we have a token, lets put a ticket in the queue for the user
-            queued_ticket = TicketQueue(ticket=ticket, token=token)
-            queued_ticket.save()
+                # Now that we have a token, lets put a ticket in the queue for the user
+                # replace part over there ----------> with qty variable)
+                queued_ticket = TicketQueue(ticket=ticket, token=token, ticket_quantity=1)
+                queued_ticket.save()
 
-            '''
-            Now that we have that done we can remove a ticket that is for sale by adding to the
-            ticket sold value on the ticket model
-            '''
-            ticket.quantity_sold += 1
-            ticket.save()
+                '''
+                Now that we have that done we can remove a ticket that is for sale by adding to the
+                ticket sold value on the ticket model
+                '''
+                ticket.quantity_sold += 1  # Replace with quantity variable
+                ticket.save()
 
-            context = {
-                'event': Event.objects.get(id=event_id),
-                'ticket': ticket,
-                'token': token
-            }
-            return HttpResponse(self.template.render(context, request))
+                # Now we need to get the quantity of the ticket to get the total and calculate some fees
+                total = ticket_quantity * ticket.price
+                fees = float(total / 100) * 2.00
+                fees += ticket_quantity * 1.00
+
+                context = {
+                    'event': Event.objects.get(id=event_id),
+                    'ticket': ticket,
+                    'token': token,
+                    'subtotal' : total,
+                    'fees' : fees,
+                    'quantity': ticket_quantity,
+                    'total': fees+float(total)
+                }
+                return HttpResponse(self.template.render(context, request))
+            else:
+                messages.warning(request, "Sorry, that quantity of tickets is not availible")
+                return redirect('/event/' + event_id)
+
+
+    def get(self, request):
+        return redirect('index')
 
 
 class TicketTimeout(View):
@@ -388,11 +411,16 @@ class TicketTimeout(View):
     def get(self, request, queue_token):
         if queue_token is not None:
             # Get ticket on queue
-            ticket = TicketQueue.objects.get(token=queue_token)
+
+            try:
+                ticket = TicketQueue.objects.get(token=queue_token)
+            except:
+                messages.warning(request, "Your ticket was released for sale to the general public because the timer ran out.")
+                return redirect('index')
 
             # Get the ticket from the database to say that there is an availible ticket
             db_ticket = Ticket.objects.get(id=ticket.ticket.id)
-            db_ticket.quantity_sold -= 1
+            db_ticket.quantity_sold -= ticket.ticket_quantity
             db_ticket.save()
 
             # Delete the queued ticket
