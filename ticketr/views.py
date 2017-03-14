@@ -12,8 +12,32 @@ from django.core.mail import send_mail
 from datetime import datetime
 from helper import *
 from django.views.decorators.csrf import csrf_exempt
+from reportlab.pdfgen import canvas
+from django.http import HttpResponse
+from django.contrib.staticfiles.templatetags.staticfiles import static
 
 User = get_user_model()
+
+
+def some_view(request):
+    # Create the HttpResponse object with the appropriate PDF headers.
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
+
+    # Create the PDF object, using the response object as its "file."
+    p = canvas.Canvas(response)
+
+    # Draw things on the PDF. Here's where the PDF generation happens.
+    # See the ReportLab documentation for the full list of functionality.
+    p.drawInlineImage('https://camo.githubusercontent.com/0c5cbab8bc8edb19b72a01d3bace2187e022d799/687474703a2f2f692e696d6775722e636f6d2f614d6f345261482e706e67', 40, 735, width=200, height=75)
+    p.drawInlineImage(
+        'http://i.imgur.com/nexc1Q6.png',
+        300, 200, width=200, height=200)
+
+    # Close the PDF object cleanly, and we're done.
+    p.showPage()
+    p.save()
+    return response
 
 
 def index(request):
@@ -30,6 +54,7 @@ def index(request):
 def event(request, id):
     # Get the index.html template in the templates folder
     template = loader.get_template('event.html')
+
     context = {
         # Get the event with the id passed as a parameter
         'event': Event.objects.get(id=id),
@@ -169,17 +194,17 @@ class CreateEventView(View):
             privacy = 'Invite'
 
         # Figure out if they want to resell or not
-        if 'Yes' in resell:
+        if 'select1' in resell:
             resell = 'Yes'
         else:
             resell = 'No'
 
         # Figure out if when they want to resell
-        if 'no' in resell_when:
+        if 'select1' in resell_when:
             resell_when = 'No'
-        elif 'anytime' in resell_when:
+        elif 'select2' in resell_when:
             resell_when = 'Anytime'
-        elif 'out' in resell_when:
+        elif 'select3' in resell_when:
             resell_when = 'Sell Out'
         else:
             resell_when = 'Amount'
@@ -187,6 +212,7 @@ class CreateEventView(View):
         # Figure out how many tickets they want sold before sale if set
         if resell_amount is None:
             resell_amount = 'No'
+
 
         event_category = Category.objects.get(id=category)
         event_owner_object = EventOwner.objects.get(id=event_owner)
@@ -214,12 +240,13 @@ class CreateEventView(View):
             limit = 9
 
         range = 0
-        print tickets
+
         while range < limit:
             ticket = Ticket(name=tickets[range+0]+"#ENAME-"+name+"#EVENT_ID-"+str(event_temp.id), price=tickets[range+1], quantity=tickets[range+2], event=event_temp)
             ticket.save()
             range += 3
 
+        print "Hello"
         if event is not None:
             messages.success(request, "Nice one! Your event created successfully.")
             return redirect(index)
@@ -372,14 +399,14 @@ class BuyTicket(View):
 
                 # Now that we have a token, lets put a ticket in the queue for the user
                 # replace part over there ----------> with qty variable)
-                queued_ticket = TicketQueue(ticket=ticket, token=token, ticket_quantity=1)
+                queued_ticket = TicketQueue(ticket=ticket, token=token, ticket_quantity=ticket_quantity)
                 queued_ticket.save()
 
                 '''
                 Now that we have that done we can remove a ticket that is for sale by adding to the
                 ticket sold value on the ticket model
                 '''
-                ticket.quantity_sold += 1  # Replace with quantity variable
+                ticket.quantity_sold += ticket_quantity  # Replace with quantity variable
                 ticket.save()
 
                 # Now we need to get the quantity of the ticket to get the total and calculate some fees

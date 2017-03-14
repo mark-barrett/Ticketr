@@ -26,7 +26,9 @@
                         <h3>{{ event.name }}</h3>
                          <p class="lead">by <a href="/organiser/{{ event.event_owner.id }}">{{ event.event_owner }}</a><small><br/>{{ event.start_date }}</small></p>
                         <p><br/>
-                           <strong>&euro;{{ event.ticket_price }}0</strong>
+                           <strong>{% for ticket in event.ticket_set.all %}
+                                            &euro;{{ ticket.price|get_fees_total:"2.0" }} {% if not forloop.last %} - {% endif %}
+                                          {% endfor %}</strong>
                         </p>
                         <a href="#tickets" class="btn btn-success btn-block" role="button">Tickets</a>
                      </div>
@@ -58,14 +60,13 @@
                 <div class="col-md-2"></div>
                 <div class="col-md-4">
                 <p class="lead">From Event:</p>
+                <div id="" style="overflow:scroll; height:400px;">
                     {% for ticket in tickets %}
                             <div class="panel panel-primary">
                                 <div class="panel-body">
                                     <div class="pull-right">
 
                                     <div class="pull-right">
-
-                                        <p>&euro;{{ ticket.price }}</p>
                                         {% if ticket.quantity != ticket.quantity_sold %}
                                             <form name="buy-ticket" action="/buy-ticket/" method="post">
                                          <div class="form-group">
@@ -97,10 +98,11 @@
                                         {% endif %}
                                     </div>
                                     <p><strong>{{ ticket.name|remove_key:"#ENAME-" }}</strong></p>
+                                <p>&euro;{{ ticket.price|get_fees_total:"2.0" }}<small> includes (FEES &euro;{{ ticket.price|get_fees:"2.0" }})</small></p>
                                 </div>
                         </div>
                     {% endfor %}
-
+                </div>
                 </div>
                 <div class="col-md-4"><p class="lead">From Resellers:</p></div>
                 <div class="col-md-2"></div>

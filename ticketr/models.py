@@ -62,7 +62,7 @@ class Event(models.Model):
 
     resell_when = models.CharField(max_length=80)
 
-    resell_amount = models.CharField(max_length=80)
+    resell_amount = models.IntegerField()
 
     # String function to display event
     def __str__(self):
