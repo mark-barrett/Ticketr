@@ -62,8 +62,25 @@
             </div>
              {% if user.is_anonymous %}
              <div class="panel panel-default">
-              <div class="panel-heading">Register account</div>
+              <div class="panel-heading">Register an account</div>
                 <div class="panel-body">
+                    <p><strong>You need to register an account to use Ticketr! Don't worry just pick a password and it will be setup. All your tickets will be saved under your account for you to access. We'll also email you a copy!</strong></p>
+                                              <div class="form-group">
+    <label for="first_name">First Name:</label>
+    <input type="text" class="form-control" id="first_name" value="{{ request.user.first_name }}">
+  </div>
+                      <div class="form-group">
+    <label for="last_name">Last Name:</label>
+    <input type="text" class="form-control" id="last_name" value="{{ request.user.last_name }}">
+  </div>
+                      <div class="form-group">
+    <label for="email_address">Email address:</label>
+    <input type="email_address" class="form-control" id="email_address"  value="{{ request.user.email }}">
+  </div>
+                                          <div class="form-group">
+    <label for="password">Password:</label>
+    <input type="password" class="form-control" id="password">
+  </div>
 
                 </div>
             </div>
@@ -87,7 +104,7 @@
                 </div>
             </div>
              {% endif %}
-
+ <a href="/register" class="btn btn-success btn-block" role="button">Buy Ticket (PayPal)</a>
          </div>
          <br/>
          <div class="col-md-3"><img src="{{ event.image }}" width="100%" height="150px">
