@@ -17,3 +17,7 @@ class Helper:
     @staticmethod
     def token_generator(size=6, chars=string.ascii_uppercase + string.digits):
         return ''.join(random.choice(chars) for _ in range(size))
+
+    @staticmethod
+    def remove_key(value, arg):
+        return value.split(arg)[0]

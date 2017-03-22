@@ -15,6 +15,13 @@ from django.views.decorators.csrf import csrf_exempt
 from reportlab.pdfgen import canvas
 from django.http import HttpResponse
 from django.contrib.staticfiles.templatetags.staticfiles import static
+import qrcode
+import StringIO
+from django.core.urlresolvers import reverse
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import os
+from pathlib import Path
+from reportlab.lib.units import inch
 
 User = get_user_model()
 
@@ -473,7 +480,73 @@ def organiser(request, id):
 class DownloadTicket(View):
 
     def get(self, request, order_number):
-        print order_number
+        if request.user.is_authenticated:
+            # Check the ticket exists
+            try:
+                order = Order.objects.get(order_number=order_number)
+                # Check if the user who is logged in owns this ticket
+                if order.user == request.user:
+
+                    # Check if the file exists
+                    qr_path = Path('qrcode/qr-'+order_number+'.png')
+                    if qr_path.is_file():
+                        # Generate PDF Here if it doesnt exist
+
+                        # Create the HttpResponse object with the appropriate PDF headers.
+                        response = HttpResponse(content_type='application/pdf')
+                        response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
+
+                        # Create the PDF object, using the response object as its "file."
+                        p = canvas.Canvas(response)
+
+                        # Draw things on the PDF. Here's where the PDF generation happens.
+                        # See the ReportLab documentation for the full list of functionality.
+                        p.drawInlineImage(
+                            'images/newticket.png',
+                            0, 0, width=600, height=850)
+
+                        # Draw details onto the pdf
+                        p.setFont("Helvetica", 15)
+                        p.drawString(48, 330, order.event.name)
+                        p.setFont("Helvetica", 12)
+                        p.drawString(315, 265, order.event.location)
+                        p.drawString(315, 165, Helper.remove_key(order.ticket.name, "#ENAME"))
+
+                        # Close the PDF object cleanly, and we're done.
+                        p.showPage()
+                        p.save()
+                        return response
+                    else:
+                        qr = qrcode.QRCode(version=1,
+                                           error_correction=qrcode.constants.ERROR_CORRECT_L,
+                                           box_size=6,
+                                           border=0)
+                        qr.add_data(order.order_code)
+                        qr.make(fit=True)
+
+                        img = qr.make_image()
+
+                        buffer = StringIO.StringIO()
+                        img.save(buffer)
+                        filename = 'qr-%s.png' % (order_number)
+                        filebuffer = InMemoryUploadedFile(
+                            buffer, None, filename, 'images/qr_codes/png', buffer.len, None)
+
+                        order.qrcode.save(filename, filebuffer)
+
+                        # Generate the pdf now that it does exist
+                else:
+                    return redirect('index')
+            except:
+                return redirect('index')
+        else:
+            return redirect('index')
+        # Verify the user is logged in
+
+        # Check the ticket exists
+        # Verify that the user who is logged in owns the ticket with this number. If not redirect
+        # Take the order_code and use it to generate a qr code
+        # Create pdf and draw the details to the page
 
 
 def some_view(request):

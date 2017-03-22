@@ -100,8 +100,9 @@ class Order(models.Model):
     ticket = models.ForeignKey(Ticket)
     event = models.ForeignKey(Event)
     user = models.ForeignKey(User)
-    order_code = models.IntegerField()
+    order_code = models.CharField(max_length=24)
     used = models.BooleanField()
+    qrcode = models.ImageField(upload_to='qrcode', blank=True, null=True)
 
     def __str__(self):
         return self.order_number
