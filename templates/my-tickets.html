@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ticketr - My Tickets</title>
+    {% load staticfiles %}
+    {% load ticket_extras %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+</head>
+<body>
+ {% include 'menu.html' %}
+     {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" style="margin-bottom: 0;">
+                <p class="text-center lead" style="color: white;">{{ message }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+ <div class="container">
+<div class="row">
+  <div class="col-md-1"></div>
+  <div class="col-md-10"><h2>My Tickets</h2>
+  <hr/>
+    <div class="row">
+        {% for ticket in tickets %}
+            <div class="col-md-6    ">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                      <div class="row">
+                          <div class="col-md-4">
+                              <img src="{{ ticket.event.image }}" width="140" height="70">
+                          </div>
+                          <div class="col-md-8">
+                              {{ ticket.event.start_date }}{{ ticket.event.start_time }}<br/>
+                              <strong>
+                                  {% if ticket.event.name|length > 30 %}
+                                      {{ ticket.event.name|truncatechars:30 }}
+                                  {% else %}
+                                      {{ ticket.event.name }}
+                                  {% endif %}
+                                  <br/>
+                                  {{ ticket.event.event_owner.name }}<br/><small>{{ ticket.ticket.name|remove_key:"#ENAME-" }}</small>
+                              </strong>
+                          </div>
+                      </div>
+                  <br/>
+                      <a href="/download-ticket/{{ ticket.order_number }}" class="btn btn-success btn-xs">Download Ticket (PDF)</a>
+                      <a class="btn btn-success btn-xs">View Order</a>
+                      <a class="btn btn-success btn-xs">Resell Ticket</a>
+                  </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+  </div>
+  <div class="col-md-1"></div>
+</div>
+             {% include 'footer.html' %}
+ </div>
+</body>
+</html>

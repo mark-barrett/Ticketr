@@ -1,4 +1,5 @@
 from django import template
+from datetime import date
 
 register = template.Library()
 
@@ -13,7 +14,13 @@ def get_fees_total(ticket_price, fee):
     ticket_price = float(ticket_price)
     return ((ticket_price/100 * float(fee)) + 1) + ticket_price
 
+
 @register.filter("get_fees")
 def get_fees(ticket_price, fee):
     ticket_price = float(ticket_price)
-    return ((ticket_price/100 * float(fee)) + 1)
+    return (ticket_price/100 * float(fee)) + 1
+
+
+@register.filter("is_past_due")
+def is_past_due(self):
+    return date.today() > self.date

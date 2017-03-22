@@ -93,3 +93,18 @@ class TicketQueue(models.Model):
 
     def __str__(self):
         return self.token
+
+
+class Order(models.Model):
+    order_number = models.CharField(max_length=16)
+    ticket = models.ForeignKey(Ticket)
+    event = models.ForeignKey(Event)
+    user = models.ForeignKey(User)
+    order_code = models.IntegerField()
+    used = models.BooleanField()
+
+    def __str__(self):
+        return self.order_number
+
+    class Meta:
+        verbose_name_plural = 'orders'

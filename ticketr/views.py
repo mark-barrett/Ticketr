@@ -9,7 +9,7 @@ from .models import *
 from django import forms
 from django.contrib import messages
 from django.core.mail import send_mail
-from datetime import datetime
+import datetime
 from helper import *
 from django.views.decorators.csrf import csrf_exempt
 from reportlab.pdfgen import canvas
@@ -17,27 +17,6 @@ from django.http import HttpResponse
 from django.contrib.staticfiles.templatetags.staticfiles import static
 
 User = get_user_model()
-
-
-def some_view(request):
-    # Create the HttpResponse object with the appropriate PDF headers.
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
-
-    # Create the PDF object, using the response object as its "file."
-    p = canvas.Canvas(response)
-
-    # Draw things on the PDF. Here's where the PDF generation happens.
-    # See the ReportLab documentation for the full list of functionality.
-    p.drawInlineImage('https://camo.githubusercontent.com/0c5cbab8bc8edb19b72a01d3bace2187e022d799/687474703a2f2f692e696d6775722e636f6d2f614d6f345261482e706e67', 40, 735, width=200, height=75)
-    p.drawInlineImage(
-        'http://i.imgur.com/nexc1Q6.png',
-        300, 200, width=200, height=200)
-
-    # Close the PDF object cleanly, and we're done.
-    p.showPage()
-    p.save()
-    return response
 
 
 def index(request):
@@ -55,19 +34,42 @@ def event(request, id):
     # Get the index.html template in the templates folder
     template = loader.get_template('event.html')
 
+    event = Event.objects.get(id=id)
+
     context = {
         # Get the event with the id passed as a parameter
-        'event': Event.objects.get(id=id),
+        'event': event,
         'tickets': Ticket.objects.all().filter(event=id)
     }
-    # Return the template as a HttpResponse
-    return HttpResponse(template.render(context, request))
+    # Check if the event is over or not
+    event_end_time_date = datetime.datetime.combine(event.end_date, event.end_time)
+
+    if event_end_time_date < datetime.datetime.now():
+        messages.warning(request, 'Sorry that event is over!')
+        return redirect('index')
+    else:
+        # Return the template as a HttpResponse
+        return HttpResponse(template.render(context, request))
 
 
 def logout_user(request):
     logout(request)
     messages.success(request, 'Thanks for stopping by, missing you already <3')
     return redirect('/home')
+
+
+class MyTickets(View):
+    template_name = loader.get_template('my-tickets.html')
+
+
+    def get(self, request):
+        # Check if the user is authenticated. They must be in order to view their tickets
+        if request.user.is_authenticated:
+
+            context = {
+                'tickets' : Order.objects.all().filter(user=request.user)
+            }
+            return HttpResponse(self.template_name.render(context, request))
 
 
 class MyEvents(View):
@@ -467,3 +469,29 @@ def organiser(request, id):
     # Return the template as a HttpResponse
     return HttpResponse(template.render(context, request))
 
+
+class DownloadTicket(View):
+
+    def get(self, request, order_number):
+        print order_number
+
+
+def some_view(request):
+    # Create the HttpResponse object with the appropriate PDF headers.
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
+
+    # Create the PDF object, using the response object as its "file."
+    p = canvas.Canvas(response)
+
+    # Draw things on the PDF. Here's where the PDF generation happens.
+    # See the ReportLab documentation for the full list of functionality.
+    p.drawInlineImage('https://camo.githubusercontent.com/0c5cbab8bc8edb19b72a01d3bace2187e022d799/687474703a2f2f692e696d6775722e636f6d2f614d6f345261482e706e67', 40, 735, width=200, height=75)
+    p.drawInlineImage(
+        'http://i.imgur.com/nexc1Q6.png',
+        300, 200, width=200, height=200)
+
+    # Close the PDF object cleanly, and we're done.
+    p.showPage()
+    p.save()
+    return response

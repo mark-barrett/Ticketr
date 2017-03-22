@@ -34,5 +34,6 @@ urlpatterns = [
     url(r'^manage-event/(?P<id>[0-9]+)$', views.ManageEvent.as_view(), name='manage-event'),
     url(r'^buy-ticket/$', views.BuyTicket.as_view(), name='buy-ticket'),
     url(r'^ticket-timeout/(?P<queue_token>[A-Z]+)$', views.TicketTimeout.as_view(), name='ticket-timeout'),
-    url(r'^pdf$', views.some_view, name='pdf')
+    url(r'^my-tickets/$', views.MyTickets.as_view(), name='my-tickets'),
+    url(r'^download-ticket/(?P<order_number>[0-9]+)$', views.DownloadTicket.as_view(), name='download-ticket')
 ]
