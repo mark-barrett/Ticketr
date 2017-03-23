@@ -47,7 +47,7 @@
                       <a href="/download-ticket/{{ ticket.order_number }}" class="btn btn-success btn-xs">Download Ticket (PDF)</a>
                       <a class="btn btn-success btn-xs">View Order</a>
                       <a class="btn btn-success btn-xs">Resell Ticket</a>
-                      <a class="btn btn-success btn-xs">Contact Organiser</a>
+                      <a href="mailto:{{ ticket.event.event_owner.owner.email }}" class="btn btn-success btn-xs">Contact Organiser</a>
                   </div>
                 </div>
             </div>

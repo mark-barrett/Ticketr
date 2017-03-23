@@ -135,7 +135,8 @@ class ManageEvent(View):
                 'event': Event.objects.get(id=id),
                 'ticketquantity': ticketquantity,
                 'sold_ticketquantity': sold_ticketquantity,
-                'percentage': percentage
+                'percentage': percentage,
+                'orders': Order.objects.all().filter(event=e)
             }
 
             if eo.owner==request.user:
@@ -509,8 +510,18 @@ class DownloadTicket(View):
                         p.setFont("Helvetica", 15)
                         p.drawString(48, 330, order.event.name)
                         p.setFont("Helvetica", 12)
+
+                        # Event location
                         p.drawString(315, 265, order.event.location)
-                        p.drawString(315, 165, Helper.remove_key(order.ticket.name, "#ENAME"))
+
+                        # Add order details
+                        p.drawString(48, 180, "Order number "+order.order_number+" purchased by "+order.user.username)
+
+                        # Ticket type
+                        p.drawString(315, 180, Helper.remove_key(order.ticket.name, "#ENAME"))
+
+                        # Add QRCode
+                        p.drawInlineImage('qrcode/qr-'+order_number+'.png', 370, 415, width=140, height=140)
 
                         # Close the PDF object cleanly, and we're done.
                         p.showPage()
@@ -535,6 +546,41 @@ class DownloadTicket(View):
                         order.qrcode.save(filename, filebuffer)
 
                         # Generate the pdf now that it does exist
+                        # Create the HttpResponse object with the appropriate PDF headers.
+                        response = HttpResponse(content_type='application/pdf')
+                        response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
+
+                        # Create the PDF object, using the response object as its "file."
+                        p = canvas.Canvas(response)
+
+                        # Draw things on the PDF. Here's where the PDF generation happens.
+                        # See the ReportLab documentation for the full list of functionality.
+                        p.drawInlineImage(
+                            'images/newticket.png',
+                            0, 0, width=600, height=850)
+
+                        # Draw details onto the pdf
+                        p.setFont("Helvetica", 15)
+                        p.drawString(48, 330, order.event.name)
+                        p.setFont("Helvetica", 12)
+
+                        # Event location
+                        p.drawString(315, 265, order.event.location)
+
+                        # Add order details
+                        p.drawString(48, 180,
+                                     "Order number " + order.order_number + " purchased by " + order.user.username)
+
+                        # Ticket type
+                        p.drawString(315, 180, Helper.remove_key(order.ticket.name, "#ENAME"))
+
+                        # Add QRCode
+                        p.drawInlineImage('qrcode/qr-' + order_number + '.png', 370, 415, width=140, height=140)
+
+                        # Close the PDF object cleanly, and we're done.
+                        p.showPage()
+                        p.save()
+                        return response
                 else:
                     return redirect('index')
             except:

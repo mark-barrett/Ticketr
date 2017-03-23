@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Ticket - Manage Event</title>
     {% load staticfiles %}
+    {% load ticket_extras %}
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 </head>
 <body>
@@ -36,28 +37,27 @@
       <span><p style="color: black;">{{ sold_ticketquantity.quantity_sold__sum }}/{{ ticketquantity.quantity__sum }}</p></span>
   </div>
 </div>
-
-                <p>Recent Ticket Sales</p>
+<p>Recent Ticket Sales</p>
                  <table class="table table-condensed table-bordered table-striped">
                 <thead>
                   <tr>
                     <th>Ticket</th>
                     <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Time</th>
+                    <th>Ordered By</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                  <td>Early Bird</td>
-                  <td>€25.00</td>
-                  <td>1</td>
-                  <td>10:00am, 07/03/2017</td>
-                  <td>View</td>
-                  </tr>
+{% for order in orders %}
+<tr>
+<td>{{ order.ticket.name|remove_key:"#ENAME-" }}</td>
+<td>&euro;{{ order.ticket.price }}</td>
+<td>{{ order.user.username }}</td>
+<td><a href="/view-order/{{ order.id }}">View</a></td>
+</tr>
+{% endfor %}
                 </tbody>
-              </table>
+                 </table>
                 <p>Event Link</p>
                 <strong>http://ticket-r.com/event/{{ event.id }}</strong>
 
