@@ -122,6 +122,7 @@ class ManageEvent(View):
         if request.user.is_authenticated:
             # Check if the user has access to this event
             e = Event.objects.get(id=id)
+
             # Look at this again. Perhaps figure out another filter method
             eo = EventOwner.objects.get(owner_id=request.user.id, name=e.event_owner.name)
             ticketquantity = Ticket.objects.all().filter(event=e).aggregate(Sum('quantity'))
@@ -495,7 +496,7 @@ class DownloadTicket(View):
 
                         # Create the HttpResponse object with the appropriate PDF headers.
                         response = HttpResponse(content_type='application/pdf')
-                        response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
+                        response['Content-Disposition'] = 'attachment; filename="order-'+order_number+'.pdf"'
 
                         # Create the PDF object, using the response object as its "file."
                         p = canvas.Canvas(response)
@@ -516,6 +517,9 @@ class DownloadTicket(View):
 
                         # Add order details
                         p.drawString(48, 180, "Order number "+order.order_number+" purchased by "+order.user.username)
+
+                        # Add date
+                        p.drawString(48, 265, (str(order.event.start_date)) + " @ " + (str(order.event.start_time)))
 
                         # Ticket type
                         p.drawString(315, 180, Helper.remove_key(order.ticket.name, "#ENAME"))
@@ -548,7 +552,7 @@ class DownloadTicket(View):
                         # Generate the pdf now that it does exist
                         # Create the HttpResponse object with the appropriate PDF headers.
                         response = HttpResponse(content_type='application/pdf')
-                        response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
+                        response['Content-Disposition'] = 'attachment; filename="order-'+order_number+'.pdf"'
 
                         # Create the PDF object, using the response object as its "file."
                         p = canvas.Canvas(response)
@@ -570,6 +574,9 @@ class DownloadTicket(View):
                         # Add order details
                         p.drawString(48, 180,
                                      "Order number " + order.order_number + " purchased by " + order.user.username)
+
+                        # Add date
+                        p.drawString(48, 265, (str(order.event.start_date)) + " @ " + (str(order.event.start_time)))
 
                         # Ticket type
                         p.drawString(315, 180, Helper.remove_key(order.ticket.name, "#ENAME"))
@@ -595,22 +602,21 @@ class DownloadTicket(View):
         # Create pdf and draw the details to the page
 
 
-def some_view(request):
-    # Create the HttpResponse object with the appropriate PDF headers.
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
+class EventViewOrders(View):
+    template = loader.get_template('orders.html')
 
-    # Create the PDF object, using the response object as its "file."
-    p = canvas.Canvas(response)
+    def get(self, request, id):
+        # Check if user is logged in
+        if request.user.is_authenticated:
+            # Check if the user has access
+            e = Event.objects.get(id=id)
 
-    # Draw things on the PDF. Here's where the PDF generation happens.
-    # See the ReportLab documentation for the full list of functionality.
-    p.drawInlineImage('https://camo.githubusercontent.com/0c5cbab8bc8edb19b72a01d3bace2187e022d799/687474703a2f2f692e696d6775722e636f6d2f614d6f345261482e706e67', 40, 735, width=200, height=75)
-    p.drawInlineImage(
-        'http://i.imgur.com/nexc1Q6.png',
-        300, 200, width=200, height=200)
-
-    # Close the PDF object cleanly, and we're done.
-    p.showPage()
-    p.save()
-    return response
+            if e.event_owner.owner == request.user:
+                # Get all of the orders for that event
+                context = {
+                    'orders': Order.objects.all().filter(event=e),
+                    'event' : e
+                }
+                return HttpResponse(self.template.render(context, request))
+            else:
+                return redirect('index')

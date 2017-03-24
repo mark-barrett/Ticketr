@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <title>Ticketr - View Orders</title>
+      {% load staticfiles %}
+       {% load ticket_extras %}
+      <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<body>
+   {% include 'menu.html' %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+
+        </div>
+        <div class="col-md-8">
+            <div class="pull-right"><br/>
+                <a href="" class="btn btn-danger">Delete Event</a>
+                <a href="" class="btn btn-warning">Close Event</a>
+                <a href="" class="btn btn-success">Edit Event</a>
+            </div>
+            <h2>{{ event.name }}</h2>
+            <p><span class="label label-success">Live</span> <span class="label label-default">{{ event.privacy }}</span></p>
+            <hr/>
+        <div class="row">
+            <div class="col-md-3">
+                {% include 'manage_event_menu.html' %}
+            </div>
+            <div class="col-md-9">
+                <p class="lead">Event Dashboard > Orders</p>
+                <hr/>
+                 <table class="table table-condensed table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>Ticket</th>
+                    <th>Price</th>
+                    <th>Ordered By</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+{% for order in orders %}
+<tr>
+<td>{{ order.ticket.name|remove_key:"#ENAME-" }}</td>
+<td>&euro;{{ order.ticket.price }}</td>
+<td>{{ order.user.username }}</td>
+<td><a href="/view-order/{{ order.id }}">View</a></td>
+</tr>
+{% endfor %}
+                </tbody>
+                 </table>
+            </div>
+        </div>
+        </div>
+        <div class="col-md-2">
+
+        </div>
+    </div>
+    {% include 'footer.html' %}
+</div>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Ticketr</title>
+        {% load staticfiles %}
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    </head>
+    <body>
+    {% block content %}{% endblock content %}
+    {% include 'footer.html' %}
+    </body>
+</html>
