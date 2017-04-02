@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
    <head>
-      <title>Ticketr - View Orders</title>
+      <title>Ticketr - View Tickets</title>
       {% load staticfiles %}
        {% load ticket_extras %}
       <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
@@ -25,31 +25,33 @@
                 {% include 'manage_event_menu.html' %}
             </div>
             <div class="col-md-9">
-                <p class="lead">Orders</p>
+                        <div class="pull-right">
+                <a href="#" class="btn btn-success" role="button">Add Ticket</a>
+            </div>
+                <p class="lead">Tickets</p>
                 <hr/>
             <ol class="breadcrumb">
   <li><a href="/manage-event/{{ event.id }}">Dashboard</a></li>
-  <li class="active">Orders</li>
+  <li class="active">Tickets</li>
 </ol>
-            {% if query %}
-                <p>Displaying queried orders:</p>
-            {% endif %}
                  <table class="table table-condensed table-bordered table-striped">
                 <thead>
                   <tr>
-                    <th>Ticket</th>
+                    <th>Name</th>
                     <th>Price</th>
-                    <th>Ordered By</th>
+                    <th>Quantity</th>
+                    <th>Quantity Sold</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
-{% for order in orders %}
+{% for ticket in tickets %}
 <tr>
-<td>{{ order.ticket.name|remove_key:"#ENAME-" }}</td>
-<td>&euro;{{ order.ticket.price }}</td>
-<td>{{ order.user.username }}</td>
-<td><a href="/view-order/{{ order.id }}">View</a></td>
+<td>{{ ticket.name|remove_key:"#ENAME-" }}</td>
+<td>&euro;{{ ticket.price }}</td>
+<td>{{ ticket.quantity }}</td>
+    <td>{{ ticket.quantity_sold }}</td>
+<td><a href="/manage-event/orders/{{ event.id }}/{{ ticket.id }}">View ticket orders</a></td>
 </tr>
 {% endfor %}
                 </tbody>

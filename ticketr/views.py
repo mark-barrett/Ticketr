@@ -127,7 +127,6 @@ class ManageEvent(View):
             eo = EventOwner.objects.get(owner_id=request.user.id, name=e.event_owner.name)
             ticketquantity = Ticket.objects.all().filter(event=e).aggregate(Sum('quantity'))
             sold_ticketquantity = Ticket.objects.all().filter(event=e).aggregate(Sum('quantity_sold'))
-
             percentage = (float(sold_ticketquantity['quantity_sold__sum']) / float(ticketquantity['quantity__sum']))
             percentage *= 100
 
@@ -605,7 +604,7 @@ class DownloadTicket(View):
 class EventViewOrders(View):
     template = loader.get_template('orders.html')
 
-    def get(self, request, id):
+    def get(self, request, id, ticket_id):
         # Check if user is logged in
         if request.user.is_authenticated:
             # Check if the user has access
@@ -613,9 +612,41 @@ class EventViewOrders(View):
 
             if e.event_owner.owner == request.user:
                 # Get all of the orders for that event
+
+                # If there is no ticket_id provided then return all orders
+                if ticket_id is None:
+                    context = {
+                        'orders': Order.objects.all().filter(event=e),
+                        'event': e
+                    }
+                else:
+                    # Get the ticket object
+                    query_ticket = Ticket.objects.get(id=ticket_id)
+
+                    context = {
+                        'orders': Order.objects.filter(event=e, ticket=query_ticket),
+                        'event': e,
+                        'query': True
+                    }
+                return HttpResponse(self.template.render(context, request))
+            else:
+                return redirect('index')
+
+
+class EventViewTickets(View):
+    template = loader.get_template('tickets.html')
+
+    def get(self, request, id):
+        if request.user.is_authenticated:
+
+            e = Event.objects.get(id=id)
+
+            if e.event_owner.owner == request.user:
+
+                # Get all tickets for this event
                 context = {
-                    'orders': Order.objects.all().filter(event=e),
-                    'event' : e
+                    'tickets': Ticket.objects.all().filter(event=e),
+                    'event': e
                 }
                 return HttpResponse(self.template.render(context, request))
             else:
