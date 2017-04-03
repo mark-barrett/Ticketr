@@ -102,6 +102,7 @@ class Order(models.Model):
     user = models.ForeignKey(User)
     order_code = models.CharField(max_length=24)
     used = models.BooleanField()
+    for_sale = models.BooleanField(default=False)
     qrcode = models.ImageField(upload_to='qrcode', blank=True, null=True)
     payment_amount = models.DecimalField(decimal_places=2, max_digits=6)
 
@@ -110,3 +111,15 @@ class Order(models.Model):
 
     class Meta:
         verbose_name_plural = 'orders'
+
+
+class ResellList(models.Model):
+    order = models.ForeignKey(Order)
+    price = models.DecimalField(decimal_places=2, max_digits=6)
+    reason = models.TextField()
+
+    def __str__(self):
+        return self.order.order_number
+
+    class Meta:
+        verbose_name_plural = 'ResellLists'

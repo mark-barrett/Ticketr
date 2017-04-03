@@ -2,9 +2,84 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Tickter - Resell Ticket</title>
+    {% load staticfiles %}
+    {% load ticket_extras %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 </head>
 <body>
-<p>Yay! You can resell your ticket :)!</p>
+ {% include 'menu.html' %}
+     {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" style="margin-bottom: 0;">
+                <p class="text-center lead" style="color: white;">{{ message }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+ <div class="container">
+     <div class="row">
+     <div class="col-md-2">
+
+     </div>
+         <div class="col-md-8">
+             <h2>Awesome, you can resell your ticket!</h2>
+             <hr/>
+             <p>Before we can put your ticket up for sale, you have to confirm the details below are correct and decide a price:
+
+         <div class="row">
+             <div class="col-md-2">
+
+             </div>
+             <div class="col-md-8">
+                                  <hr/>
+             <strong>Ticket:</strong> {{ order.ticket.name|remove_key:"#ENAME-" }}<br/>
+                <strong>Event:</strong> {{ order.event.name }}<br/>
+                <strong>Used: </strong> {% if order.used is True %} Yes {% else %} No {% endif %}<br/>
+                <strong>Payment Method: </strong> PayPal<br/>
+                 <strong>Payment Amount: </strong> &euro; {{ order.payment_amount }}
+             <hr/>
+                          If you think these details are correct then please fill out the following:</p>
+
+         <form name="resell-ticket" action="" method="post">
+             {% csrf_token %}
+            <div class="form-group">
+                <label for="price">Price | <strong>Must be €{{ order.ticket.price }} or less</strong>:</label>
+                <input type="text" class="form-control" id="price" name="price" required="required">
+            </div>
+             <div class="form-group">
+                  <label for="reason">Reason for Selling (Optional):</label>
+                  <textarea class="form-control" rows="5" id="reason" name="reason"></textarea>
+             </div>
+             <br/>
+             <div class="panel panel-danger">
+                 <div class="panel-heading">Ticket reselling terms and conditions</div>
+                 <div class="panel-body">
+                     <ol>
+                         <li>Your ticket may not be resold. It is subject to other people logging on and buying your ticket. Ticketr is not responsible for any unsold tickets</li>
+                         <li>You can remove your ticket from the re-sell list whenever you like, however once your ticket is sold you cannot remove it from the re-sell list</li>
+                         <li>Once your ticket has been sold, your old ticket will become voided. It will be non reversable.</li>
+                         <li>Your current ticket will be frozen while up for sale, <strong>you cannot use it while it is up for sale. </strong></li>
+                     </ol>
+                 </div>
+             </div>
+             <p>By clicking Resell Ticket, you agree to the above terms and conditions regarding selling your ticket</p>
+             <input type="hidden" name="order" value="{{ order.id }}">
+             <div class="pull-right">
+                <button type="submit" class="btn btn-success">Resell Ticket</button>
+             </div>
+         </form>
+             </div>
+             <div class="col-md-2">
+
+             </div>
+         </div>
+<br/>
+         </div>
+         <div class="col-md-2">
+
+         </div>
+     </div>
+{% include 'footer.html' %}
+ </div>
 </body>
 </html>

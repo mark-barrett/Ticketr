@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.db.models import Sum
 from django.http import HttpResponse
 from django.template import loader
@@ -688,13 +689,28 @@ class ResellTicket(View):
             order = Order.objects.get(id=order_id)
 
             if order.user == request.user:
+
+                context = {
+                    'order': order
+                }
+
                 # Check to see whether or not the ticket can be resold
                 if order.ticket.event.resell == 'Yes':
                     # Now check when the user can resell tickets.
 
                     # If you can resell anytime
                     if order.ticket.event.resell_when == 'Anytime':
-                        return HttpResponse(self.template.render(request))
+                        # Check to make sure the ticket has not been used
+
+                        if order.used is False:
+                            if order.for_sale is False:
+                                return HttpResponse(self.template.render(context, request))
+                            else:
+                                messages.warning(request, "Sorry, this ticket is already for sale")
+                                return redirect('index')
+                        else:
+                            messages.warning(request, "Sorry you cannot resell a ticket that has been used.")
+                            return redirect('index')
                     else:
                         # Cannot resell anytime
                         # If the user can sell at sell out
@@ -711,8 +727,16 @@ class ResellTicket(View):
 
                             # If sold out then let them
                             if quantity_sold == quantity_availible:
-                                # Do resell stuff here
-                                return HttpResponse(self.template.render(request))
+                                # Check to make sure the ticket isn't used
+                                if order.used is False:
+                                    if order.for_sale is False:
+                                        return HttpResponse(self.template.render(context, request))
+                                    else:
+                                        messages.warning(request, "Sorry, this ticket is already for sale")
+                                        return redirect('index')
+                                else:
+                                    messages.warning(request, "Sorry you cannot resell a ticket that has been used.")
+                                    return redirect('index')
                             else:
                                 messages.warning(request, "Sorry, the owner only lets you re-sell when the event is sold out. It is not yet sold out.")
                                 return redirect('index')
@@ -727,11 +751,19 @@ class ResellTicket(View):
 
                             # If the amount of tickets sold is equal or greater than the amount required amount set by the user
                             if quantity_sold >= order.ticket.event.resell_amount:
-                                return HttpResponse(self.template.render(request))
+                                # Make sure the ticket isn't used.
+                                if order.used is False:
+                                    if order.for_sale is False:
+                                        return HttpResponse(self.template.render(context, request))
+                                    else:
+                                        messages.warning(request, "Sorry, this ticket is already for sale")
+                                        return redirect('index')
+                                else:
+                                    messages.warning(request, "Sorry you cannot resell a ticket that has been used.")
+                                    return redirect('index')
                             else:
                                 messages.warning(request, "Sorry you cannot re-sell your ticket yet. The event has to sell more tickets first. Check back soon.")
-
-                            return redirect('index')
+                                return redirect('index')
                 else:
                     messages.warning(request, "Sorry, the event owner does not allow you to resell tickets :(")
                     return redirect('index')
@@ -739,3 +771,38 @@ class ResellTicket(View):
                 return redirect('index')
         else:
             return redirect('login')
+
+    def post(self, request, order_id):
+        price = request.POST['price']
+        reason = request.POST['reason']
+        order = request.POST['order']
+
+        # First make sure the user is still logged in
+        if request.user.is_authenticated:
+
+            # Now make sure the user still has access to sell this ticket
+            o = Order.objects.get(id=order)
+
+            if o.user == request.user:
+
+                # Now check to make sure the user is charging face value or less
+                print o.ticket.price
+
+                if Decimal(price) <= o.ticket.price:
+                    # Now set the users ticket to used so they cannot use it again
+                    o.for_sale = True
+                    o.save()
+
+                    # Add ticket to the resell list
+                    resell = ResellList(order=o, price=price, reason=reason)
+                    resell.save()
+
+                    messages.success(request, "Your ticket has now been put up for sale and will be listed here below.")
+                    return redirect('/event/'+str(o.event.id))
+                else:
+                    messages.warning(request, "Sorry, you cannot charge more than face value for your ticket")
+                    return redirect('index')
+            else:
+                return redirect('index')
+        else:
+            return redirect('index')
