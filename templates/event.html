@@ -104,7 +104,54 @@
                     {% endfor %}
                 </div>
                 </div>
-                <div class="col-md-4"><p class="lead">From Resellers:</p></div>
+                <div class="col-md-4"><p class="lead">From Resellers:</p>
+                <div id="" style="overflow:scroll; height:400px;">
+                    {% for resell in resells %}
+                        <div class="panel panel-primary">
+                                <div class="panel-body">
+                                        <div class="pull-right">
+                                        <form name="buy-resell" action="" method="post">
+                                <input type="hidden" name="event_id" value="{{ event.id }}">
+                                <input type="hidden" name="ticket_id" value="{{ resell.id }}">
+                                {% csrf_token %}
+                            <input type="submit" class="btn btn-success" value="Buy">
+                                                                            </form>
+                                        </div>
+                                    <p><strong>{{ resell.order.ticket.name|remove_key:"#ENAME-" }}</strong></p>
+                                <p>&euro;{{ resell.price|get_fees_total:"2.0" }}<small> includes (FEES &euro;{{ resell.price|get_fees:"2.0" }})</small><br/>
+                                <a data-toggle="modal" data-target="#{{ resell.id }}Modal">Click to view details on seller</a></p>
+
+                                    <!-- Modal -->
+<div id="{{ resell.id }}Modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">{{ resell.order.ticket.name|remove_key:"#ENAME-" }} sold by {{ resell.order.user }}</h4>
+      </div>
+      <div class="modal-body">
+        <p>This ticket is being re-sold by this user. All payments and ticket transfers are handled by Ticketr and are secure.
+        Payments are made to the user rather than the event owner, through the Ticketr application. When purchased, a new ticket is generated for you and the original destroyed in order to protect your purchase.<br/><br>
+        Details:<br/>
+        <strong>Sold By: </strong>{{ resell.order.user }}<br/>
+        <strong>Reason: </strong>{{ resell.reason }}<br/>
+            <strong>Price: </strong> &euro;{{ resell.price|get_fees_total:"2.0" }}<small> includes (FEES &euro;{{ resell.price|get_fees:"2.0" }})</small></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+                                </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                </div>
                 <div class="col-md-2"></div>
 
              </div>

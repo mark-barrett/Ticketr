@@ -47,7 +47,8 @@ def event(request, id):
     context = {
         # Get the event with the id passed as a parameter
         'event': event,
-        'tickets': Ticket.objects.all().filter(event=id)
+        'tickets': Ticket.objects.all().filter(event=id),
+        'resells': ResellList.objects.all().filter(event=event)
     }
     # Check if the event is over or not
     event_end_time_date = datetime.datetime.combine(event.end_date, event.end_time)

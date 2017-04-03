@@ -115,6 +115,7 @@ class Order(models.Model):
 
 class ResellList(models.Model):
     order = models.ForeignKey(Order)
+    event = models.ForeignKey(Event)
     price = models.DecimalField(decimal_places=2, max_digits=6)
     reason = models.TextField()
 
