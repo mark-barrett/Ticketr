@@ -651,6 +651,8 @@ class EventViewTickets(View):
                 return HttpResponse(self.template.render(context, request))
             else:
                 return redirect('index')
+        else:
+            return redirect('login')
 
 
 class ViewOrder(View):
@@ -672,4 +674,68 @@ class ViewOrder(View):
                 return HttpResponse(self.template.render(context, request))
             else:
                 return redirect('index')
+        else:
+            return redirect('login')
 
+
+class ResellTicket(View):
+    template = loader.get_template('resell-ticket.html')
+
+    def get(self, request, order_id):
+        # Check that the user is logged in,
+        if request.user.is_authenticated:
+            # Check to make sure the user has access to this ticket
+            order = Order.objects.get(id=order_id)
+
+            if order.user == request.user:
+                # Check to see whether or not the ticket can be resold
+                if order.ticket.event.resell == 'Yes':
+                    # Now check when the user can resell tickets.
+
+                    # If you can resell anytime
+                    if order.ticket.event.resell_when == 'Anytime':
+                        return HttpResponse(self.template.render(request))
+                    else:
+                        # Cannot resell anytime
+                        # If the user can sell at sell out
+                        if order.ticket.event.resell_when == 'Sell Out':
+                            # Now we know that the user can only sell when the event sells out. Check if the event is sold out
+                            # Add up all of tickets quantities and all of the tickets sold and figure out if its sold out
+                            tickets = Ticket.objects.all().filter(event=order.event)
+                            quantity_sold = 0
+                            quantity_availible = 0
+
+                            for ticket in tickets:
+                                quantity_sold += ticket.quantity_sold
+                                quantity_availible += ticket.quantity
+
+                            # If sold out then let them
+                            if quantity_sold == quantity_availible:
+                                # Do resell stuff here
+                                return HttpResponse(self.template.render(request))
+                            else:
+                                messages.warning(request, "Sorry, the owner only lets you re-sell when the event is sold out. It is not yet sold out.")
+                                return redirect('index')
+                        else:
+                            # If it is not Anytime and is not Sell Out then it must be after a certain amount of tickets
+                            # Calculate that amount on decide.
+                            tickets = Ticket.objects.all().filter(event=order.event)
+                            quantity_sold = 0
+
+                            for ticket in tickets:
+                                quantity_sold += ticket.quantity_sold
+
+                            # If the amount of tickets sold is equal or greater than the amount required amount set by the user
+                            if quantity_sold >= order.ticket.event.resell_amount:
+                                return HttpResponse(self.template.render(request))
+                            else:
+                                messages.warning(request, "Sorry you cannot re-sell your ticket yet. The event has to sell more tickets first. Check back soon.")
+
+                            return redirect('index')
+                else:
+                    messages.warning(request, "Sorry, the event owner does not allow you to resell tickets :(")
+                    return redirect('index')
+            else:
+                return redirect('index')
+        else:
+            return redirect('login')

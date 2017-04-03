@@ -38,5 +38,6 @@ urlpatterns = [
     url(r'^download-ticket/(?P<order_number>[0-9]+)$', views.DownloadTicket.as_view(), name='download-ticket'),
     url(r'^manage-event/orders/?(?P<id>[\w]+)?/?(?P<ticket_id>[0-9]+)?/$', views.EventViewOrders.as_view(), name='view-orders-event'),
     url(r'^manage-event/tickets/(?P<id>[0-9]+)$', views.EventViewTickets.as_view(), name='view-tickets-event'),
-    url(r'^view-order/(?P<id>[0-9]+)$', views.ViewOrder.as_view(), name='view-order')
+    url(r'^view-order/(?P<id>[0-9]+)$', views.ViewOrder.as_view(), name='view-order'),
+    url(r'^resell-ticket/(?P<order_id>[0-9]+)$', views.ResellTicket.as_view(), name='resell-ticket')
 ]
