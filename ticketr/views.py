@@ -651,3 +651,25 @@ class EventViewTickets(View):
                 return HttpResponse(self.template.render(context, request))
             else:
                 return redirect('index')
+
+
+class ViewOrder(View):
+    template = loader.get_template('view-order.html')
+
+    def get(self, request, id):
+        # Check that the user is logged in, whether it is the admin or not
+        if request.user.is_authenticated:
+
+            # Check if the user is either the event owner or the person who ordered the ticket
+            order = Order.objects.get(id=id)
+
+            if order.event.event_owner == request.user or order.user == request.user:
+
+                context = {
+                    'order': order
+                }
+
+                return HttpResponse(self.template.render(context, request))
+            else:
+                return redirect('index')
+

@@ -103,6 +103,7 @@ class Order(models.Model):
     order_code = models.CharField(max_length=24)
     used = models.BooleanField()
     qrcode = models.ImageField(upload_to='qrcode', blank=True, null=True)
+    payment_amount = models.DecimalField(decimal_places=2, max_digits=6)
 
     def __str__(self):
         return self.order_number
