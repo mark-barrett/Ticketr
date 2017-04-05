@@ -689,87 +689,94 @@ class ResellTicket(View):
             # Check to make sure the user has access to this ticket
             order = Order.objects.get(id=order_id)
 
-            if order.user == request.user:
+            # Check if the event is over or not
+            event_end_time_date = datetime.datetime.combine(order.event.end_date, order.event.end_time)
 
-                context = {
-                    'order': order
-                }
-
-                # Check to see whether or not the ticket can be resold
-                if order.ticket.event.resell == 'Yes':
-                    # Now check when the user can resell tickets.
-
-                    # If you can resell anytime
-                    if order.ticket.event.resell_when == 'Anytime':
-                        # Check to make sure the ticket has not been used
-
-                        if order.used is False:
-                            if order.for_sale is False:
-                                return HttpResponse(self.template.render(context, request))
-                            else:
-                                messages.warning(request, "Sorry, this ticket is already for sale")
-                                return redirect('index')
-                        else:
-                            messages.warning(request, "Sorry you cannot resell a ticket that has been used.")
-                            return redirect('index')
-                    else:
-                        # Cannot resell anytime
-                        # If the user can sell at sell out
-                        if order.ticket.event.resell_when == 'Sell Out':
-                            # Now we know that the user can only sell when the event sells out. Check if the event is sold out
-                            # Add up all of tickets quantities and all of the tickets sold and figure out if its sold out
-                            tickets = Ticket.objects.all().filter(event=order.event)
-                            quantity_sold = 0
-                            quantity_availible = 0
-
-                            for ticket in tickets:
-                                quantity_sold += ticket.quantity_sold
-                                quantity_availible += ticket.quantity
-
-                            # If sold out then let them
-                            if quantity_sold == quantity_availible:
-                                # Check to make sure the ticket isn't used
-                                if order.used is False:
-                                    if order.for_sale is False:
-                                        return HttpResponse(self.template.render(context, request))
-                                    else:
-                                        messages.warning(request, "Sorry, this ticket is already for sale")
-                                        return redirect('index')
-                                else:
-                                    messages.warning(request, "Sorry you cannot resell a ticket that has been used.")
-                                    return redirect('index')
-                            else:
-                                messages.warning(request, "Sorry, the owner only lets you re-sell when the event is sold out. It is not yet sold out.")
-                                return redirect('index')
-                        else:
-                            # If it is not Anytime and is not Sell Out then it must be after a certain amount of tickets
-                            # Calculate that amount on decide.
-                            tickets = Ticket.objects.all().filter(event=order.event)
-                            quantity_sold = 0
-
-                            for ticket in tickets:
-                                quantity_sold += ticket.quantity_sold
-
-                            # If the amount of tickets sold is equal or greater than the amount required amount set by the user
-                            if quantity_sold >= order.ticket.event.resell_amount:
-                                # Make sure the ticket isn't used.
-                                if order.used is False:
-                                    if order.for_sale is False:
-                                        return HttpResponse(self.template.render(context, request))
-                                    else:
-                                        messages.warning(request, "Sorry, this ticket is already for sale")
-                                        return redirect('index')
-                                else:
-                                    messages.warning(request, "Sorry you cannot resell a ticket that has been used.")
-                                    return redirect('index')
-                            else:
-                                messages.warning(request, "Sorry you cannot re-sell your ticket yet. The event has to sell more tickets first. Check back soon.")
-                                return redirect('index')
-                else:
-                    messages.warning(request, "Sorry, the event owner does not allow you to resell tickets :(")
-                    return redirect('index')
+            if event_end_time_date < datetime.datetime.now():
+                messages.warning(request, 'Sorry you cannot resell that ticket because the event is over.')
+                return redirect('/my-tickets')
             else:
-                return redirect('index')
+                if order.user == request.user:
+
+                    context = {
+                        'order': order
+                    }
+
+                    # Check to see whether or not the ticket can be resold
+                    if order.ticket.event.resell == 'Yes':
+                        # Now check when the user can resell tickets.
+
+                        # If you can resell anytime
+                        if order.ticket.event.resell_when == 'Anytime':
+                            # Check to make sure the ticket has not been used
+
+                            if order.used is False:
+                                if order.for_sale is False:
+                                    return HttpResponse(self.template.render(context, request))
+                                else:
+                                    messages.warning(request, "Sorry, this ticket is already for sale")
+                                    return redirect('index')
+                            else:
+                                messages.warning(request, "Sorry you cannot resell a ticket that has been used.")
+                                return redirect('index')
+                        else:
+                            # Cannot resell anytime
+                            # If the user can sell at sell out
+                            if order.ticket.event.resell_when == 'Sell Out':
+                                # Now we know that the user can only sell when the event sells out. Check if the event is sold out
+                                # Add up all of tickets quantities and all of the tickets sold and figure out if its sold out
+                                tickets = Ticket.objects.all().filter(event=order.event)
+                                quantity_sold = 0
+                                quantity_availible = 0
+
+                                for ticket in tickets:
+                                    quantity_sold += ticket.quantity_sold
+                                    quantity_availible += ticket.quantity
+
+                                # If sold out then let them
+                                if quantity_sold == quantity_availible:
+                                    # Check to make sure the ticket isn't used
+                                    if order.used is False:
+                                        if order.for_sale is False:
+                                            return HttpResponse(self.template.render(context, request))
+                                        else:
+                                            messages.warning(request, "Sorry, this ticket is already for sale")
+                                            return redirect('index')
+                                    else:
+                                        messages.warning(request, "Sorry you cannot resell a ticket that has been used.")
+                                        return redirect('index')
+                                else:
+                                    messages.warning(request, "Sorry, the owner only lets you re-sell when the event is sold out. It is not yet sold out.")
+                                    return redirect('index')
+                            else:
+                                # If it is not Anytime and is not Sell Out then it must be after a certain amount of tickets
+                                # Calculate that amount on decide.
+                                tickets = Ticket.objects.all().filter(event=order.event)
+                                quantity_sold = 0
+
+                                for ticket in tickets:
+                                    quantity_sold += ticket.quantity_sold
+
+                                # If the amount of tickets sold is equal or greater than the amount required amount set by the user
+                                if quantity_sold >= order.ticket.event.resell_amount:
+                                    # Make sure the ticket isn't used.
+                                    if order.used is False:
+                                        if order.for_sale is False:
+                                            return HttpResponse(self.template.render(context, request))
+                                        else:
+                                            messages.warning(request, "Sorry, this ticket is already for sale")
+                                            return redirect('index')
+                                    else:
+                                        messages.warning(request, "Sorry you cannot resell a ticket that has been used.")
+                                        return redirect('index')
+                                else:
+                                    messages.warning(request, "Sorry you cannot re-sell your ticket yet. The event has to sell more tickets first. Check back soon.")
+                                    return redirect('index')
+                    else:
+                        messages.warning(request, "Sorry, the event owner does not allow you to resell tickets :(")
+                        return redirect('index')
+                else:
+                    return redirect('index')
         else:
             return redirect('login')
 
@@ -787,7 +794,6 @@ class ResellTicket(View):
             if o.user == request.user:
 
                 # Now check to make sure the user is charging face value or less
-                print o.ticket.price
 
                 if Decimal(price) <= o.ticket.price:
                     # Now set the users ticket to used so they cannot use it again
@@ -795,7 +801,7 @@ class ResellTicket(View):
                     o.save()
 
                     # Add ticket to the resell list
-                    resell = ResellList(order=o, price=price, reason=reason)
+                    resell = ResellList(order=o, event=o.event, price=price, reason=reason)
                     resell.save()
 
                     messages.success(request, "Your ticket has now been put up for sale and will be listed here below.")
@@ -807,3 +813,10 @@ class ResellTicket(View):
                 return redirect('index')
         else:
             return redirect('index')
+
+
+class SellTicket(View):
+
+    def get(self, request):
+        messages.success(request, "Please select a ticket you want to resell below")
+        return redirect('/my-tickets')
