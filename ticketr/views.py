@@ -699,7 +699,7 @@ class ResellTicket(View):
                 if order.user == request.user:
 
                     context = {
-                        'order': order
+                        'order': orderxw
                     }
 
                     # Check to see whether or not the ticket can be resold
