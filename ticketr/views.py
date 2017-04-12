@@ -820,3 +820,26 @@ class SellTicket(View):
     def get(self, request):
         messages.success(request, "Please select a ticket you want to resell below")
         return redirect('/my-tickets')
+
+
+class DiscountCodes(View):
+    template = loader.get_template('discount-codes.html')
+
+    def get(self, request, id):
+        if request.user.is_authenticated:
+
+            e = Event.objects.get(id=id)
+
+            if e.event_owner.owner == request.user:
+
+                # Get all tickets for this event
+                context = {
+                    'tickets': Ticket.objects.all().filter(event=e),
+                    'event': e,
+                    'discount_codes': DiscountCode.objects.all().filter(event=e)
+                }
+                return HttpResponse(self.template.render(context, request))
+            else:
+                return redirect('index')
+        else:
+            return redirect('login')

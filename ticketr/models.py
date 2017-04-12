@@ -124,3 +124,15 @@ class ResellList(models.Model):
 
     class Meta:
         verbose_name_plural = 'ResellLists'
+
+
+class DiscountCode(models.Model):
+    code = models.CharField(max_length=64)
+    discount = models.DecimalField(decimal_places=2, max_digits=6)
+    event = models.ForeignKey(Event)
+
+    def __str__(self):
+        return self.code
+
+    class Meta:
+        verbose_name_plural = 'Discount Codes'

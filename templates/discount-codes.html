@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
    <head>
-      <title>Ticketr - View Tickets</title>
+      <title>Ticketr - Discount Codes</title>
       {% load staticfiles %}
        {% load ticket_extras %}
       <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
@@ -26,32 +26,26 @@
             </div>
             <div class="col-md-9">
                         <div class="pull-right">
-                <a href="/manage-event/tickets/create" class="btn btn-success" role="button">Add Ticket</a>
+                <a href="/manage-event/discounts/create" class="btn btn-success" role="button">Add Discount</a>
             </div>
-                <p class="lead">Tickets</p>
+                <p class="lead">Discount Code</p>
                 <hr/>
             <ol class="breadcrumb">
   <li><a href="/manage-event/{{ event.id }}">Dashboard</a></li>
-  <li class="active">Tickets</li>
+  <li class="active">Discount Codes</li>
 </ol>
                  <table class="table table-condensed table-bordered table-striped">
                 <thead>
                   <tr>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Quantity Sold</th>
-                    <th></th>
+                    <th>Code</th>
+                    <th>Discount</th>
                   </tr>
                 </thead>
                 <tbody>
-{% for ticket in tickets %}
+{% for discount_code in discount_codes %}
 <tr>
-<td>{{ ticket.name|remove_key:"#ENAME-" }}</td>
-<td>&euro;{{ ticket.price }}</td>
-<td>{{ ticket.quantity }}</td>
-    <td>{{ ticket.quantity_sold }}</td>
-<td><a href="/manage-event/orders/{{ event.id }}/{{ ticket.id }}">View ticket orders</a></td>
+<td>{{ discount_code.code }}</td>
+<td>{{ discount_code.discount }}</td>
 </tr>
 {% endfor %}
                 </tbody>
