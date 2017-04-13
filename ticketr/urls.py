@@ -44,5 +44,7 @@ urlpatterns = [
     url(r'^resell-ticket/(?P<order_id>[0-9]+)$', views.ResellTicket.as_view(), name='resell-ticket'),
     url(r'^sell-ticket/$', views.SellTicket.as_view(), name='sell-ticket'),
     url(r'^manage-event/discount-codes/(?P<id>[0-9]+)$', views.DiscountCodes.as_view(), name='discount-codes'),
-    url(r'^manage-event/discount-codes/(?P<id>[0-9]+)/add$', views.DiscountCodesAdd.as_view(), name='discount-codes-add')
+    url(r'^manage-event/discount-codes/(?P<id>[0-9]+)/add$', views.DiscountCodesAdd.as_view(), name='discount-codes-add'),
+    url(r'^manage-event/discount-codes/(?P<id>[0-9]+)/delete/(?P<discount_code_id>[0-9]+)$', views.DeleteDiscountCode.as_view(),
+        name='delete-discount-code'),
 ]

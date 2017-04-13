@@ -951,3 +951,24 @@ class DiscountCodesAdd(View):
                 except:
                     messages.warning(request, "Could not add discount code")
                     return redirect('/manage-event/discount-codes/' + str(e.id))
+
+
+class DeleteDiscountCode(View):
+
+    def get(self, request, id, discount_code_id):
+        if request.user.is_authenticated:
+
+            e = Event.objects.get(id=id)
+
+            if e.event_owner.owner == request.user:
+
+                discount_code = DiscountCode.objects.get(id=discount_code_id)
+
+                discount_code.delete()
+
+                messages.success(request, "Discount code successfully deleted")
+                return redirect('/manage-event/discount-codes/' + str(e.id))
+            else:
+                return redirect('index')
+        else:
+            return redirect('login')

@@ -46,6 +46,7 @@
                   <tr>
                     <th>Code</th>
                     <th>Discount</th>
+                      <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -53,6 +54,7 @@
 <tr>
 <td>{{ discount_code.code }}</td>
 <td>{{ discount_code.discount }}</td>
+<td><a href="/manage-event/discount-codes/{{ event.id }}/delete/{{ discount_code.id }}" class="btn btn-danger btn-xs" role="button"><span class="glyphicon glyphicon-trash"></span></a></td>
 </tr>
 {% endfor %}
                 </tbody>
