@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
    <head>
-      <title>Ticketr - Discount Codes</title>
+      <title>Ticketr - Add Discoutn Code</title>
       {% load staticfiles %}
        {% load ticket_extras %}
       <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
@@ -25,38 +25,32 @@
                 {% include 'manage_event_menu.html' %}
             </div>
             <div class="col-md-9">
-                        <div class="pull-right">
-                <a href="/manage-event/discount-codes/{{ event.id }}/add" class="btn btn-success" role="button">Add Discount</a>
-            </div>
-                <p class="lead">Discount Code</p>
+                <p class="lead">Add Ticket</p>
                 <hr/>
-                            {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}" style="margin-bottom: 0;">
-                <p class="text-center lead" style="color: white;">{{ message }}</p>
-            </div><br/>
-        {% endfor %}
-    {% endif %}
             <ol class="breadcrumb">
   <li><a href="/manage-event/{{ event.id }}">Dashboard</a></li>
-  <li class="active">Discount Codes</li>
+  <li class="active">Add Discount Code</li>
 </ol>
-                 <table class="table table-condensed table-bordered table-striped">
-                <thead>
-                  <tr>
-                    <th>Code</th>
-                    <th>Discount</th>
-                  </tr>
-                </thead>
-                <tbody>
-{% for discount_code in discount_codes %}
-<tr>
-<td>{{ discount_code.code }}</td>
-<td>{{ discount_code.discount }}</td>
-</tr>
-{% endfor %}
-                </tbody>
-                 </table>
+<form name="add-discount-code" method="post" action="">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="code">Code:</label>
+                <input type="text" class="form-control" id="code" name="code" required>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="price">Discount:</label>
+                <input type="number" class="form-control" id="discount" name="discount" required>
+            </div>
+        </div>
+    </div>
+    <div class="pull-right">
+         <button type="submit" class="btn btn-success">Add Discount Code</button>
+    </div>
+    {% csrf_token %}
+</form>
             </div>
         </div>
         </div>

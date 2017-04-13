@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
    <head>
-      <title>Ticketr - Create Ticket</title>
+      <title>Ticketr - Add Ticket</title>
       {% load staticfiles %}
        {% load ticket_extras %}
       <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
@@ -44,13 +44,13 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="quantity">Quantity:</label>
-                <input type="text" class="form-control" id="quantity" name="quantity" required>
+                <input type="number" class="form-control" id="quantity" name="quantity" required>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
                 <label for="price">Price:</label>
-                <input type="text" class="form-control" id="price" name="price" required>
+                <input type="number" class="form-control" id="price" name="price" required>
             </div>
         </div>
     </div>

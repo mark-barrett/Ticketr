@@ -908,3 +908,46 @@ class EventDeleteTicket(View):
                 return redirect('index')
         else:
             return redirect('login')
+
+
+class DiscountCodesAdd(View):
+    template = loader.get_template('add-discount-code.html')
+
+    def get(self, request, id):
+        if request.user.is_authenticated:
+
+            e = Event.objects.get(id=id)
+
+            if e.event_owner.owner == request.user:
+
+                # Get all tickets for this event
+                context = {
+                    'tickets': Ticket.objects.all().filter(event=e),
+                    'event': e,
+                    'discount_codes': DiscountCode.objects.all().filter(event=e)
+                }
+                return HttpResponse(self.template.render(context, request))
+            else:
+                return redirect('index')
+        else:
+            return redirect('login')
+
+    def post(self, request, id):
+        if request.user.is_authenticated:
+
+            e = Event.objects.get(id=id)
+
+            if e.event_owner.owner == request.user:
+
+                code = request.POST['code']
+                discount = request.POST['discount']
+
+                discount = DiscountCode(code=code, discount=discount, event=e)
+
+                try:
+                    discount.save()
+                    messages.success(request, "Discount code added successfully")
+                    return redirect('/manage-event/discount-codes/'+str(e.id))
+                except:
+                    messages.warning(request, "Could not add discount code")
+                    return redirect('/manage-event/discount-codes/' + str(e.id))
