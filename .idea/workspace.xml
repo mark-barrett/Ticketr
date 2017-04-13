@@ -3,9 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="426b2ace-27a3-42ae-9b0a-5eb4752dd27f" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/add-ticket.html" afterPath="$PROJECT_DIR$/templates/add-ticket.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/tickets.html" afterPath="$PROJECT_DIR$/templates/tickets.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ticketr/urls.py" afterPath="$PROJECT_DIR$/ticketr/urls.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ticketr/views.py" afterPath="$PROJECT_DIR$/ticketr/views.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -27,11 +26,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ticketr/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1314">
-              <caret line="885" column="70" lean-forward="false" selection-start-line="885" selection-start-column="70" selection-end-line="885" selection-end-column="70" />
+            <state relative-caret-position="219">
+              <caret line="905" column="55" lean-forward="false" selection-start-line="905" selection-start-column="55" selection-end-line="905" selection-end-column="55" />
               <folding>
                 <element signature="e#0#27#0" expanded="true" />
               </folding>
@@ -62,8 +61,8 @@
       <file leaf-file-name="event.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/event.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="7" lean-forward="true" selection-start-line="9" selection-start-column="7" selection-end-line="15" selection-end-column="15" />
+            <state relative-caret-position="-1275">
+              <caret line="16" column="149" lean-forward="true" selection-start-line="16" selection-start-column="149" selection-end-line="16" selection-end-column="149" />
               <folding />
             </state>
           </provider>
@@ -89,14 +88,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tickets.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="tickets.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/tickets.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="60" column="181" lean-forward="false" selection-start-line="60" selection-start-column="181" selection-end-line="60" selection-end-column="181" />
-              <folding>
-                <element signature="e#2284#2290#0#HTML" expanded="true" />
-              </folding>
+            <state relative-caret-position="180">
+              <caret line="60" column="191" lean-forward="false" selection-start-line="60" selection-start-column="191" selection-end-line="60" selection-end-column="191" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -114,8 +111,8 @@
       <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ticketr/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="40" column="50" lean-forward="false" selection-start-line="40" selection-start-column="50" selection-end-line="40" selection-end-column="50" />
+            <state relative-caret-position="249">
+              <caret line="41" column="65" lean-forward="false" selection-start-line="41" selection-start-column="65" selection-end-line="41" selection-end-column="65" />
               <folding>
                 <element signature="e#638#670#0" expanded="true" />
               </folding>
@@ -219,10 +216,10 @@
         <option value="$PROJECT_DIR$/templates/manage_event_menu.html" />
         <option value="$PROJECT_DIR$/templates/discount-codes.html" />
         <option value="$PROJECT_DIR$/templates/create-ticket.html" />
-        <option value="$PROJECT_DIR$/ticketr/urls.py" />
-        <option value="$PROJECT_DIR$/ticketr/views.py" />
         <option value="$PROJECT_DIR$/templates/add-ticket.html" />
+        <option value="$PROJECT_DIR$/ticketr/urls.py" />
         <option value="$PROJECT_DIR$/templates/tickets.html" />
+        <option value="$PROJECT_DIR$/ticketr/views.py" />
       </list>
     </option>
   </component>
@@ -691,7 +688,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="712" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26979" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32922536" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1076,34 +1073,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ticketr/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="40" column="50" lean-forward="false" selection-start-line="40" selection-start-column="50" selection-end-line="40" selection-end-column="50" />
-          <folding>
-            <element signature="e#638#670#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ticketr/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1314">
-          <caret line="885" column="70" lean-forward="false" selection-start-line="885" selection-start-column="70" selection-end-line="885" selection-end-column="70" />
-          <folding>
-            <element signature="e#0#27#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/event.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="7" lean-forward="true" selection-start-line="9" selection-start-column="7" selection-end-line="15" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/add-ticket.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -1112,12 +1081,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/ticketr/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="249">
+          <caret line="41" column="65" lean-forward="false" selection-start-line="41" selection-start-column="65" selection-end-line="41" selection-end-column="65" />
+          <folding>
+            <element signature="e#638#670#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/event.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1275">
+          <caret line="16" column="149" lean-forward="true" selection-start-line="16" selection-start-column="149" selection-end-line="16" selection-end-column="149" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/tickets.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="60" column="181" lean-forward="false" selection-start-line="60" selection-start-column="181" selection-end-line="60" selection-end-column="181" />
+        <state relative-caret-position="180">
+          <caret line="60" column="191" lean-forward="false" selection-start-line="60" selection-start-column="191" selection-end-line="60" selection-end-column="191" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ticketr/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="219">
+          <caret line="905" column="55" lean-forward="false" selection-start-line="905" selection-start-column="55" selection-end-line="905" selection-end-column="55" />
           <folding>
-            <element signature="e#2284#2290#0#HTML" expanded="true" />
+            <element signature="e#0#27#0" expanded="true" />
           </folding>
         </state>
       </provider>

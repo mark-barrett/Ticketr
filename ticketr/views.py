@@ -886,5 +886,25 @@ class EventAddTicket(View):
                     return redirect('/manage-event/tickets/'+str(e.id))
                 except:
                     messages.warning(request, "Could not add ticket")
-                    return redirect('/manage-event/tickets/'+e.id)
+                    return redirect('/manage-event/tickets/'+str(e.id))
 
+
+class EventDeleteTicket(View):
+
+    def get(self, request, id, ticket_id):
+        if request.user.is_authenticated:
+
+            e = Event.objects.get(id=id)
+
+            if e.event_owner.owner == request.user:
+
+                ticket = Ticket.objects.get(id=ticket_id)
+
+                ticket.delete()
+
+                messages.success(request, "Ticket successfully deleted")
+                return redirect('/manage-event/tickets/'+str(e.id))
+            else:
+                return redirect('index')
+        else:
+            return redirect('login')
