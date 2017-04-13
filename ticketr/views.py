@@ -699,7 +699,7 @@ class ResellTicket(View):
                 if order.user == request.user:
 
                     context = {
-                        'order': orderxw
+                        'order': order
                     }
 
                     # Check to see whether or not the ticket can be resold
@@ -837,6 +837,28 @@ class DiscountCodes(View):
                     'tickets': Ticket.objects.all().filter(event=e),
                     'event': e,
                     'discount_codes': DiscountCode.objects.all().filter(event=e)
+                }
+                return HttpResponse(self.template.render(context, request))
+            else:
+                return redirect('index')
+        else:
+            return redirect('login')
+
+
+class EventAddTicket(View):
+    template = loader.get_template('add-ticket.html')
+
+    def get(self, request, id):
+        if request.user.is_authenticated:
+
+            e = Event.objects.get(id=id)
+
+            if e.event_owner.owner == request.user:
+
+                # Get all tickets for this event
+                context = {
+                    'tickets': Ticket.objects.all().filter(event=e),
+                    'event': e
                 }
                 return HttpResponse(self.template.render(context, request))
             else:
