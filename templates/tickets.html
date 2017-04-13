@@ -30,6 +30,13 @@
             </div>
                 <p class="lead">Tickets</p>
                 <hr/>
+                {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" style="margin-bottom: 0;">
+                <p class="text-center lead" style="color: white;">{{ message }}</p>
+            </div><br/>
+        {% endfor %}
+    {% endif %}
             <ol class="breadcrumb">
   <li><a href="/manage-event/{{ event.id }}">Dashboard</a></li>
   <li class="active">Tickets</li>
@@ -51,7 +58,7 @@
 <td>&euro;{{ ticket.price }}</td>
 <td>{{ ticket.quantity }}</td>
     <td>{{ ticket.quantity_sold }}</td>
-<td><a href="/manage-event/orders/{{ event.id }}/{{ ticket.id }}">View ticket orders</a></td>
+    <td><a href="/manage-event/orders/{{ event.id }}/{{ ticket.id }}">View ticket orders</a>&nbsp; <a href="/manage-event/tickets/{{ event.id }}/delete" class="btn btn-danger btn-xs" role="button"><span class="glyphicon glyphicon-trash"></span></span></a></td>
 </tr>
 {% endfor %}
                 </tbody>

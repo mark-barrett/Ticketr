@@ -865,3 +865,26 @@ class EventAddTicket(View):
                 return redirect('index')
         else:
             return redirect('login')
+
+    def post(self, request, id):
+        if request.user.is_authenticated:
+
+            e = Event.objects.get(id=id)
+
+            if e.event_owner.owner == request.user:
+
+                # Add the ticket
+                name = request.POST['name']
+                quantity = request.POST['quantity']
+                price = request.POST['price']
+
+                new_ticket = Ticket(name=name, quantity=quantity, price=price, event=e)
+
+                try:
+                    new_ticket.save()
+                    messages.success(request, "Ticket added successfully")
+                    return redirect('/manage-event/tickets/'+str(e.id))
+                except:
+                    messages.warning(request, "Could not add ticket")
+                    return redirect('/manage-event/tickets/'+e.id)
+
