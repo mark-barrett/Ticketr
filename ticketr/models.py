@@ -136,3 +136,7 @@ class DiscountCode(models.Model):
 
     class Meta:
         verbose_name_plural = 'Discount Codes'
+
+
+class Request(models.Model):
+    did_you = models.BooleanField()

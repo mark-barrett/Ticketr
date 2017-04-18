@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, get_user_model, logout
+from django.utils.decorators import method_decorator
 from django.views.generic import View
 from .forms import UserForm, UserLoginForm, CreateEventForm, CreateOrganiserProfileForm
 from .models import *
@@ -23,6 +24,8 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 import os
 from pathlib import Path
 from reportlab.lib.units import inch
+from django.http import HttpResponse
+from django.http import JsonResponse
 
 User = get_user_model()
 
@@ -972,3 +975,45 @@ class DeleteDiscountCode(View):
                 return redirect('index')
         else:
             return redirect('login')
+
+
+class ApiAuthenticate(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ApiAuthenticate, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        return redirect('../../api/home')
+
+    def post(self, request):
+        # Firstly we need to get the posted data
+        username = request.POST['username']
+        password = request.POST['password']
+
+        # Response dictionary
+        response = {}
+
+        try:
+            # Get the user object
+            user = User.objects.get(username=username)
+
+            # Check the password
+            if user.check_password(password):
+                response['success'] = True
+                response['username'] = username
+                response['password'] = password
+
+                # Send Json response
+                return JsonResponse(response)
+            else:
+                response['success'] = False
+                response['reason'] = "Incorrect password"
+                return JsonResponse(response)
+
+        except:
+            # If you cannot get the object then return false
+            response['success'] = False
+            response['reason'] = "User does not exist"
+            return JsonResponse(response)
+
+
