@@ -47,5 +47,6 @@ urlpatterns = [
     url(r'^manage-event/discount-codes/(?P<id>[0-9]+)/add$', views.DiscountCodesAdd.as_view(), name='discount-codes-add'),
     url(r'^manage-event/discount-codes/(?P<id>[0-9]+)/delete/(?P<discount_code_id>[0-9]+)$', views.DeleteDiscountCode.as_view(),
         name='delete-discount-code'),
-    url(r'^api/authenticate/$', views.ApiAuthenticate.as_view(), name='api-authenticate')
+    url(r'^api/authenticate/$', views.ApiAuthenticate.as_view(), name='api-authenticate'),
+    url(r'^api/validate-ticket/$', views.ApiValidateTicket.as_view(), name='api-validate-ticket')
 ]

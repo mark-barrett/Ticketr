@@ -1017,3 +1017,48 @@ class ApiAuthenticate(View):
             return JsonResponse(response)
 
 
+class ApiValidateTicket(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ApiValidateTicket, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        return redirect('../../api/home')
+
+    def post(self, request):
+        # Firstly we need to get the posted data
+        order_code = request.POST['order_code']
+
+        # Response dictionary
+        response = {}
+
+        try:
+            # Get the user object
+            order = Order.objects.get(order_code=order_code)
+
+            # Check to see if the ticket has not been used
+            if order.used == False and order.for_sale == False:
+                response['success'] = True
+                response['user'] = order.user.username
+                response['order_number'] = order.order_number
+
+                order.used = True
+                order.save()
+
+                return JsonResponse(response)
+            elif order.used == True:
+                response['success'] = False
+                response['reason'] = "Ticket already used"
+                return JsonResponse(response)
+            elif order.for_sale == True:
+                response['success'] = False
+                response['reason'] = "Ticket is up for sale"
+                return JsonResponse(response)
+
+        except:
+            # If you cannot get the object then return false
+            response['success'] = False
+            response['reason'] = "Ticket does not exist"
+            return JsonResponse(response)
+
+
