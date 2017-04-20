@@ -1,4 +1,7 @@
 from decimal import Decimal
+
+from django.contrib.sessions import serializers
+from django.core.serializers import serialize
 from django.db.models import Sum
 from django.http import HttpResponse
 from django.template import loader
@@ -1072,3 +1075,45 @@ class ApiHome(View):
         }
         return HttpResponse(template.render(context, request))
 
+
+class ApiTickets(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ApiTickets, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        return redirect('../../api/home')
+
+    def post(self, request):
+        # Firstly we need to get the posted data
+        username = request.POST['username']
+        password = request.POST['password']
+
+        # Response dictionary
+        response = {}
+
+        try:
+            # Get the user object
+            user = User.objects.get(username=username)
+
+            # Check the password
+            if user.check_password(password):
+                response['success'] = True
+                orders = Order.objects.all().filter(user=user)
+                test = serialize("json", orders)
+
+                return HttpResponse(test, content_type='application/json')
+            else:
+                response['success'] = False
+                response['reason'] = "Incorrect password"
+                return JsonResponse(response)
+
+        except:
+            # If you cannot get the object then return false
+            response['success'] = False
+            response['reason'] = "User does not exist"
+            return JsonResponse(response)
+
+
+class ApiEvents(View):
+    pass
