@@ -1062,3 +1062,13 @@ class ApiValidateTicket(View):
             return JsonResponse(response)
 
 
+class ApiHome(View):
+
+    def get(self, request):
+        template = loader.get_template('api.html')
+
+        # Get all tickets for this event
+        context = {
+        }
+        return HttpResponse(template.render(context, request))
+

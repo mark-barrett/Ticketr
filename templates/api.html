@@ -1,0 +1,83 @@
+<html>
+    <head>
+        <title>Ticketr Api Home</title>
+        {% load staticfiles %}
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    </head>
+    <body>
+
+    {% load staticfiles %}
+<div class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-inner">
+            <a class="brand" href="#">
+            <!-- UNCOMMENT THE CSS VALUES TO TEST OTHER DIMENTIONS -->
+            <!-- <img src="http://placehold.it/150x80&text=Logo" alt=""> -->
+                {% if 'buy-ticket' in request.path %}
+                <a href="../../home"><img src={% static "images/logo.png" %} alt="" height="44"></a>
+                    {% else %}
+                    <a href="../home"><img src={% static "images/logo.png" %} alt="" height="44"></a>
+                {% endif %}
+            </a>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="">Developer</a></li>
+        </ul>
+        </div>
+    </div>
+</div>
+
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" style="margin-bottom: 0;">
+                <p class="text-center lead" style="color: white;">{{ message }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+
+        <div style="background: url('{% static 'images/background1.png' %}'); background-size: 100% 100%; background-attachment: fixed; height: 160px">
+            <br/><br/><h1 class="text-center" style="color:white;">Ticketr API. For Developers or Anyone.</h1><br/>
+        </div>
+        <div class="container">
+            <h2>Ticketr API - Documentation</h2>
+                        <p>The Tickter API allows the Ticketr app and other developers to communicate with the Ticketr database to get certain information. The API returns data in JSON format.
+            The API comes with 4 API handles which are the following:
+            <ul>
+            <li>
+                <strong>My Tickets</strong> - Providing a users username and password will return a list of the users tickets. The Ticketr app will use this to show QR codes on the Android app.<br/>
+                Usage:<br/>
+                <code>http://178.62.41.17/api/tickets</code><br/>
+                <code>Posting: username</code><br/>
+                <code>Posting: password</code>
+            </li>
+            <br/>
+            <li>
+                <strong>My Events</strong> - Providing a users username and password will return a list of the users events. The Ticketr app will use this to show an event organiser what events he/she has.<br/>
+                Usage:<br/>
+                <code>http://178.62.41.17/api/events</code><br/>
+                <code>Posting: username</code><br/>
+                <code>Posting: password</code>
+            </li>
+            <br/>
+            <li>
+                <strong>Authentication</strong> - Providing a users username and password will return a message either authenticating the user as valid or reutrning an error.<br/>
+                Usage:<br/>
+                <code>http://178.62.41.17/api/authenticate</code><br/>
+                <code>Posting: username</code><br/>
+                <code>Posting: password</code>
+            </li>
+            <br/>
+            <li>
+                <strong>Ticket Validation</strong> - Providing the Event owners ID for authentication, the order number, and the name and order code will be returned.<br/>
+                Usage:<br/>
+                <code>http://178.62.41.17/api/validate-ticket</code><br/>
+                <code>Posting: event_owner_id</code><br/>
+                <code>Posting: order_number</code>
+            </li>
+            </ul>
+            </p>
+            {% include 'footer.html' %}
+    </div>
+    </body>
+</html>
