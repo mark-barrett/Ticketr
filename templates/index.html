@@ -19,49 +19,42 @@
         <div style="background: url('{% static 'images/background1.png' %}'); background-size: 100% 100%; background-attachment: fixed; height: 275px">
             <br/><br/><h1 class="text-center" style="color:white;">Sell tickets for an event, resell tickets easily</h1><br/>
             <p class="lead text-center" style="color: white;"><strong>Event Organisers:</strong> Start selling your tickets with Ticketr now! <a href="">More Information</a><br/><strong>Event Goers:</strong> Can't go to an event? Need to resell your ticket? Put it up for sale here!</p>
-        </div>
-        <div class="container">
-        <h1>Events near you:</h1>
-            <!-- Get categories-->
-            {% for category in categories %}
-                <h2>{{ category.name }}</h2>
-                <div class="row">
-                    <!--List each event in that category-->
-                    {% for event in category.event_set.all %}
+            <div class="container">
+                <div class="well">
+                    <div class="row">
+                        <div class="col-md-1">
 
-                        {% if 'Public' in event.privacy %}
-                            <div class="col-md-4">
-                                <div class="panel panel-default">
-                                  <div class="panel-body">
-                                      <div style="background: url('{{ event.image }}'); background-size: 100% 100%; height: 175px">
-                                                                                   <div class="pull-right">
-                                            <p class="lead"><span class="label label-default">
-                                          {% for ticket in event.ticket_set.all %}
-                                            &euro;{{ ticket.price }} {% if not forloop.last %} - {% endif %}
-                                          {% endfor %}
-                                            </span>&nbsp;</p>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="row">
+                                <form name="search_event" action="search" method="post">
+                                    <div class="col-md-5">
+                                          <div class="form-group">
+                                            <input class="form-control input-lg" type="text" placeholder="Search Event" name="query">
                                           </div>
-                                      </div><br/>
-                                      {{ event.start_date }}, {{ event.start_time }}
-                                      <br/>
-                                      <strong>{% if event.name|length > 34 %}
-                                          {{ event.name|truncatechars:35 }}
-                                      {% else %}
-                                      {{ event.name }}
-                                      {% endif %}
-                                      </strong><br/>
-                                      <small>
-                                          {{ event.event_owner }}</small>
-                                      <div class="pull-right">
-                                          <a href="/event/{{ event.id }}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-qrcode"></span> Get Tickets</a>
-                                      </div>
-                                  </div>
-                                </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <input class="form-control input-lg" type="text" placeholder="Where?" name="where">
+                                          </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button class="btn btn-primary btn-lg" type="submit">
+                                            Search <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
-                        {% endif %}
-                {% endfor %}
+                        </div>
+                        <div class="col-md-1">
+                        </div>
+                    </div>
                 </div>
-            {% endfor %}
+            </div>
+
+
+        <div class="container">
+            <h3>Popular Events Near You:</h3>
             {% include 'footer.html' %}
     </div>
     </body>

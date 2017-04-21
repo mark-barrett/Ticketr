@@ -1100,9 +1100,9 @@ class ApiTickets(View):
             if user.check_password(password):
                 response['success'] = True
                 orders = Order.objects.all().filter(user=user)
-                test = serialize("json", orders)
+                response = serialize("json", orders)
 
-                return HttpResponse(test, content_type='application/json')
+                return HttpResponse(response, content_type='application/json')
             else:
                 response['success'] = False
                 response['reason'] = "Incorrect password"

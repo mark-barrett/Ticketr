@@ -51,6 +51,7 @@ urlpatterns = [
     url(r'^api/validate-ticket/$', views.ApiValidateTicket.as_view(), name='api-validate-ticket'),
     url(r'^api/tickets/$', views.ApiTickets.as_view(), name='api-tickets'),
     url(r'^api/events/$', views.ApiEvents.as_view(), name='api-events'),
-    url(r'^api/home/$', views.ApiHome.as_view(), name='api-home')
+    url(r'^api/home/$', views.ApiHome.as_view(), name='api-home'),
+    url
 
 ]
