@@ -1150,4 +1150,13 @@ class Search(View):
 
 
 class Events(View):
-    pass
+
+    def get(self, request):
+        # Get the index.html template in the templates folder
+        template = loader.get_template('events.html')
+        context = {
+            # We want all categories objects to be sent
+            'categories': Category.objects.all(),
+        }
+        # Return the template as a HttpResponse
+        return HttpResponse(template.render(context, request))
