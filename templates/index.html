@@ -27,7 +27,7 @@
                         </div>
                         <div class="col-md-10">
                             <div class="row">
-                                <form name="search_event" action="search" method="post">
+                                <form name="search_event" action="{% url 'search' %}" method="post">
                                     <div class="col-md-5">
                                           <div class="form-group">
                                             <input class="form-control input-lg" type="text" placeholder="Search Event" name="query">
@@ -43,6 +43,7 @@
                                             Search <i class="glyphicon glyphicon-search"></i>
                                         </button>
                                     </div>
+                                    {% csrf_token %}
                                 </form>
                             </div>
                         </div>
