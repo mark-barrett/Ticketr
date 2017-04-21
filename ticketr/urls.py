@@ -52,6 +52,7 @@ urlpatterns = [
     url(r'^api/tickets/$', views.ApiTickets.as_view(), name='api-tickets'),
     url(r'^api/events/$', views.ApiEvents.as_view(), name='api-events'),
     url(r'^api/home/$', views.ApiHome.as_view(), name='api-home'),
-    url(r'^search/$', views.Search.as_view(), name='search')
+    url(r'^search/$', views.Search.as_view(), name='search'),
+    url(r'^events/$', views.Events.as_view(), name='events')
 
 ]

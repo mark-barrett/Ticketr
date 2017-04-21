@@ -1129,23 +1129,22 @@ class Search(View):
         query = request.POST['query']
         where = request.POST['where']
 
-        if __name__ == '__main__':
-            if query == "":
-                messages.warning(request, "You must search something")
-                return redirect('index')
+        if query == "":
+            messages.warning(request, "You must search something")
+            return redirect('index')
+        else:
+            # Now that we know we are searching with a query we need to figure out whether or not we have a where
+            if where == "":
+                # Just searching by event
+                context = {
+                    'events': Event.objects.all().filter(name__contains=query)
+                }
             else:
-                # Now that we know we are searching with a query we need to figure out whether or not we have a where
-                if where == "":
-                    # Just searching by event
-                    context = {
-                        'events': Event.objects.all().filter(name__contains=query)
-                    }
-                else:
-                    # Searching by where aswell
-                    context = {
-                        'events': Event.objects.all().filter(name__contains=query, location__contains=where)
-                    }
+                # Searching by where aswell
+                context = {
+                    'events': Event.objects.all().filter(name__contains=query, location__contains=where)
+                }
 
-                # Now we have to return these events
-                return HttpResponse(template.render(context, request))
+            # Now we have to return these events
+            return HttpResponse(template.render(context, request))
 

@@ -1,0 +1,71 @@
+<html>
+    <head>
+        <title>Ticketr Search</title>
+        {% load staticfiles %}
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    </head>
+    <body>
+    {% include 'menu.html' %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" style="margin-bottom: 0;">
+                <p class="text-center lead" style="color: white;">{{ message }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+
+        <div style="background: url('{% static 'images/background1.png' %}'); background-size: 100% 100%; background-attachment: fixed; height: 275px">
+
+        <div class="container" style="padding-top: 4%;">
+            <div class="panel panel-default">
+            <div class="panel-body">
+            <h3>Search Results</h3>
+
+            {% if events %}
+                <!--List each event in that category-->
+                {% for event in events %}
+
+                    {% if 'Public' in event.privacy %}
+                        <div class="col-md-4">
+                            <div class="panel panel-default">
+                              <div class="panel-body">
+                                  <div style="background: url('{{ event.image }}'); background-size: 100% 100%; height: 175px">
+                                                                               <div class="pull-right">
+                                        <p class="lead"><span class="label label-default">
+                                      {% for ticket in event.ticket_set.all %}
+                                        &euro;{{ ticket.price }} {% if not forloop.last %} - {% endif %}
+                                      {% endfor %}
+                                        </span>&nbsp;</p>
+                                      </div>
+                                  </div><br/>
+                                  {{ event.start_date }}, {{ event.start_time }}
+                                  <br/>
+                                  <strong>{% if event.name|length > 34 %}
+                                      {{ event.name|truncatechars:35 }}
+                                  {% else %}
+                                  {{ event.name }}
+                                  {% endif %}
+                                  </strong><br/>
+                                  <small>
+                                      {{ event.event_owner }}</small>
+                                  <div class="pull-right">
+                                      <a href="/event/{{ event.id }}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-qrcode"></span> Get Tickets</a>
+                                  </div>
+                              </div>
+                            </div>
+                        </div>
+                    {% endif %}
+            {% endfor %}
+            {% else %}
+                <p>Nothing found with that query.. sorry about that!</p>
+            {% endif %}
+            </div>
+            </div>
+            {% include 'footer.html' %}
+        </div>
+        </div>
+    </div>
+    </body>
+</html>
