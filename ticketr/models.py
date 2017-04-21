@@ -40,6 +40,7 @@ class Event(models.Model):
     name = models.CharField(max_length=64)
     # Give the event a picture
     image = models.CharField(max_length=240)
+    background = models.CharField(max_length=240)
 
     # Start date and time and end date and time
     start_date = models.DateField()
@@ -103,7 +104,7 @@ class Order(models.Model):
     order_code = models.CharField(max_length=24)
     used = models.BooleanField()
     for_sale = models.BooleanField(default=False)
-    qrcode = models.ImageField(upload_to='qrcode', blank=True, null=True)
+    qrcode = models.FileField(upload_to='qrcode', blank=True, null=True)
     payment_amount = models.DecimalField(decimal_places=2, max_digits=6)
 
     def __str__(self):
