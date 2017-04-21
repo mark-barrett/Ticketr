@@ -1148,3 +1148,6 @@ class Search(View):
             # Now we have to return these events
             return HttpResponse(template.render(context, request))
 
+
+class Events(View):
+    pass
