@@ -495,8 +495,9 @@ class DownloadTicket(View):
             if order.user == request.user:
 
                 # Check if the file exists
-                qr_path = Path('/media/qrcode/qr-'+order_number+'.png')
+                qr_path = Path(os.path.abspath(os.path.dirname(__name__))+'/django_project/media/qrcode/qr-'+order.order_code+'.png')
                 if qr_path.is_file():
+
                     # Generate PDF Here if it doesnt exist
 
                     # Create the HttpResponse object with the appropriate PDF headers.
@@ -509,7 +510,7 @@ class DownloadTicket(View):
                     # Draw things on the PDF. Here's where the PDF generation happens.
                     # See the ReportLab documentation for the full list of functionality.
                     p.drawInlineImage(
-                        '/media/images/newticket.png',
+                        os.path.abspath(os.path.dirname(__name__)) + '/django_project/media/images/newticket.png',
                         0, 0, width=600, height=850)
 
                     # Draw details onto the pdf
@@ -530,7 +531,9 @@ class DownloadTicket(View):
                     p.drawString(315, 180, Helper.remove_key(order.ticket.name, "#ENAME"))
 
                     # Add QRCode
-                    p.drawInlineImage('qrcode/qr-'+order_number+'.png', 370, 415, width=140, height=140)
+                    p.drawInlineImage(os.path.abspath(
+                        os.path.dirname(__name__)) + '/django_project/media/qrcode/qr-' + order.order_code + '.png', 370,
+                                      415, width=140, height=140)
 
                     # Close the PDF object cleanly, and we're done.
                     p.showPage()
@@ -548,7 +551,7 @@ class DownloadTicket(View):
 
                     buffer = StringIO.StringIO()
                     img.save(buffer)
-                    filename = 'qr-%s.png' % (order_number)
+                    filename = 'qr-%s.png' % (order.order_code)
                     filebuffer = InMemoryUploadedFile(
                         buffer, None, filename, 'images/qr_codes/png', buffer.len, None)
 
@@ -564,8 +567,10 @@ class DownloadTicket(View):
 
                     # Draw things on the PDF. Here's where the PDF generation happens.
                     # See the ReportLab documentation for the full list of functionality.
+
+
                     p.drawInlineImage(
-                        'images/newticket.png',
+                        os.path.abspath(os.path.dirname(__name__))+'/django_project/media/images/newticket.png',
                         0, 0, width=600, height=850)
 
                     # Draw details onto the pdf
@@ -587,7 +592,7 @@ class DownloadTicket(View):
                     p.drawString(315, 180, Helper.remove_key(order.ticket.name, "#ENAME"))
 
                     # Add QRCode
-                    p.drawInlineImage('qrcode/qr-' + order_number + '.png', 370, 415, width=140, height=140)
+                    p.drawInlineImage(os.path.abspath(os.path.dirname(__name__))+'/django_project/media/qrcode/qr-' + order.order_code + '.png', 370, 415, width=140, height=140)
 
                     # Close the PDF object cleanly, and we're done.
                     p.showPage()
