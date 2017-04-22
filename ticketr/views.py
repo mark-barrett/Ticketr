@@ -490,114 +490,110 @@ class DownloadTicket(View):
 
     def get(self, request, order_number):
         if request.user.is_authenticated:
-            # Check the ticket exists
-            try:
-                order = Order.objects.get(order_number=order_number)
-                # Check if the user who is logged in owns this ticket
-                if order.user == request.user:
+            order = Order.objects.get(order_number=order_number)
+            # Check if the user who is logged in owns this ticket
+            if order.user == request.user:
 
-                    # Check if the file exists
-                    qr_path = Path('qrcode/qr-'+order_number+'.png')
-                    if qr_path.is_file():
-                        # Generate PDF Here if it doesnt exist
+                # Check if the file exists
+                qr_path = Path('qrcode/qr-'+order_number+'.png')
+                if qr_path.is_file():
+                    # Generate PDF Here if it doesnt exist
 
-                        # Create the HttpResponse object with the appropriate PDF headers.
-                        response = HttpResponse(content_type='application/pdf')
-                        response['Content-Disposition'] = 'attachment; filename="order-'+order_number+'.pdf"'
+                    # Create the HttpResponse object with the appropriate PDF headers.
+                    response = HttpResponse(content_type='application/pdf')
+                    response['Content-Disposition'] = 'attachment; filename="order-'+order_number+'.pdf"'
 
-                        # Create the PDF object, using the response object as its "file."
-                        p = canvas.Canvas(response)
+                    # Create the PDF object, using the response object as its "file."
+                    p = canvas.Canvas(response)
 
-                        # Draw things on the PDF. Here's where the PDF generation happens.
-                        # See the ReportLab documentation for the full list of functionality.
-                        p.drawInlineImage(
-                            'images/newticket.png',
-                            0, 0, width=600, height=850)
+                    # Draw things on the PDF. Here's where the PDF generation happens.
+                    # See the ReportLab documentation for the full list of functionality.
+                    p.drawInlineImage(
+                        'images/newticket.png',
+                        0, 0, width=600, height=850)
 
-                        # Draw details onto the pdf
-                        p.setFont("Helvetica", 15)
-                        p.drawString(48, 330, order.event.name)
-                        p.setFont("Helvetica", 12)
+                    # Draw details onto the pdf
+                    p.setFont("Helvetica", 15)
+                    p.drawString(48, 330, order.event.name)
+                    p.setFont("Helvetica", 12)
 
-                        # Event location
-                        p.drawString(315, 265, order.event.location)
+                    # Event location
+                    p.drawString(315, 265, order.event.location)
 
-                        # Add order details
-                        p.drawString(48, 180, "Order number "+order.order_number+" purchased by "+order.user.username)
+                    # Add order details
+                    p.drawString(48, 180, "Order number "+order.order_number+" purchased by "+order.user.username)
 
-                        # Add date
-                        p.drawString(48, 265, (str(order.event.start_date)) + " @ " + (str(order.event.start_time)))
+                    # Add date
+                    p.drawString(48, 265, (str(order.event.start_date)) + " @ " + (str(order.event.start_time)))
 
-                        # Ticket type
-                        p.drawString(315, 180, Helper.remove_key(order.ticket.name, "#ENAME"))
+                    # Ticket type
+                    p.drawString(315, 180, Helper.remove_key(order.ticket.name, "#ENAME"))
 
-                        # Add QRCode
-                        p.drawInlineImage('qrcode/qr-'+order_number+'.png', 370, 415, width=140, height=140)
+                    # Add QRCode
+                    p.drawInlineImage('qrcode/qr-'+order_number+'.png', 370, 415, width=140, height=140)
 
-                        # Close the PDF object cleanly, and we're done.
-                        p.showPage()
-                        p.save()
-                        return response
-                    else:
-                        qr = qrcode.QRCode(version=1,
-                                           error_correction=qrcode.constants.ERROR_CORRECT_L,
-                                           box_size=6,
-                                           border=0)
-                        qr.add_data(order.order_code)
-                        qr.make(fit=True)
-
-                        img = qr.make_image()
-
-                        buffer = StringIO.StringIO()
-                        img.save(buffer)
-                        filename = 'qr-%s.png' % (order_number)
-                        filebuffer = InMemoryUploadedFile(
-                            buffer, None, filename, 'images/qr_codes/png', buffer.len, None)
-
-                        order.qrcode.save(filename, filebuffer)
-
-                        # Generate the pdf now that it does exist
-                        # Create the HttpResponse object with the appropriate PDF headers.
-                        response = HttpResponse(content_type='application/pdf')
-                        response['Content-Disposition'] = 'attachment; filename="order-'+order_number+'.pdf"'
-
-                        # Create the PDF object, using the response object as its "file."
-                        p = canvas.Canvas(response)
-
-                        # Draw things on the PDF. Here's where the PDF generation happens.
-                        # See the ReportLab documentation for the full list of functionality.
-                        p.drawInlineImage(
-                            'images/newticket.png',
-                            0, 0, width=600, height=850)
-
-                        # Draw details onto the pdf
-                        p.setFont("Helvetica", 15)
-                        p.drawString(48, 330, order.event.name)
-                        p.setFont("Helvetica", 12)
-
-                        # Event location
-                        p.drawString(315, 265, order.event.location)
-
-                        # Add order details
-                        p.drawString(48, 180,
-                                     "Order number " + order.order_number + " purchased by " + order.user.username)
-
-                        # Add date
-                        p.drawString(48, 265, (str(order.event.start_date)) + " @ " + (str(order.event.start_time)))
-
-                        # Ticket type
-                        p.drawString(315, 180, Helper.remove_key(order.ticket.name, "#ENAME"))
-
-                        # Add QRCode
-                        p.drawInlineImage('qrcode/qr-' + order_number + '.png', 370, 415, width=140, height=140)
-
-                        # Close the PDF object cleanly, and we're done.
-                        p.showPage()
-                        p.save()
-                        return response
+                    # Close the PDF object cleanly, and we're done.
+                    p.showPage()
+                    p.save()
+                    return response
                 else:
-                    return redirect('index')
-            except:
+                    qr = qrcode.QRCode(version=1,
+                                       error_correction=qrcode.constants.ERROR_CORRECT_L,
+                                       box_size=6,
+                                       border=0)
+                    qr.add_data(order.order_code)
+                    qr.make(fit=True)
+
+                    img = qr.make_image()
+
+                    buffer = StringIO.StringIO()
+                    img.save(buffer)
+                    filename = 'qr-%s.png' % (order_number)
+                    filebuffer = InMemoryUploadedFile(
+                        buffer, None, filename, 'images/qr_codes/png', buffer.len, None)
+
+                    order.qrcode.save(filename, filebuffer)
+
+                    # Generate the pdf now that it does exist
+                    # Create the HttpResponse object with the appropriate PDF headers.
+                    response = HttpResponse(content_type='application/pdf')
+                    response['Content-Disposition'] = 'attachment; filename="order-'+order_number+'.pdf"'
+
+                    # Create the PDF object, using the response object as its "file."
+                    p = canvas.Canvas(response)
+
+                    # Draw things on the PDF. Here's where the PDF generation happens.
+                    # See the ReportLab documentation for the full list of functionality.
+                    p.drawInlineImage(
+                        'images/newticket.png',
+                        0, 0, width=600, height=850)
+
+                    # Draw details onto the pdf
+                    p.setFont("Helvetica", 15)
+                    p.drawString(48, 330, order.event.name)
+                    p.setFont("Helvetica", 12)
+
+                    # Event location
+                    p.drawString(315, 265, order.event.location)
+
+                    # Add order details
+                    p.drawString(48, 180,
+                                 "Order number " + order.order_number + " purchased by " + order.user.username)
+
+                    # Add date
+                    p.drawString(48, 265, (str(order.event.start_date)) + " @ " + (str(order.event.start_time)))
+
+                    # Ticket type
+                    p.drawString(315, 180, Helper.remove_key(order.ticket.name, "#ENAME"))
+
+                    # Add QRCode
+                    p.drawInlineImage('qrcode/qr-' + order_number + '.png', 370, 415, width=140, height=140)
+
+                    # Close the PDF object cleanly, and we're done.
+                    p.showPage()
+                    p.save()
+                    return response
+            else:
                 return redirect('index')
         else:
             return redirect('index')
