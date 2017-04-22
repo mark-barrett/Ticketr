@@ -13,9 +13,9 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 
-from . import views
+import views
 
 urlpatterns = [
     # If the user goes to the root directory send them to index (view) #
@@ -53,6 +53,8 @@ urlpatterns = [
     url(r'^api/events/$', views.ApiEvents.as_view(), name='api-events'),
     url(r'^api/home/$', views.ApiHome.as_view(), name='api-home'),
     url(r'^search/$', views.Search.as_view(), name='search'),
-    url(r'^events/$', views.Events.as_view(), name='events')
-
+    url(r'^events/$', views.Events.as_view(), name='events'),
+    url(r'^test/$', views.view_that_asks_for_money, name='test'),
+    url(r'^paypal/', include('paypal.standard.ipn.urls')),
+    url(r'^paypal-ipn/$', views.show_me_the_money, name='test'),
 ]

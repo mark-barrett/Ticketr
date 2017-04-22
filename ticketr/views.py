@@ -10,6 +10,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.utils.decorators import method_decorator
 from django.views.generic import View
+from paypal.standard.ipn.signals import valid_ipn_received
+from paypal.standard.models import ST_PP_COMPLETED
+
 from .forms import UserForm, UserLoginForm, CreateEventForm, CreateOrganiserProfileForm
 from .models import *
 from django import forms
@@ -30,6 +33,7 @@ from pathlib import Path
 from reportlab.lib.units import inch
 from django.http import HttpResponse
 from django.http import JsonResponse
+from paypal.standard.forms import PayPalPaymentsForm
 
 User = get_user_model()
 
@@ -1191,3 +1195,44 @@ class Events(View):
         }
         # Return the template as a HttpResponse
         return HttpResponse(template.render(context, request))
+
+
+def view_that_asks_for_money(request):
+
+    # What you want the button to do.
+    paypal_dict = {
+        "business": "mark.barrett.design-facilitator@gmail.com",
+        "amount": "100.00",
+        "item_name": "Ticket",
+        "notify_url": "http://178.62.41.17/paypal-ipn",
+        "return_url": "https://www.example.com/your-return-location/",
+        "cancel_return": "https://www.example.com/your-cancel-location/",
+    }
+
+    # Create the instance.
+    form = PayPalPaymentsForm(initial=paypal_dict)
+    context = {"form": form}
+    return render(request, "payment.html", context)
+
+
+def show_me_the_money(sender, **kwargs):
+    ipn_obj = sender
+    if ipn_obj.payment_status == ST_PP_COMPLETED:
+        # WARNING !
+        # Check that the receiver email is the same we previously
+        # set on the business field request. (The user could tamper
+        # with those fields on payment form before send it to PayPal)
+        if ipn_obj.receiver_email != "mark.barrett.design-facilitator@gmail.com":
+            # Not a valid payment
+            print "Not valid"
+
+        # ALSO: for the same reason, you need to check the amount
+        # received etc. are all what you expect.
+
+        # Undertake some action depending upon `ipn_obj`.
+        if ipn_obj.custom == "Upgrade all users!":
+            yep = Request(did_you=True)
+    else:
+        "Not complete"
+
+    valid_ipn_received.connect(show_me_the_money)
