@@ -16,13 +16,16 @@
         <a class="btn btn-success btn-xs" href="/my-tickets/">< Back to My Tickets</a>
             <h2>Order for: <a href="/event/{{ order.event.id }}">{{ order.event.name }}</a></h2>
             <hr/>
-        <div class="pull-right"><img src="/home/django/django_project/media/qrcode/qr-{{ order.order_code }}.png"></div>
+        {% if order.user == request.user %}
+        <div class="pull-right"><img src="/media/qrcode/qr-{{ order.order_code }}.png"><br/>
+            <div class="pull-right">{% if order.used is True %}<h1><span class="glyphicon glyphicon-ok" style="color: green;"></span>{% endif %}</h1></div>
+        </div>
+        {% endif %}
             <p>
             Order Number: {{ order.order_number }} for {{ order.payment_amount }} on {{ order.order_date }}<br/>
                 <strong>Event:</strong> <br/>{{ order.event.name }}<br/>
                 {{ order.event.start_date }} @ {{ order.event.start_time }} - {{ order.event.end_date }} @ {{ order.event.end_time }}<br/>
                 <strong>Ticket:</strong> {{ order.ticket.name|remove_key:"#ENAME-" }}<br/>
-                <strong>Used: </strong> {% if order.used is True %} Yes {% else %} No {% endif %}<br/>
                 <strong>Payment Method: </strong> PayPal<br/>
                 <strong>Payment Amount: </strong> &euro; {{ order.payment_amount }}<br/><br/>
                 {% if order.user == request.user %}<a class="btn btn-success" href="/download-ticket/{{ order.order_number }}">Download Ticket PDF</a>{% endif %}
