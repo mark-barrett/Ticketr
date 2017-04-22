@@ -16,7 +16,7 @@
         <a class="btn btn-success btn-xs" href="/my-tickets/">< Back to My Tickets</a>
             <h2>Order for: <a href="/event/{{ order.event.id }}">{{ order.event.name }}</a></h2>
             <hr/>
-        <div class="pull-right">QR CODE WILL GO HERE</div>
+        <div class="pull-right"><img src="/home/django/django_project/media/qrcode/qr-{{ order.order_code }}.png"></div>
             <p>
             Order Number: {{ order.order_number }} for {{ order.payment_amount }} on {{ order.order_date }}<br/>
                 <strong>Event:</strong> <br/>{{ order.event.name }}<br/>

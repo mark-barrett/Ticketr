@@ -495,7 +495,7 @@ class DownloadTicket(View):
             if order.user == request.user:
 
                 # Check if the file exists
-                qr_path = Path('qrcode/qr-'+order_number+'.png')
+                qr_path = Path('/media/qrcode/qr-'+order_number+'.png')
                 if qr_path.is_file():
                     # Generate PDF Here if it doesnt exist
 
@@ -509,7 +509,7 @@ class DownloadTicket(View):
                     # Draw things on the PDF. Here's where the PDF generation happens.
                     # See the ReportLab documentation for the full list of functionality.
                     p.drawInlineImage(
-                        'images/newticket.png',
+                        '/media/images/newticket.png',
                         0, 0, width=600, height=850)
 
                     # Draw details onto the pdf
