@@ -13,12 +13,15 @@
             </a>
  <ul class="nav navbar-nav navbar-right">
 
-      <form class="navbar-form navbar-left">
+      <form class="navbar-form navbar-left" name="search_event" action="{% url 'search' %}" method="post">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search an Event">
+          <input type="text" class="form-control" placeholder="Search an Event" name="query">
+            <input type="hidden" name="where">
         </div>
+          {% csrf_token %}
         <button type="submit" class="btn btn-default btn-sm">Search</button>
       </form>
+ <li><a href="/api/home">Developer/API</a></li>
               <li><a href="/events">Browse Events</a></li>
               <li><a href="/create-event">Create Event</a></li>
               <li><a href="/sell-ticket">Sell Your Ticket</a></li>
