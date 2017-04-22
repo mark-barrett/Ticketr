@@ -39,8 +39,8 @@ class Event(models.Model):
     # Varchar with 32 chars
     name = models.CharField(max_length=64)
     # Give the event a picture
-    image = models.CharField(max_length=240)
-    background = models.CharField(max_length=240)
+    image = models.FileField()
+    background = models.FileField()
 
     # Start date and time and end date and time
     start_date = models.DateField()

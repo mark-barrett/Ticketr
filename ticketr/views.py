@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 from django.contrib.sessions import serializers
+from django.core.files.base import ContentFile
 from django.core.serializers import serialize
 from django.db.models import Sum
 from django.http import HttpResponse
@@ -185,7 +186,33 @@ class CreateEventView(View):
         end_date = request.POST['end_date']
         start_time = request.POST['start_time']
         end_time = request.POST['end_time']
-        image = request.POST['image']
+        image = request.FILES['image']
+        background = request.FILES['background']
+
+        # save the uploaded file inside that folder.
+        folder = '/home/django/django_project/media/images/event_images'
+        uploaded_filename = request.FILES['image'].name
+        full_filename = os.path.join(settings.MEDIA_ROOT, folder, uploaded_filename)
+        fout = open(full_filename, 'wb+')
+
+        file_content = ContentFile(request.FILES['image'].read())
+
+        # Iterate through the chunks.
+        for chunk in file_content.chunks():
+            fout.write(chunk)
+        fout.close()
+
+        uploaded_filename = request.FILES['image'].name
+        full_filename = os.path.join(settings.MEDIA_ROOT, folder, uploaded_filename)
+        fout = open(full_filename, 'wb+')
+
+        file_content = ContentFile(request.FILES['background'].read())
+
+        # Iterate through the chunks.
+        for chunk in file_content.chunks():
+            fout.write(chunk)
+        fout.close()
+
         description = request.POST['description']
         category = request.POST['category']
         event_owner = request.POST['event_owner']
@@ -235,7 +262,7 @@ class CreateEventView(View):
         event_category = Category.objects.get(id=category)
         event_owner_object = EventOwner.objects.get(id=event_owner)
 
-        event_temp = Event(name=name, image=image, description=description, location=location, start_date=Helper.date(start_date),
+        event_temp = Event(name=name, image=image, background=background, description=description, location=location, start_date=Helper.date(start_date),
                            start_time=start_time, end_date=Helper.date(end_date), end_time=end_time, event_owner=event_owner_object,
                            category=event_category, privacy=privacy, resell=resell, resell_when=resell_when,
                            resell_amount=resell_amount)

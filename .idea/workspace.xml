@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="426b2ace-27a3-42ae-9b0a-5eb4752dd27f" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ticketr/forms.py" afterPath="$PROJECT_DIR$/ticketr/forms.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ticketr/models.py" afterPath="$PROJECT_DIR$/ticketr/models.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ticketr/views.py" afterPath="$PROJECT_DIR$/ticketr/views.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -27,8 +29,8 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ticketr/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="589">
-              <caret line="1162" column="62" lean-forward="true" selection-start-line="1162" selection-start-column="62" selection-end-line="1162" selection-end-column="62" />
+            <state relative-caret-position="454">
+              <caret line="215" column="49" lean-forward="true" selection-start-line="215" selection-start-column="49" selection-end-line="215" selection-end-column="49" />
               <folding />
             </state>
           </provider>
@@ -79,16 +81,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
-        <entry file="file:///private/var/folders/5h/r9t65fk55plb8g23h4tx_mnw0000gn/T/fz3temp-1/views.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="332">
-              <caret line="557" column="15" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="1162" selection-end-column="62" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
@@ -102,8 +94,18 @@
       <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ticketr/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="103" column="48" lean-forward="true" selection-start-line="103" selection-start-column="48" selection-end-line="103" selection-end-column="48" />
+            <state relative-caret-position="214">
+              <caret line="42" column="35" lean-forward="false" selection-start-line="42" selection-start-column="35" selection-end-line="42" selection-end-column="35" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="forms.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ticketr/forms.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="360">
+              <caret line="83" column="102" lean-forward="true" selection-start-line="83" selection-start-column="102" selection-end-line="83" selection-end-column="102" />
               <folding />
             </state>
           </provider>
@@ -164,7 +166,6 @@
         <option value="$PROJECT_DIR$/templates/small-event-form.html" />
         <option value="$PROJECT_DIR$/templates/form_template.html" />
         <option value="$PROJECT_DIR$/templates/event_form_template.html" />
-        <option value="$PROJECT_DIR$/ticketr/forms.py" />
         <option value="$PROJECT_DIR$/templates/organiser.html" />
         <option value="$PROJECT_DIR$/templates/organiser-profiles.html" />
         <option value="$PROJECT_DIR$/templates/my-events.html" />
@@ -205,11 +206,12 @@
         <option value="$PROJECT_DIR$/templates/create-event.html" />
         <option value="$PROJECT_DIR$/templates/footer.html" />
         <option value="$PROJECT_DIR$/templates/menu.html" />
-        <option value="$PROJECT_DIR$/ticketr/models.py" />
         <option value="/private/var/folders/5h/r9t65fk55plb8g23h4tx_mnw0000gn/T/fz3temp-1/urls.py" />
         <option value="/private/var/folders/5h/r9t65fk55plb8g23h4tx_mnw0000gn/T/fz3temp-1/settings.py" />
         <option value="$PROJECT_DIR$/templates/view-order.html" />
         <option value="/private/var/folders/5h/r9t65fk55plb8g23h4tx_mnw0000gn/T/fz3temp-1/views.py" />
+        <option value="$PROJECT_DIR$/ticketr/models.py" />
+        <option value="$PROJECT_DIR$/ticketr/forms.py" />
         <option value="$PROJECT_DIR$/ticketr/views.py" />
       </list>
     </option>
@@ -252,6 +254,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="oop3" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="oop3" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="oop3" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ticketr" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -636,14 +652,14 @@
     <frame x="-1558" y="-257" width="1426" height="962" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="manage.py@oop3" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32357723" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="manage.py@oop3" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32254335" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28395954" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32922536" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32922536" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32922536" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25202313" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25202313" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24958949" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32852563" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -693,13 +709,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/ticketr/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="32" column="20" lean-forward="true" selection-start-line="32" selection-start-column="20" selection-end-line="32" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/login.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="277">
@@ -859,6 +868,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
           <caret line="43" column="192" lean-forward="false" selection-start-line="43" selection-start-column="192" selection-end-line="43" selection-end-column="192" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -884,6 +894,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="20" column="1" lean-forward="false" selection-start-line="20" selection-start-column="1" selection-end-line="23" selection-end-column="35" />
+          <folding>
+            <element signature="e#1620#1626#0#HTML" expanded="true" />
+            <element signature="e#1783#1789#1#HTML" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -975,14 +989,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ticketr/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="103" column="48" lean-forward="true" selection-start-line="103" selection-start-column="48" selection-end-line="103" selection-end-column="48" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///private/var/folders/5h/r9t65fk55plb8g23h4tx_mnw0000gn/T/fz3temp-1/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="454">
@@ -999,6 +1005,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/ticketr/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="214">
+          <caret line="42" column="35" lean-forward="false" selection-start-line="42" selection-start-column="35" selection-end-line="42" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ticketr/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="83" column="102" lean-forward="true" selection-start-line="83" selection-start-column="102" selection-end-line="83" selection-end-column="102" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///private/var/folders/5h/r9t65fk55plb8g23h4tx_mnw0000gn/T/fz3temp-1/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="553" column="57" lean-forward="true" selection-start-line="553" selection-start-column="57" selection-end-line="553" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/view-order.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
@@ -1009,18 +1039,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///private/var/folders/5h/r9t65fk55plb8g23h4tx_mnw0000gn/T/fz3temp-1/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="332">
-          <caret line="557" column="15" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="1162" selection-end-column="62" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ticketr/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="589">
-          <caret line="1162" column="62" lean-forward="true" selection-start-line="1162" selection-start-column="62" selection-end-line="1162" selection-end-column="62" />
+        <state relative-caret-position="454">
+          <caret line="215" column="49" lean-forward="true" selection-start-line="215" selection-start-column="49" selection-end-line="215" selection-end-column="49" />
           <folding />
         </state>
       </provider>

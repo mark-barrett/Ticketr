@@ -65,7 +65,8 @@ class CreateEventForm(forms.ModelForm):
         self.fields['resell_amount'].label = "If choosen above, how many tickets should be sold before re-selling can occur?"
 
     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control input-xs'}))
-    image = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control input-xs'}))
+    image = forms.FileField()
+    background = forms.FileField()
     description = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control input-xs'}))
     location = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control input-xs'}))
     start_date = forms.DateField(widget=DateInput(), input_formats=settings.DATE_INPUT_FORMATS)
@@ -102,7 +103,7 @@ class CreateEventForm(forms.ModelForm):
 
     class Meta:
         model = Event
-        fields = ['name', 'location', 'start_date', 'end_date', 'start_time', 'end_time', 'image', 'description', 'category', 'event_owner', 'ticket1_name',
+        fields = ['name', 'location', 'start_date', 'end_date', 'start_time', 'end_time', 'image', 'background', 'description', 'category', 'event_owner', 'ticket1_name',
                   'ticket1_price', 'ticket1_qty', 'ticket2_name', 'ticket2_price', 'ticket2_qty', 'ticket3_name',
                   'ticket3_price', 'ticket3_qty', 'privacy', 'resell', 'resell_when', 'resell_amount']
 
