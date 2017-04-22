@@ -28,10 +28,10 @@
                   <div class="panel-body">
                       <div class="row">
                           <div class="col-md-4">
-                              <img src="{{ ticket.event.image }}" width="140" height="70">
+                              <img src="/media/{{ ticket.event.image }}" width="140" height="70">
                           </div>
                           <div class="col-md-8">
-                              {{ ticket.event.start_date }}{{ ticket.event.start_time }}<br/>
+                              {{ ticket.event.start_date }} @ {{ ticket.event.start_time }}<br/>
                               <strong>
                                   {% if ticket.event.name|length > 30 %}
                                       {{ ticket.event.name|truncatechars:30 }}

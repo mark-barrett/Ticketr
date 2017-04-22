@@ -61,53 +61,58 @@
               </div>
             </div>
              {% if user.is_anonymous %}
-             <div class="panel panel-default">
-              <div class="panel-heading">Register an account</div>
-                <div class="panel-body">
-                    <p><strong>You need to register an account to use Ticketr! Don't worry just pick a password and it will be setup. All your tickets will be saved under your account for you to access. We'll also email you a copy!</strong></p>
-                                              <div class="form-group">
-    <label for="first_name">First Name:</label>
-    <input type="text" class="form-control" id="first_name" value="{{ request.user.first_name }}">
-  </div>
-                      <div class="form-group">
-    <label for="last_name">Last Name:</label>
-    <input type="text" class="form-control" id="last_name" value="{{ request.user.last_name }}">
-  </div>
-                      <div class="form-group">
-    <label for="email_address">Email address:</label>
-    <input type="email_address" class="form-control" id="email_address"  value="{{ request.user.email }}">
-  </div>
-                                          <div class="form-group">
-    <label for="password">Password:</label>
-    <input type="password" class="form-control" id="password">
-  </div>
-
-                </div>
-            </div>
+                 <form name="register-buy" action="/buy-register/" method="post">
+                     <div class="panel panel-default">
+                      <div class="panel-heading">Register an account</div>
+                        <div class="panel-body">
+                            <p><strong>You need to register an account to use Ticketr! Don't worry just pick a password and it will be setup. All your tickets will be saved under your account for you to access. We'll also email you a copy!</strong></p>
+                              <div class="form-group">
+                                <label for="first_name">First Name:</label>
+                                <input type="text" class="form-control" id="first_name" value="{{ request.user.first_name }}" name="first_name">
+                              </div>
+                                                  <div class="form-group">
+                                <label for="last_name">Last Name:</label>
+                                <input type="text" class="form-control" id="last_name" value="{{ request.user.last_name }}" name="last_name">
+                              </div>
+                                                  <div class="form-group">
+                                <label for="email_address">Email address:</label>
+                                <input type="email_address" class="form-control" id="email_address"  value="{{ request.user.email }}" name="email_address">
+                              </div>
+                                                                      <div class="form-group">
+                                <label for="password">Password:</label>
+                                <input type="password" class="form-control" id="password" name="password">
+                              </div>
+                        </div>
+                    </div>
+                 <input type="submit" class="btn btn-success btn-block" value="Register and Purchase (PayPal)">
+                 </form>
              {% else %}
-             <div class="panel panel-default">
-              <div class="panel-heading">Account Details</div>
-                <div class="panel-body">
-                    <p>Username:<br/>{{ user.username }} <small>Not you? <a href="logout">(Logout)</a></small>
+                 <form name="buy" action="/buy/" method="post">
+                     <div class="panel panel-default">
+                      <div class="panel-heading">Account Details</div>
+                        <div class="panel-body">
+                            <p>Username:<br/>{{ user.username }} <small>Not you? <a href="logout">(Logout)</a></small>
+                            <input type="hidden" name="username" value="{{ user.username }}">
                           <div class="form-group">
-    <label for="first_name">First Name:</label>
-    <input type="text" class="form-control" id="first_name" value="{{ request.user.first_name }}">
-  </div>
-                      <div class="form-group">
-    <label for="last_name">Last Name:</label>
-    <input type="text" class="form-control" id="last_name" value="{{ request.user.last_name }}">
-  </div>
-                      <div class="form-group">
-    <label for="email_address">Email address:</label>
-    <input type="email_address" class="form-control" id="email_address"  value="{{ request.user.email }}">
-  </div>
-                </div>
-            </div>
+                            <label for="first_name">First Name:</label>
+                            <input type="text" class="form-control" id="first_name" value="{{ request.user.first_name }}" name="first_name">
+                          </div>
+                                              <div class="form-group">
+                            <label for="last_name">Last Name:</label>
+                            <input type="text" class="form-control" id="last_name" value="{{ request.user.last_name }}" name="last_name">
+                          </div>
+                                              <div class="form-group">
+                            <label for="email_address">Email address:</label>
+                            <input type="email_address" class="form-control" id="email_address"  value="{{ request.user.email }}" name="email_address">
+                          </div>
+                        </div>
+                    </div>
+                 <input type="submit" class="btn btn-success btn-block" value="Purchase (PayPal)">
+                 </form>
              {% endif %}
- <a href="/register" class="btn btn-success btn-block" role="button">Buy Ticket (PayPal)</a>
          </div>
          <br/>
-         <div class="col-md-3"><img src="{{ event.image }}" width="100%" height="150px">
+         <div class="col-md-3"><img src="/media/{{ event.image }}" width="100%" height="150px">
              <br/><br/>
             <div class="panel panel-default">
               <div class="panel-heading">Ticket(s) will be held for:</div>
@@ -119,8 +124,8 @@
             </div>
              <div class="panel panel-default">
               <div class="panel-heading">Organiser:</div>
-                <div class="panel-body"><a href="" class="btn btn-default" role="button">Organiser Profile</a><br/><br/>
-                <a href="#" class="btn btn-default" role="button">Contact Organiser</a></div>
+                <div class="panel-body"><a href="" class="btn btn-default btn-block" role="button">Organiser Profile</a><br/><br/>
+                <a href="#" class="btn btn-default btn-block" role="button">Contact Organiser</a></div>
             </div>
          </div>
          <div class="col-md-1">

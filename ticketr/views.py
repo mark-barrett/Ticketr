@@ -291,10 +291,9 @@ class CreateEventView(View):
             ticket.save()
             range += 3
 
-        print "Hello"
         if event is not None:
-            messages.success(request, "Nice one! Your event created successfully.")
-            return redirect(index)
+            messages.success(request, "Nice one! Your event created successfully. Here it is")
+            return redirect('/event/'+str(event_temp.id))
 
 
 class CreateOrganiserView(View):
@@ -458,6 +457,10 @@ class BuyTicket(View):
                 total = ticket_quantity * ticket.price
                 fees = float(total / 100) * 2.00
                 fees += ticket_quantity * 1.00
+
+                if ticket.price == 0:
+                    subtotal = 0
+                    fees = 0
 
                 context = {
                     'event': Event.objects.get(id=event_id),

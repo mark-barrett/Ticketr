@@ -14,14 +14,14 @@
             </div>
         {% endfor %}
     {% endif %}
-      <div style="background: url('{{ event.background }}'); background-size: 100% 100%; background-attachment: fixed; height: 275px">
+      <div style="background: url('/media/{{ event.background }}'); background-size: 100% 100%; background-attachment: fixed; height: 275px">
          <div class="container">
             <br/><br/>
             <div class="panel panel-default">
                <div class="panel-body">
                   <div class="row">
                      <div class="col-md-2"></div>
-                     <div class="col-md-4"><img src="{{ event.image }}" width="100%" height="235px"></div>
+                     <div class="col-md-4"><img src="/media/{{ event.image }}" width="100%" height="235px"></div>
                      <div class="col-md-4">
                         <h3>{{ event.name }}</h3>
                          <p class="lead">by <a href="/organiser/{{ event.event_owner.id }}">{{ event.event_owner }}</a><small><br/>{{ event.start_date }}</small></p>

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
+    'paypal.standard.ipn',
     'ticketr'
 ]
 
@@ -116,6 +117,10 @@ USE_L10N = True
 USE_TZ = True
 
 DATE_INPUT_FORMATS = '%m-%d-%Y'
+
+
+# To change between Paypal sandbox and normal
+PAYPAL_TEST = True
 
 
 # Static files (CSS, JavaScript, Images)
