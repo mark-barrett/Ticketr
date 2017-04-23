@@ -61,7 +61,13 @@
             </div>
              <div class="row" id="tickets">
                  <div class="col-md-2"></div>
-                 <div class="col-md-8"><h3>Tickets</h3></div>
+                 <div class="col-md-8"><h3>Tickets</h3>
+                     {% if 'Invite' in event.privacy %}
+                     <div class="alert alert-info">
+                        <p>This event is invite only. You must have an invite code to purchase a ticket.</p>
+                    </div>
+                     {% endif %}
+                 </div>
                 <div class="col-md-2"></div>
              </div>
              <div class="row">

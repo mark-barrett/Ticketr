@@ -47,7 +47,7 @@
             </div>
             <div class="col-md-9">
                         <div class="pull-right">
-                <a href="/manage-event/discount-codes/{{ event.id }}/add" class="btn btn-success" role="button"><span class="glyphicon glyphicon-plus"></span> Add Discount</a>
+                <a href="/manage-event/discount-codes/{{ event.id }}/add" class="btn btn-success" role="button"><span class="glyphicon glyphicon-plus"></span> Add Discount Code</a>
             </div>
                 <p class="lead">Discount Codes</p>
                 <hr/>
@@ -80,7 +80,13 @@
 {% endfor %}
                 </tbody>
                  </table>
+            <div class="pull-right">
+                <a href="/manage-event/invite-codes/{{ event.id }}/add" class="btn btn-success" role="button"><span class="glyphicon glyphicon-plus"></span> Add Invite Code</a>
             </div>
+                <p class="lead">Invite Codes</p>
+                <hr/>
+            </div>
+
         </div>
         </div>
         <div class="col-md-1">

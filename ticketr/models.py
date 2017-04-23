@@ -141,5 +141,16 @@ class DiscountCode(models.Model):
         verbose_name_plural = 'Discount Codes'
 
 
+class InviteCode(models.Model):
+    code = models.CharField(max_length=64)
+    event = models.ForeignKey(Event)
+
+    def __str__(self):
+        return self.code+event.name
+
+    class Meta:
+        verbose_name_plural = 'Invite Codes'
+
+
 class Request(models.Model):
     did_you = models.BooleanField()

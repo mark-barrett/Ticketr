@@ -28,7 +28,7 @@
                     <!--List each event in that category-->
                     {% for event in category.event_set.all %}
 
-                        {% if 'Public' in event.privacy %}
+                        {% if 'Public' in event.privacy or 'Invite' in event.privacy %}
                             <div class="col-md-4">
                                 <div class="panel panel-default">
                                   <div class="panel-body">
