@@ -1297,14 +1297,26 @@ class DeleteEvent(View):
                     event.delete()
 
                     messages.success(request, "The event was deleted successfully!")
-                    return redirect('/home/')
+                    return redirect('/my-events/')
                 else:
                     messages.warning(request, "You do not have access to that event")
-                    return redirect('/home/')
+                    return redirect('/my-events/')
             except:
                 messages.warning(request, "Sorry that event doesn't exist")
-                return redirect('/home/')
+                return redirect('/my-events/')
         else:
             messages.warning(request, "You must be logged in to do that.")
             return redirect('/home/')
 
+
+class EditEvent(View):
+
+    def get(self, request, event_id):
+
+        if request.user.is_authenticated:
+            # Try get the event
+            try:
+                event = Event.objects.get(id=event_id)
+            except:
+                messages.warning(request, "Cannot find that event")
+                return redirect('/my-events/')
