@@ -29,7 +29,7 @@ class EventOwner(models.Model):
     website = models.CharField(max_length=64)
     facebook = models.CharField(max_length=64)
     owner = models.ForeignKey(User)
-    image = models.CharField(max_length=128)
+    image = models.FileField()
 
     def __str__(self):
         return self.name

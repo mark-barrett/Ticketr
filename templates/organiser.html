@@ -36,7 +36,7 @@
                   <div class="panel-body">
                       <div class="row">
                       <div class="col-md-4">
-                        <img src="{{ event.image }}" height="80px" width="100px">
+                        <img src="/media/images/event_images/{{ event.image }}" height="80px" width="100px">
                       </div>
                           <div class="col-md-8"><p><strong>{% if event.name|length > 34 %}
                                           {{ event.name|truncatechars:35 }}

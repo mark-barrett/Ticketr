@@ -206,7 +206,7 @@ class CreateEventView(View):
             fout.write(chunk)
         fout.close()
 
-        uploaded_filename = request.FILES['image'].name
+        uploaded_filename = request.FILES['background'].name
         full_filename = os.path.join(settings.MEDIA_ROOT, folder, uploaded_filename)
         fout = open(full_filename, 'wb+')
 
@@ -266,7 +266,7 @@ class CreateEventView(View):
         event_category = Category.objects.get(id=category)
         event_owner_object = EventOwner.objects.get(id=event_owner)
 
-        event_temp = Event(name=name, image=image, background=background, description=description, location=location, start_date=Helper.date(start_date),
+        event_temp = Event(name=name, image=request.FILES['image'].name, background=request.FILES['background'].name, description=description, location=location, start_date=Helper.date(start_date),
                            start_time=start_time, end_date=Helper.date(end_date), end_time=end_time, event_owner=event_owner_object,
                            category=event_category, privacy=privacy, resell=resell, resell_when=resell_when,
                            resell_amount=resell_amount)
@@ -1204,7 +1204,7 @@ def view_that_asks_for_money(request):
         "business": "mark.barrett.design-facilitator@gmail.com",
         "amount": "100.00",
         "item_name": "Ticket",
-        "notify_url": "http://178.62.41.17/paypal-ipn",
+        "notify_url": "http://178.62.41.17" + reverse('paypal-ipn'),
         "return_url": "https://www.example.com/your-return-location/",
         "cancel_return": "https://www.example.com/your-cancel-location/",
     }
@@ -1215,9 +1215,15 @@ def view_that_asks_for_money(request):
     return render(request, "payment.html", context)
 
 
-def show_me_the_money(sender, **kwargs):
+@csrf_exempt
+def show_me_the_money(request, sender, **kwargs):
+    test = Category(name="Recieved IPN")
+    test.save()
+
     ipn_obj = sender
     if ipn_obj.payment_status == ST_PP_COMPLETED:
+        test = Category(name="Recieved IPN, payment complete")
+        test.save()
         # WARNING !
         # Check that the receiver email is the same we previously
         # set on the business field request. (The user could tamper
@@ -1228,10 +1234,9 @@ def show_me_the_money(sender, **kwargs):
 
         # ALSO: for the same reason, you need to check the amount
         # received etc. are all what you expect.
-
-        # Undertake some action depending upon `ipn_obj`.
-        if ipn_obj.custom == "Upgrade all users!":
+        else:
             yep = Request(did_you=True)
+            yep.save()
     else:
         "Not complete"
 

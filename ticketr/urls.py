@@ -56,5 +56,4 @@ urlpatterns = [
     url(r'^events/$', views.Events.as_view(), name='events'),
     url(r'^test/$', views.view_that_asks_for_money, name='test'),
     url(r'^paypal/', include('paypal.standard.ipn.urls')),
-    url(r'^paypal-ipn/$', views.show_me_the_money, name='test'),
 ]
