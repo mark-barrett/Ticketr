@@ -63,7 +63,7 @@
                  <div class="col-md-2"></div>
                  <div class="col-md-8"><h3>Tickets</h3>
                      {% if 'Invite' in event.privacy %}
-                     <div class="alert alert-info">
+                     <div class="alert alert-success">
                         <p>This event is invite only. You must have an invite code to purchase a ticket.</p>
                     </div>
 
@@ -81,11 +81,11 @@
                                              <br/>
                                             <p class="lead"><span class="label label-default">Sold Out</span></p>
                                         {% else %}
-                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#buyInvite{{ event.id }}">Buy With Invite Code</button>
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#buyInvite{{ ticket.id }}">Buy With Invite Code</button>
 
 
                                              <!-- Modal -->
-                                            <div id="buyInvite{{ event.id }}" class="modal fade" role="dialog">
+                                            <div id="buyInvite{{ ticket.id }}" class="modal fade" role="dialog">
                                               <div class="modal-dialog">
 
                                                 <!-- Modal content-->
@@ -96,7 +96,7 @@
                                                   </div>
                                                   <div class="modal-body">
                                                       <p>This event is Invite Only and requires you to have a valid Invite Code to purchase a ticket. Please enter it below:<br/>
-                                                      <form name="buy-ticket" action="/buy-ticket/" method="post">
+                                                      <form name="buy-ticket-{{ ticket.id }}" action="/buy-ticket/" method="post">
                                                       <div class="form-group">
                                                         <label for="invite_code">Invite Code:</label>
                                                         <input type="text" class="form-control" id="invite_code" name="invite_code" required="required">

@@ -9,8 +9,9 @@ from django.template import loader
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.utils.decorators import method_decorator
+from django.views.decorators.http import require_POST
 from django.views.generic import View
-from paypal.standard.ipn.signals import valid_ipn_received
+from paypal.standard.ipn.signals import valid_ipn_received, payment_was_successful, invalid_ipn_received
 from paypal.standard.models import ST_PP_COMPLETED
 
 from .forms import UserForm, UserLoginForm, CreateEventForm, CreateOrganiserProfileForm
@@ -474,7 +475,7 @@ class BuyTicket(View):
                             return redirect('/event/'+str(event_id))
 
                     except:
-                        messages.warning(request, "Invite code doesn't exist.")
+                        messages.warning(request, "Invalid invite code")
                         return redirect('/event/'+str(event_id))
             else:
                 not_invite_event = True
@@ -1246,52 +1247,6 @@ class Events(View):
         return HttpResponse(template.render(context, request))
 
 
-def view_that_asks_for_money(request):
-
-    # What you want the button to do.
-    paypal_dict = {
-        "business": "mark.barrett.design-facilitator@gmail.com",
-        "amount": "100.00",
-        "item_name": "Ticket",
-        "notify_url": "http://178.62.41.17" + reverse('paypal-ipn'),
-        "return_url": "https://www.example.com/your-return-location/",
-        "cancel_return": "https://www.example.com/your-cancel-location/",
-    }
-
-    # Create the instance.
-    form = PayPalPaymentsForm(initial=paypal_dict)
-    context = {"form": form}
-    return render(request, "payment.html", context)
-
-
-@csrf_exempt
-def show_me_the_money(request, sender, **kwargs):
-    test = Category(name="Recieved IPN")
-    test.save()
-
-    ipn_obj = sender
-    if ipn_obj.payment_status == ST_PP_COMPLETED:
-        test = Category(name="Recieved IPN, payment complete")
-        test.save()
-        # WARNING !
-        # Check that the receiver email is the same we previously
-        # set on the business field request. (The user could tamper
-        # with those fields on payment form before send it to PayPal)
-        if ipn_obj.receiver_email != "mark.barrett.design-facilitator@gmail.com":
-            # Not a valid payment
-            print "Not valid"
-
-        # ALSO: for the same reason, you need to check the amount
-        # received etc. are all what you expect.
-        else:
-            yep = Request(did_you=True)
-            yep.save()
-    else:
-        "Not complete"
-
-    valid_ipn_received.connect(show_me_the_money)
-
-
 class RemoveSale(View):
 
     def get(self, request, order_number):
@@ -1343,6 +1298,20 @@ class DeleteEvent(View):
         else:
             messages.warning(request, "You must be logged in to do that.")
             return redirect('/home/')
+
+
+class ConfirmOrder(View):
+    template = loader.get_template('confirm-order.html')
+
+    def get(self, request):
+        return redirect('/home/')
+
+    def post(self, request):
+
+        if request.user.is_authenticated:
+            # Get the neccessary information
+            # If a registration has to take place
+            if request.POST['register']:
 
 
 class EditEvent(View):
@@ -1590,3 +1559,47 @@ class DeleteInviteCode(View):
                 return redirect('index')
         else:
             return redirect('login')
+
+
+from django.core.urlresolvers import reverse
+from django.shortcuts import render
+from paypal.standard.forms import PayPalPaymentsForm
+
+def view_that_asks_for_money(request):
+
+    # What you want the button to do.
+    paypal_dict = {
+        "business": "receiver_email@example.com",
+        "amount": "100.00",
+        "item_name": "Yep",
+        "currency_code": "EUR",
+        "invoice": "Turbo deadly. This is the new one :)!",
+        "notify_url": "http://178.62.41.17/paypal/",
+        "return_url": "https://www.example.com/your-return-location/",
+        "cancel_return": "https://www.example.com/your-cancel-location/",
+        "custom": "Upgrade all users!",  # Custom command to correlate to some function later (optional)
+    }
+
+    # Create the instance.
+    form = PayPalPaymentsForm(initial=paypal_dict)
+    context = {"form": form}
+    return render(request, "payment.html", context)
+
+from paypal.standard.models import ST_PP_COMPLETED
+from paypal.standard.ipn.signals import valid_ipn_received
+
+def show_me_the_money(sender, **kwargs):
+    ipn_obj = sender
+    category = Category(name="Got IPN")
+    category.save()
+
+    if ipn_obj.payment_status == ST_PP_COMPLETED:
+        category = Category(name="Good Buzz, complete")
+        category.save()
+    else:
+        category = Category(name="Bad Buzz, not complete")
+        category.save()
+
+
+valid_ipn_received.connect(show_me_the_money)
+invalid_ipn_received.connect(show_me_the_money)

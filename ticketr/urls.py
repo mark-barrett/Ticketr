@@ -54,8 +54,6 @@ urlpatterns = [
     url(r'^api/home/$', views.ApiHome.as_view(), name='api-home'),
     url(r'^search/$', views.Search.as_view(), name='search'),
     url(r'^events/$', views.Events.as_view(), name='events'),
-    url(r'^test/$', views.view_that_asks_for_money, name='test'),
-    url(r'^paypal/', include('paypal.standard.ipn.urls')),
     url(r'^remove-sale/(?P<order_number>[0-9]+)$', views.RemoveSale.as_view(), name='remove-sale'),
     url(r'^delete-event/(?P<event_id>[0-9]+)$', views.DeleteEvent.as_view(), name='delete-event'),
     url(r'^edit-event/(?P<event_id>[0-9]+)$', views.EditEvent.as_view(), name='edit-event'),
@@ -63,5 +61,7 @@ urlpatterns = [
     url(r'^manage-settings/(?P<event_id>[0-9]+)$', views.ManageSettings.as_view(), name='manage-settings'),
     url(r'^manage-event/invite-codes/(?P<id>[0-9]+)/add$', views.InviteCodeAdd.as_view(), name='invite-codes-add'),
     url(r'^manage-event/invite-codes/(?P<id>[0-9]+)/delete/(?P<invite_code_id>[0-9]+)$', views.DeleteInviteCode.as_view(),
-        name='delete-invite-code')
+        name='delete-invite-code'),
+    url(r'^paypal/', include('paypal.standard.ipn.urls')),
+    url(r'^test/$', views.view_that_asks_for_money, name='ask')
 ]
