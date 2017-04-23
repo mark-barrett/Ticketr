@@ -146,7 +146,7 @@ class InviteCode(models.Model):
     event = models.ForeignKey(Event)
 
     def __str__(self):
-        return self.code+event.name
+        return self.code
 
     class Meta:
         verbose_name_plural = 'Invite Codes'

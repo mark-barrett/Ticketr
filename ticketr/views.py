@@ -890,7 +890,8 @@ class DiscountCodes(View):
                 context = {
                     'tickets': Ticket.objects.all().filter(event=e),
                     'event': e,
-                    'discount_codes': DiscountCode.objects.all().filter(event=e)
+                    'discount_codes': DiscountCode.objects.all().filter(event=e),
+                    'invite_codes': InviteCode.objects.all().filter(event=e)
                 }
                 return HttpResponse(self.template.render(context, request))
             else:
@@ -1493,3 +1494,64 @@ class ManageSettings(View):
         else:
             messages.warning(request, "You must be logged in to do that")
             return redirect('/login/')
+
+
+class InviteCodeAdd(View):
+    template = loader.get_template('add-invite-code.html')
+
+    def get(self, request, id):
+        if request.user.is_authenticated:
+
+            e = Event.objects.get(id=id)
+
+            if e.event_owner.owner == request.user:
+
+                # Get all tickets for this event
+                context = {
+                    'event': e,
+                }
+                return HttpResponse(self.template.render(context, request))
+            else:
+                return redirect('index')
+        else:
+            return redirect('login')
+
+    def post(self, request, id):
+        if request.user.is_authenticated:
+
+            e = Event.objects.get(id=id)
+
+            if e.event_owner.owner == request.user:
+
+                code = request.POST['code']
+
+                invite_code = InviteCode(code=code, event=e)
+
+                try:
+                    invite_code.save()
+                    messages.success(request, "Invite code added successfully")
+                    return redirect('/manage-event/discount-codes/' + str(e.id))
+                except:
+                    messages.warning(request, "Could not add discount code")
+                    return redirect('/manage-event/discount-codes/' + str(e.id))
+
+
+class DeleteInviteCode(View):
+
+    def get(self, request, id, invite_code_id):
+        if request.user.is_authenticated:
+
+            e = Event.objects.get(id=id)
+
+            if e.event_owner.owner == request.user:
+
+                invite_code = InviteCode.objects.get(id=invite_code_id)
+
+                invite_code.delete()
+
+                messages.success(request, "Invite code successfully deleted")
+                return redirect('/manage-event/discount-codes/' + str(e.id))
+            else:
+                return redirect('index')
+        else:
+            return redirect('login')

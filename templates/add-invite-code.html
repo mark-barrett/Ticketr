@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
    <head>
-      <title>Ticketr - Discount Codes</title>
+      <title>Ticketr - Add Invite Code</title>
       {% load staticfiles %}
        {% load ticket_extras %}
       <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
@@ -46,63 +46,23 @@
                 {% include 'manage_event_menu.html' %}
             </div>
             <div class="col-md-9">
-                        <div class="pull-right">
-                <a href="/manage-event/discount-codes/{{ event.id }}/add" class="btn btn-success" role="button"><span class="glyphicon glyphicon-plus"></span> Add Discount Code</a>
-            </div>
-                <p class="lead">Discount Codes</p>
+                <p class="lead">Add Invite Code</p>
                 <hr/>
-                            {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}" style="margin-bottom: 0;">
-                <p class="text-center lead" style="color: white;">{{ message }}</p>
-            </div><br/>
-        {% endfor %}
-    {% endif %}
             <ol class="breadcrumb">
   <li><a href="/manage-event/{{ event.id }}">Dashboard</a></li>
-  <li class="active">Discount Codes</li>
+  <li class="active">Add Invite Code</li>
 </ol>
-                 <table class="table table-condensed table-bordered table-striped">
-                <thead>
-                  <tr>
-                    <th>Code</th>
-                    <th>Discount</th>
-                      <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-{% for discount_code in discount_codes %}
-<tr>
-<td>{{ discount_code.code }}</td>
-<td>{{ discount_code.discount }}</td>
-<td><a href="/manage-event/discount-codes/{{ event.id }}/delete/{{ discount_code.id }}" class="btn btn-danger btn-xs" role="button"><span class="glyphicon glyphicon-trash"></span></a></td>
-</tr>
-{% endfor %}
-                </tbody>
-                 </table>
-            <div class="pull-right">
-                <a href="/manage-event/invite-codes/{{ event.id }}/add" class="btn btn-success" role="button"><span class="glyphicon glyphicon-plus"></span> Add Invite Code</a>
+<form name="add-invite-code" method="post" action="">
+    <div class="form-group">
+        <label for="code">Code:</label>
+        <input type="text" class="form-control" id="code" name="code" required>
+    </div>
+    <div class="pull-right">
+         <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add Invite Code</button>
+    </div>
+    {% csrf_token %}
+</form>
             </div>
-                <p class="lead">Invite Codes</p>
-                <hr/>
-            <table class="table table-condensed table-bordered table-striped">
-                <thead>
-                  <tr>
-                    <th>Code</th>
-                      <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-{% for invite_code in invite_codes %}
-<tr>
-<td>{{ invite_code.code }}</td>
-<td><a href="/manage-event/invite-codes/{{ event.id }}/delete/{{ invite_code.id }}" class="btn btn-danger btn-xs" role="button"><span class="glyphicon glyphicon-trash"></span></a></td>
-</tr>
-{% endfor %}
-                </tbody>
-                 </table>
-            </div>
-
         </div>
         </div>
         <div class="col-md-1">

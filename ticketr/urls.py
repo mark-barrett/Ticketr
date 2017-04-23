@@ -61,4 +61,7 @@ urlpatterns = [
     url(r'^edit-event/(?P<event_id>[0-9]+)$', views.EditEvent.as_view(), name='edit-event'),
     url(r'^guest-list/(?P<event_id>[0-9]+)$', views.GuestList.as_view(), name='guest-list'),
     url(r'^manage-settings/(?P<event_id>[0-9]+)$', views.ManageSettings.as_view(), name='manage-settings'),
+    url(r'^manage-event/invite-codes/(?P<id>[0-9]+)/add$', views.InviteCodeAdd.as_view(), name='invite-codes-add'),
+    url(r'^manage-event/invite-codes/(?P<id>[0-9]+)/delete/(?P<invite_code_id>[0-9]+)$', views.DeleteInviteCode.as_view(),
+        name='delete-invite-code')
 ]
