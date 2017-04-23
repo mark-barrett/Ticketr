@@ -1417,3 +1417,26 @@ class EditEvent(View):
                 return redirect('/my-events/')
 
 
+class GuestList(View):
+
+    def get(self, request, event_id):
+
+        if request.user.is_authenticated:
+            template = loader.get_template('guest-list.html')
+            # Try get the event
+            try:
+                event = Event.objects.get(id=event_id)
+
+                # Check to see if the user has access to this event
+                if event.event_owner.owner == request.user:
+
+                    context = {
+                        'orders': Order.objects.all().filter(event=event)
+                    }
+
+                    return HttpResponse(template.render(context, request))
+
+            except:
+                messages.warning(request, "Event does not exist")
+                return redirect('/manage-events/')
+

@@ -17,6 +17,14 @@
       <div style="background: url('/media/images/event_images/{{ event.background }}'); background-size: 100% 100%; background-attachment: fixed; height: 275px">
          <div class="container">
             <br/><br/>
+         {% if request.user == event.event_owner.owner %}
+         <div class="alert alert-info">
+         <div class="pull-right">
+             <a href="/manage-event/{{ event.id }}" class="btn btn-success btn-sm">Click here to manage it</a>
+         </div>
+             <h5>&nbsp;&nbsp; <strong>This is one of your events!</strong></h5>
+        </div>
+         {% endif %}
             <div class="panel panel-default">
                <div class="panel-body">
                   <div class="row">
