@@ -58,6 +58,11 @@
                         </tr>
                         </tbody>
                       </table>
+                  {% if invite_code %}
+                      <div class="pull-right">
+                          Using invite code: {{ invite_code }}
+                      </div>
+                  {% endif %}
               </div>
             </div>
              {% if user.is_anonymous %}

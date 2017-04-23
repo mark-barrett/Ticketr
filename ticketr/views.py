@@ -441,57 +441,92 @@ class BuyTicket(View):
         ticket_id = request.POST['ticket_id']
         ticket_quantity = int(request.POST['ticket_quantity'])
 
+        not_invite_event = False
+        valid_invite_code = False
+
+        try:
+            invite_code = request.POST['invite_code']
+        except:
+            invite_code = False
+
         ticket = Ticket.objects.get(id=ticket_id)
 
         if ticket.quantity == ticket.quantity_sold:
             messages.warning(request, "Sorry, that ticket is sold out, choose another.")
             return redirect('/event/' + event_id)
         else:
-            # Check to see if there is enough availible tickets
-            if (ticket.quantity - ticket.quantity_sold) >= ticket_quantity:
-                # First we need to add the ticket to the queue.
-                # Generate a token
-                while True:
-                    token = Helper.token_generator(64, "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+            # Check to see if the event is invite only. If it is then do some checking.
+            event = Event.objects.get(id=event_id)
+
+            if 'Invite' in event.privacy:
+                # Now we know that the event is invite only.
+                # If we got the invite code
+                if invite_code != False:
+                    # Check the invite code
                     try:
-                        db_token = TicketQueue.objects.get(token=token)
-                    except TicketQueue.DoesNotExist:
-                        break
+                        db_invite_code = InviteCode.objects.get(code=invite_code)
 
-                # Now that we have a token, lets put a ticket in the queue for the user
-                # replace part over there ----------> with qty variable)
-                queued_ticket = TicketQueue(ticket=ticket, token=token, ticket_quantity=ticket_quantity)
-                queued_ticket.save()
+                        # If its a valid invite code
+                        if db_invite_code.event == event:
+                            valid_invite_code = True
+                        else:
+                            messages.warning(request, "Invalid invite code")
+                            return redirect('/event/'+str(event_id))
 
-                '''
-                Now that we have that done we can remove a ticket that is for sale by adding to the
-                ticket sold value on the ticket model
-                '''
-                ticket.quantity_sold += ticket_quantity  # Replace with quantity variable
-                ticket.save()
-
-                # Now we need to get the quantity of the ticket to get the total and calculate some fees
-                total = ticket_quantity * ticket.price
-                fees = float(total / 100) * 2.00
-                fees += ticket_quantity * 1.00
-
-                if ticket.price == 0:
-                    subtotal = 0
-                    fees = 0
-
-                context = {
-                    'event': Event.objects.get(id=event_id),
-                    'ticket': ticket,
-                    'token': token,
-                    'subtotal' : total,
-                    'fees' : fees,
-                    'quantity': ticket_quantity,
-                    'total': fees+float(total)
-                }
-                return HttpResponse(self.template.render(context, request))
+                    except:
+                        messages.warning(request, "Invite code doesn't exist.")
+                        return redirect('/event/'+str(event_id))
             else:
-                messages.warning(request, "Sorry, that quantity of tickets is not availible")
-                return redirect('/event/' + event_id)
+                not_invite_event = True
+
+
+            if not_invite_event == True or valid_invite_code == True:
+                # Check to see if there is enough availible tickets
+                if (ticket.quantity - ticket.quantity_sold) >= ticket_quantity:
+                    # First we need to add the ticket to the queue.
+                    # Generate a token
+                    while True:
+                        token = Helper.token_generator(64, "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+                        try:
+                            db_token = TicketQueue.objects.get(token=token)
+                        except TicketQueue.DoesNotExist:
+                            break
+
+                    # Now that we have a token, lets put a ticket in the queue for the user
+                    # replace part over there ----------> with qty variable)
+                    queued_ticket = TicketQueue(ticket=ticket, token=token, ticket_quantity=ticket_quantity)
+                    queued_ticket.save()
+
+                    '''
+                    Now that we have that done we can remove a ticket that is for sale by adding to the
+                    ticket sold value on the ticket model
+                    '''
+                    ticket.quantity_sold += ticket_quantity  # Replace with quantity variable
+                    ticket.save()
+
+                    # Now we need to get the quantity of the ticket to get the total and calculate some fees
+                    total = ticket_quantity * ticket.price
+                    fees = float(total / 100) * 2.00
+                    fees += ticket_quantity * 1.00
+
+                    if ticket.price == 0:
+                        subtotal = 0
+                        fees = 0
+
+                    context = {
+                        'event': Event.objects.get(id=event_id),
+                        'ticket': ticket,
+                        'token': token,
+                        'subtotal' : total,
+                        'fees' : fees,
+                        'quantity': ticket_quantity,
+                        'total': fees+float(total),
+                        'invite_code': invite_code
+                    }
+                    return HttpResponse(self.template.render(context, request))
+                else:
+                    messages.warning(request, "Sorry, that quantity of tickets is not availible")
+                    return redirect('/event/' + event_id)
 
 
     def get(self, request):
