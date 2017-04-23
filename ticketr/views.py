@@ -1317,6 +1317,20 @@ class EditEvent(View):
             # Try get the event
             try:
                 event = Event.objects.get(id=event_id)
+
+                # Make sure that the person who is editing actually owns the event
+                if event.event_owner.owner == request.user:
+                    # Send the event to the page for the user to edit
+                    template = loader.get_template('edit-event.html')
+
+                    context = {
+                        'event' : event
+                    }
+
+                    return HttpResponse(template.render(context, request))
+                else:
+                    messages.warning(request, "You cannot edit that event")
+                    return redirect('/my-events/')
             except:
                 messages.warning(request, "Cannot find that event")
                 return redirect('/my-events/')
