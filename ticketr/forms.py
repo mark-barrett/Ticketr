@@ -113,7 +113,7 @@ class CreateOrganiserProfileForm(forms.ModelForm):
     description = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control'}))
     website = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     facebook = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    image = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    image = forms.FileField()
 
     class Meta:
         model = EventOwner

@@ -8,6 +8,13 @@
 </head>
 <body>
  {% include 'menu.html' %}
+     {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" style="margin-bottom: 0;">
+                <p class="text-center lead" style="color: white;">{{ message }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
       <div style="background: url('{% static 'images/background1.png' %}'); background-size: 100% 100%; background-attachment: fixed; height: 275px">
          <div class="container">
             <br/><br/>
@@ -15,7 +22,7 @@
                <div class="panel-body"><br/>
                   <div class="row">
                   <div class="col-md-2"></div>
-                     <div class="col-md-2"><img src="{{ organiser.image }}" class="img-circle" alt="{{ organiser.name }}" width="150" height="150"></div>
+                     <div class="col-md-2"><img src="/media/images/organiser_profiles/{{ organiser.image }}" class="img-circle" alt="{{ organiser.name }}" width="150" height="150"></div>
                      <div class="col-md-8"><h2>{{ organiser.name }}</h2>
                            {% if organiser.facebook is not None %}
       <a href="{{ organiser.facebook }}" class="btn btn-primary" role="button">Facebook</a>

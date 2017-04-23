@@ -23,9 +23,38 @@
   <hr/>
     <div class="row">
         {% for ticket in tickets %}
-            <div class="col-md-6    ">
+            <div class="col-md-6">
                 <div class="panel panel-default">
                   <div class="panel-body">
+                  {% if ticket.for_sale == True %}
+                  <div class="alert alert-success">
+                      <strong>This ticket is listed for sale. </strong> <a style="color: white;" data-toggle="modal" data-target="#remove{{ ticket.order_number }}">Click here to remove it from the sale list.</a>
+                    </div>
+                      <!-- Modal -->
+                        <div id="remove{{ ticket.order_number }}" class="modal fade" role="dialog">
+                          <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Are you sure?</h4>
+                              </div>
+                              <div class="modal-body">
+                                <p>You are about to remove this ticket:<br/><br/>
+                                {{ ticket.ticket.name }}<br/>
+                                <br/>
+                                From the resellers list, are you sure?</p>
+                              </div>
+                              <div class="modal-footer">
+                                <a href="/remove-sale/{{ ticket.order_number }}" class="btn btn-success">Remove from List</a>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+                  {% endif %}
                       <div class="row">
                           <div class="col-md-4">
                               <img src="/media/{{ ticket.event.image }}" width="140" height="70">

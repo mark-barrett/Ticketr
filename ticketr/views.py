@@ -313,16 +313,29 @@ class CreateOrganiserView(View):
         description = request.POST['description']
         website = request.POST['website']
         facebook = request.POST['facebook']
-        image = request.POST['image']
+        image = request.FILES['image']
 
-        eo = EventOwner(name=name, description=description, website=website, facebook=facebook, image=image,
+        # save the uploaded file inside that folder.
+        folder = '/home/django/django_project/media/images/organiser_profiles'
+        uploaded_filename = request.FILES['image'].name
+        full_filename = os.path.join(settings.MEDIA_ROOT, folder, uploaded_filename)
+        fout = open(full_filename, 'wb+')
+
+        file_content = ContentFile(request.FILES['image'].read())
+
+        # Iterate through the chunks.
+        for chunk in file_content.chunks():
+            fout.write(chunk)
+        fout.close()
+
+        eo = EventOwner(name=name, description=description, website=website, facebook=facebook, image=request.FILES['image'].name,
                         owner=request.user)
 
         eo.save()
 
         if eo is not None:
             messages.success(request, "Created organiser profile successfully!")
-            return redirect('index')
+            return redirect('/organiser/'+str(eo.id))
 
 
 class LoginUserFormView(View):
