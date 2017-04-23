@@ -1254,3 +1254,32 @@ def show_me_the_money(request, sender, **kwargs):
         "Not complete"
 
     valid_ipn_received.connect(show_me_the_money)
+
+
+class RemoveSale(View):
+
+    def get(self, request, order_number):
+
+        if request.user.is_authenticated:
+            # Check to see if the user owns the ticket
+            try:
+                order = Order.objects.get(order_number=order_number)
+
+                if order.user == request.user:
+                    # Remove it from the resell list
+                    resell = ResellList.objects.get(order=order)
+                    resell.delete()
+
+                    # Mark it as not for sale
+                    order.for_sale = False
+                    order.save()
+
+                    messages.success(request, "Your ticket has been removed from the resell list.")
+                    return redirect('/my-tickets/')
+                else:
+                    messages.warning(request, "You do not have the access to sell this ticket")
+                    return redirect('/my-tickets/')
+            except:
+                return redirect('/my-tickets/')
+
+

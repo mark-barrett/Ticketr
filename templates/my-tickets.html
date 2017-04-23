@@ -42,7 +42,7 @@
                               </div>
                               <div class="modal-body">
                                 <p>You are about to remove this ticket:<br/><br/>
-                                {{ ticket.ticket.name }}<br/>
+                                {{ ticket.ticket.name|remove_key:"#ENAME-" }}<br/>
                                 <br/>
                                 From the resellers list, are you sure?</p>
                               </div>
