@@ -1431,7 +1431,8 @@ class GuestList(View):
                 if event.event_owner.owner == request.user:
 
                     context = {
-                        'orders': Order.objects.all().filter(event=event)
+                        'orders': Order.objects.all().filter(event=event),
+                        'event': event
                     }
 
                     return HttpResponse(template.render(context, request))
@@ -1440,3 +1441,55 @@ class GuestList(View):
                 messages.warning(request, "Event does not exist")
                 return redirect('/manage-events/')
 
+class ManageSettings(View):
+
+    def get(self, request, event_id):
+
+        if request.user.is_authenticated:
+            # Try get the event
+            try:
+                event = Event.objects.get(id=event_id)
+
+                # Make sure that the person who is editing actually owns the event
+                if event.event_owner.owner == request.user:
+                    # Send the event to the page for the user to edit
+                    template = loader.get_template('manage-settings.html')
+
+                    context = {
+                        'event' : event,
+                    }
+
+                    return HttpResponse(template.render(context, request))
+                else:
+                    messages.warning(request, "You cannot edit the settings for this event")
+                    return redirect('/my-events/')
+            except:
+                messages.warning(request, "Cannot find that event")
+                return redirect('/my-events/')
+        else:
+            messages.warning(request, "You must be logged in to do that")
+            return redirect('/login/')
+
+
+    def post(self, request, event_id):
+        event_privacy = request.POST['privacy']
+        resell = request.POST['resell']
+        resell_when = request.POST['resell_when']
+        resell_amount = request.POST['resell_amount']
+
+        # Find out if the user is authenticated
+        if request.user.is_authenticated:
+
+            event = Event.objects.get(id=event_id)
+
+            event.privacy = event_privacy
+            event.resell = resell
+            event.resell_when = resell_when
+            event.resell_amount = resell_amount
+
+            event.save()
+            messages.success(request, "Event settings successfully edited.")
+            return redirect('/manage-event/'+str(event_id))
+        else:
+            messages.warning(request, "You must be logged in to do that")
+            return redirect('/login/')

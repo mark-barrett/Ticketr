@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ticket - Manage Settings</title>
+    {% load staticfiles %}
+    {% load ticket_extras %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+</head>
+<body>
+{% include 'menu.html' %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-1">
+
+        </div>
+        <div class="col-md-10">
+            <div class="pull-right"><br/>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete{{ event.id }}">Delete Event</button>
+                <!-- Modal -->
+                <div id="delete{{ event.id }}" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Delete Event {{ event.name }}</h4>
+                      </div>
+                      <div class="modal-body">
+                        <p>You are about to delete this event. Once you do so, it cannot be undone. Please be sure.</p>
+                      </div>
+                      <div class="modal-footer">
+                        <a href="/delete-event/{{ event.id }}" class="btn btn-danger">I am sure, Delete Event</a>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <a href="/edit-event/{{ event.id }}" class="btn btn-success">Edit Event</a>
+            </div>
+            <h2>{{ event.name }}</h2>
+            <p><span class="label label-success">Live</span> <span class="label label-default">{{ event.privacy }}</span></p>
+            <hr/>
+        <div class="row">
+            <div class="col-md-3">
+                {% include 'manage_event_menu.html' %}
+            </div>
+            <div class="col-md-9">
+                <p class="lead">Resell &amp; Event Settings</p>
+                <hr/>
+                <ol class="breadcrumb">
+                  <li><a href="/manage-event/{{ event.id }}">Dashboard</a></li>
+                  <li class="active">Resell &amp; Event Settings</li>
+                </ol>
+                <form name="edit-settings" action="" method="post">
+                    <div class="form-group">
+                      <label for="event_privacy">Event Privacy:</label>
+                      <select class="form-control" id="event_privacy" name="privacy">
+                          <option value="Public" {% if event.privacy == "Public" %} selected {% endif %}>Public - List your event for anybody to see on the Ticketr website.</option>
+                          <option value="Private" {% if event.privacy == "Private" %} selected {% endif %}>Private - Do not list this event. Only people with a link can view.</option>
+                          <option value="Invite Only"{% if event.privacy == "Invite" %} selected {% endif %}>Invite Only - Only people who have an invite code can buy tickets.</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="resell">Would you like event goers to be able to re-sell their tickets on Ticketr?</label>
+                      <select class="form-control" id="resell" name="resell">
+                            <option value="Yes" {% if event.resell == "Yes" %} selected {% endif %}>Yes! - I want to allow event goers to re-sell their tickets</option>
+                            <option value="No" {% if event.resell == "No" %} selected {% endif %}>No! - I do not want event goers to be able to re-sell tickets</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="resell_when">If so, when should they be able to sell them?</label>
+                      <select class="form-control" id="resell_when" name="resell_when">
+                            <option value="No">I choose no above</option>
+                              <option value="Anytime">Allow event goers to re-sell tickets at anytime</option>
+                              <option value="Sold Out">Allow event goers to re-sell tickets once the event has sold out</option>
+                              <option value="Amount">Allow event goers to re-sell after a certain amount of tickets have been sold.</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="resell_amount">If choosen above, how many tickets should be sold before re-selling can occur?</label>
+                      <input type="text" class="form-control" id="resell_amount" name="resell_amount" placeholder="If not choosen set to 0" required="required">
+                    </div>
+                {% csrf_token %}
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-success">Edit Settings</button>
+                </div>
+                </form>
+
+            </div>
+        </div>
+        </div>
+        <div class="col-md-1">
+
+        </div>
+    </div>
+<br/><br/>
+    {% include 'footer.html' %}
+</div>
+
+</body>
+</html>

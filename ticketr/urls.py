@@ -59,5 +59,6 @@ urlpatterns = [
     url(r'^remove-sale/(?P<order_number>[0-9]+)$', views.RemoveSale.as_view(), name='remove-sale'),
     url(r'^delete-event/(?P<event_id>[0-9]+)$', views.DeleteEvent.as_view(), name='delete-event'),
     url(r'^edit-event/(?P<event_id>[0-9]+)$', views.EditEvent.as_view(), name='edit-event'),
-    url(r'^guest-list/(?P<event_id>[0-9]+)$', views.GuestList.as_view(), name='guest-list')
+    url(r'^guest-list/(?P<event_id>[0-9]+)$', views.GuestList.as_view(), name='guest-list'),
+    url(r'^manage-settings/(?P<event_id>[0-9]+)$', views.ManageSettings.as_view(), name='manage-settings'),
 ]

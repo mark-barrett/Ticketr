@@ -46,10 +46,7 @@
                 {% include 'manage_event_menu.html' %}
             </div>
             <div class="col-md-9">
-                        <div class="pull-right">
-                <a href="/manage-event/discount-codes/{{ event.id }}/add" class="btn btn-success" role="button"><span class="glyphicon glyphicon-plus"></span> Add Discount</a>
-            </div>
-                <p class="lead">Discount Code</p>
+                <p class="lead">Guest List</p>
                 <hr/>
                             {% if messages %}
         {% for message in messages %}
@@ -60,22 +57,22 @@
     {% endif %}
             <ol class="breadcrumb">
   <li><a href="/manage-event/{{ event.id }}">Dashboard</a></li>
-  <li class="active">Discount Codes</li>
+  <li class="active">Guest List</li>
 </ol>
                  <table class="table table-condensed table-bordered table-striped">
                 <thead>
                   <tr>
-                    <th>Code</th>
-                    <th>Discount</th>
-                      <th></th>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
-{% for discount_code in discount_codes %}
+{% for order in orders %}
 <tr>
-<td>{{ discount_code.code }}</td>
-<td>{{ discount_code.discount }}</td>
-<td><a href="/manage-event/discount-codes/{{ event.id }}/delete/{{ discount_code.id }}" class="btn btn-danger btn-xs" role="button"><span class="glyphicon glyphicon-trash"></span></a></td>
+<td>{{ order.user.first_name }} {{ order.user.last_name }}</td>
+<td>{{ order.user.username }}</td>
+<td><a href="/view-order/{{ order.id }}" class="btn btn-success btn-xs" role="button">View Order</a></td>
 </tr>
 {% endfor %}
                 </tbody>
