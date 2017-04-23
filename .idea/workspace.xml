@@ -2,14 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="426b2ace-27a3-42ae-9b0a-5eb4752dd27f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/add-discount-code.html" afterPath="$PROJECT_DIR$/templates/add-discount-code.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/add-ticket.html" afterPath="$PROJECT_DIR$/templates/add-ticket.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/discount-codes.html" afterPath="$PROJECT_DIR$/templates/discount-codes.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/edit-event.html" afterPath="$PROJECT_DIR$/templates/edit-event.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/manage-event.html" afterPath="$PROJECT_DIR$/templates/manage-event.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/manage_event_menu.html" afterPath="$PROJECT_DIR$/templates/manage_event_menu.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/orders.html" afterPath="$PROJECT_DIR$/templates/orders.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/tickets.html" afterPath="$PROJECT_DIR$/templates/tickets.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/view-order.html" afterPath="$PROJECT_DIR$/templates/view-order.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ticketr/views.py" afterPath="$PROJECT_DIR$/ticketr/views.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -33,8 +32,8 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ticketr/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="382">
-              <caret line="1324" column="0" lean-forward="true" selection-start-line="1324" selection-start-column="0" selection-end-line="1324" selection-end-column="0" />
+            <state relative-caret-position="247">
+              <caret line="1399" column="0" lean-forward="true" selection-start-line="1399" selection-start-column="0" selection-end-line="1399" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -43,10 +42,10 @@
       <file leaf-file-name="edit-event.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/edit-event.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="40" column="91" lean-forward="false" selection-start-line="40" selection-start-column="91" selection-end-line="40" selection-end-column="91" />
+            <state relative-caret-position="1395">
+              <caret line="93" column="96" lean-forward="true" selection-start-line="93" selection-start-column="96" selection-end-line="93" selection-end-column="96" />
               <folding>
-                <element signature="e#958#965#0#HTML" expanded="true" />
+                <element signature="e#959#966#0#HTML" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -62,34 +61,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="manage-event.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="login.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/login.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="16" selection-end-column="15" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="manage-event.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/manage-event.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="61" column="23" lean-forward="true" selection-start-line="61" selection-start-column="23" selection-end-line="61" selection-end-column="23" />
+            <state relative-caret-position="330">
+              <caret line="22" column="14" lean-forward="true" selection-start-line="22" selection-start-column="14" selection-end-line="22" selection-end-column="14" />
               <folding>
-                <element signature="e#961#968#0#HTML" expanded="true" />
+                <element signature="e#1244#1251#0#HTML" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="orders.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/orders.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="370">
-              <caret line="47" column="34" lean-forward="true" selection-start-line="47" selection-start-column="34" selection-end-line="47" selection-end-column="34" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tickets.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/tickets.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="265">
-              <caret line="41" column="100" lean-forward="true" selection-start-line="41" selection-start-column="100" selection-end-line="41" selection-end-column="100" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -114,7 +103,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="add-discount-code.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="add-discount-code.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/add-discount-code.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="265">
@@ -147,7 +136,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>lb</find>
       <find>example</find>
       <find>dat</find>
       <find>count</find>
@@ -168,7 +156,6 @@
       <find>Orders</find>
       <find>login</find>
       <find>class Login</find>
-      <find>CreateEvent</find>
       <find>&lt;hr/&gt;</find>
       <find>qrcode</find>
       <find>img</find>
@@ -176,6 +163,8 @@
       <find>BuyTicket</find>
       <find>Creae</find>
       <find>MyRTi</find>
+      <find>CreateEvent</find>
+      <find>chunk</find>
       <find>RECENT</find>
     </findStrings>
   </component>
@@ -211,7 +200,6 @@
         <option value="$PROJECT_DIR$/templates/create-event.html" />
         <option value="$PROJECT_DIR$/templates/footer.html" />
         <option value="$PROJECT_DIR$/templates/menu.html" />
-        <option value="$PROJECT_DIR$/templates/view-order.html" />
         <option value="$PROJECT_DIR$/ticketr/templatetags/ticket_extras.py" />
         <option value="$PROJECT_DIR$/templates/buy-ticket.html" />
         <option value="$PROJECT_DIR$/oop3/settings.py" />
@@ -227,15 +215,16 @@
         <option value="$PROJECT_DIR$/templates/organiser.html" />
         <option value="$PROJECT_DIR$/templates/my-tickets.html" />
         <option value="$PROJECT_DIR$/ticketr/urls.py" />
-        <option value="$PROJECT_DIR$/ticketr/views.py" />
-        <option value="$PROJECT_DIR$/templates/edit-event.html" />
         <option value="$PROJECT_DIR$/templates/manage_event_menu.html" />
-        <option value="$PROJECT_DIR$/templates/manage-event.html" />
-        <option value="$PROJECT_DIR$/templates/orders.html" />
-        <option value="$PROJECT_DIR$/templates/tickets.html" />
         <option value="$PROJECT_DIR$/templates/add-ticket.html" />
         <option value="$PROJECT_DIR$/templates/discount-codes.html" />
         <option value="$PROJECT_DIR$/templates/add-discount-code.html" />
+        <option value="$PROJECT_DIR$/templates/orders.html" />
+        <option value="$PROJECT_DIR$/templates/view-order.html" />
+        <option value="$PROJECT_DIR$/templates/tickets.html" />
+        <option value="$PROJECT_DIR$/templates/edit-event.html" />
+        <option value="$PROJECT_DIR$/ticketr/views.py" />
+        <option value="$PROJECT_DIR$/templates/manage-event.html" />
       </list>
     </option>
   </component>
@@ -246,8 +235,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-1519" />
-    <option name="y" value="-154" />
+    <option name="x" value="-1555" />
+    <option name="y" value="-216" />
     <option name="width" value="1426" />
     <option name="height" value="962" />
   </component>
@@ -689,7 +678,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1519" y="-154" width="1426" height="962" extended-state="0" />
+    <frame x="-1555" y="-216" width="1426" height="962" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="manage.py@oop3" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32254335" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -699,8 +688,8 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32922536" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32922536" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25202313" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24958949" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25202313" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24927746" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32852563" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39898133" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -749,7 +738,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file:///private/var/folders/5h/r9t65fk55plb8g23h4tx_mnw0000gn/T/fz3temp-1/wsgi 2.py" />
     <entry file="file:///private/var/folders/5h/r9t65fk55plb8g23h4tx_mnw0000gn/T/fz3temp-1/settings 3.py" />
     <entry file="file:///private/var/folders/5h/r9t65fk55plb8g23h4tx_mnw0000gn/T/fz3temp-1/__init__.py" />
     <entry file="file://$PROJECT_DIR$/ticketr/admin.py">
@@ -800,14 +788,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ticketr/migrations/0051_auto_20170422_1604.py" />
-    <entry file="file://$PROJECT_DIR$/templates/view-order.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="19" lean-forward="false" selection-start-line="22" selection-start-column="19" selection-end-line="22" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ticketr/templatetags/ticket_extras.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -952,14 +932,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ticketr/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="382">
-          <caret line="1324" column="0" lean-forward="true" selection-start-line="1324" selection-start-column="0" selection-end-line="1324" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/base.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1000,54 +972,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/edit-event.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="40" column="91" lean-forward="false" selection-start-line="40" selection-start-column="91" selection-end-line="40" selection-end-column="91" />
-          <folding>
-            <element signature="e#958#965#0#HTML" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/register.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/manage_event_menu.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
           <caret line="7" column="5" lean-forward="true" selection-start-line="7" selection-start-column="5" selection-end-line="7" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/manage-event.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="61" column="23" lean-forward="true" selection-start-line="61" selection-start-column="23" selection-end-line="61" selection-end-column="23" />
-          <folding>
-            <element signature="e#961#968#0#HTML" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/orders.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="370">
-          <caret line="47" column="34" lean-forward="true" selection-start-line="47" selection-start-column="34" selection-end-line="47" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/tickets.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="265">
-          <caret line="41" column="100" lean-forward="true" selection-start-line="41" selection-start-column="100" selection-end-line="41" selection-end-column="100" />
           <folding />
         </state>
       </provider>
@@ -1073,6 +1001,74 @@
         <state relative-caret-position="265">
           <caret line="49" column="21" lean-forward="true" selection-start-line="49" selection-start-column="21" selection-end-line="49" selection-end-column="21" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/orders.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="52" column="32" lean-forward="true" selection-start-line="52" selection-start-column="32" selection-end-line="52" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/tickets.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="74" column="23" lean-forward="true" selection-start-line="74" selection-start-column="23" selection-end-line="74" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/view-order.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="17" lean-forward="true" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ticketr/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="1399" column="0" lean-forward="true" selection-start-line="1399" selection-start-column="0" selection-end-line="1399" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/edit-event.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1395">
+          <caret line="93" column="96" lean-forward="true" selection-start-line="93" selection-start-column="96" selection-end-line="93" selection-end-column="96" />
+          <folding>
+            <element signature="e#959#966#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/register.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/login.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="16" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/manage-event.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="14" lean-forward="true" selection-start-line="22" selection-start-column="14" selection-end-line="22" selection-end-column="14" />
+          <folding>
+            <element signature="e#1244#1251#0#HTML" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

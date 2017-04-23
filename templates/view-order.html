@@ -13,7 +13,11 @@
 
         </div>
         <div class="col-md-10"><br/>
+        {% if order.user == request.user %}
         <a class="btn btn-success btn-xs" href="/my-tickets/">< Back to My Tickets</a>
+        {% else %}
+        <a class="btn btn-success btn-xs" href="/manage-event/{{ order.event.id }}">< Back to Manage Event</a>
+        {% endif %}
             <h2>Order for: <a href="/event/{{ order.event.id }}">{{ order.event.name }}</a></h2>
             <hr/>
         {% if order.user == request.user %}

@@ -1324,7 +1324,9 @@ class EditEvent(View):
                     template = loader.get_template('edit-event.html')
 
                     context = {
-                        'event' : event
+                        'event' : event,
+                        'event_types': Category.objects.all(),
+                        'event_owners': EventOwner.objects.all().filter(owner=request.user)
                     }
 
                     return HttpResponse(template.render(context, request))
@@ -1334,3 +1336,84 @@ class EditEvent(View):
             except:
                 messages.warning(request, "Cannot find that event")
                 return redirect('/my-events/')
+
+    def post(self, request, event_id):
+        event_name = request.POST['name']
+        location = request.POST['location']
+        start_date = request.POST['start_date']
+        end_date = request.POST['end_date']
+        start_time = request.POST['start_time']
+        end_time = request.POST['end_time']
+
+        try:
+            image = request.FILEs['image']
+        except:
+            image = False
+
+        try:
+            background = request.FILES['background']
+        except:
+            background = False
+
+        description = request.POST['description']
+        event_type = request.POST['event_type']
+        event_owner = request.POST['event_owner']
+
+        # Find out if the user is authenticated
+        if request.user.is_authenticated:
+
+            try:
+                event = Event.objects.get(id=event_id)
+
+                # Check to make sure the user has access to this event
+                if event.event_owner.owner == request.user:
+                    # Now we can edit the event.
+                    event.name = event_name
+                    event.location = location
+                    event.start_date = start_date
+                    event.end_date = end_date
+                    event.start_time = start_time
+                    event.end_time = end_time
+
+                    if image is not False:
+                        # Upload the image
+                        folder = '/home/django/django_project/media/images/event_images'
+                        uploaded_filename = request.FILES['image'].name
+                        full_filename = os.path.join(settings.MEDIA_ROOT, folder, uploaded_filename)
+                        fout = open(full_filename, 'wb+')
+
+                        file_content = ContentFile(request.FILES['image'].read())
+
+                        # Iterate through the chunks.
+                        for chunk in file_content.chunks():
+                            fout.write(chunk)
+                        fout.close()
+
+                        event.image = request.FILES['image'].name
+
+                    if background is not False:
+                        # Upload the image
+                        folder = '/home/django/django_project/media/images/event_images'
+                        uploaded_filename = request.FILES['background'].name
+                        full_filename = os.path.join(settings.MEDIA_ROOT, folder, uploaded_filename)
+                        fout = open(full_filename, 'wb+')
+
+                        file_content = ContentFile(request.FILES['background'].read())
+
+                        # Iterate through the chunks.
+                        for chunk in file_content.chunks():
+                            fout.write(chunk)
+                        fout.close()
+
+                        event.background = request.FILES['background'].name
+
+
+                    event.save()
+
+                    messages.success(request, "Event was edited succesfully.")
+                    return redirect('/manage-event/'+str(event.id))
+            except:
+                messages.warning(request, "Event does not exist")
+                return redirect('/my-events/')
+
+

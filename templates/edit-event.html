@@ -11,10 +11,10 @@
 {% include 'menu.html' %}
 <div class="container">
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-1">
 
         </div>
-        <div class="col-md-8">
+        <div class="col-md-10">
             <div class="pull-right"><br/>
                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete{{ event.id }}">Delete Event</button>
                 <!-- Modal -->
@@ -48,46 +48,96 @@
                 {% include 'manage_event_menu.html' %}
             </div>
             <div class="col-md-9">
-                <p class="lead">Event Dashboard</p>
+                <p class="lead">Edit Event</p>
                 <hr/>
-                <p>Tickets Sold</p>
-                <div class="progress">
-  <div class="progress-bar" role="progressbar" aria-valuenow="70"
-  aria-valuemin="0" aria-valuemax="{{ ticketquantity.quantity__sum }}" style="width:{{ percentage }}%">
-      <span><p style="color: black;">{{ sold_ticketquantity.quantity_sold__sum }}/{{ ticketquantity.quantity__sum }}</p></span>
-  </div>
-</div>
-<p>Recent Ticket Sales</p>
-                 <table class="table table-condensed table-bordered table-striped">
-                <thead>
-                  <tr>
-                    <th>Ticket</th>
-                    <th>Price</th>
-                    <th>Ordered By</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-{% for order in orders %}
-<tr>
-<td>{{ order.ticket.name|remove_key:"#ENAME-" }}</td>
-<td>&euro;{{ order.ticket.price }}</td>
-<td>{{ order.user.username }}</td>
-<td><a href="/view-order/{{ order.id }}">View</a></td>
-</tr>
-{% endfor %}
-                </tbody>
-                 </table>
-                <p>Event Link</p>
-                <strong>http://ticket-r.com/event/{{ event.id }}</strong>
-
+                <form name="edit-event" action="" method="post">
+                    <div class="form-group">
+                        <label for="name">Event Name:</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ event.name }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location:</label>
+                        <input type="text" class="form-control" id="location" name="location" value="{{ event.location }}">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="start_date">Start Date:</label>
+                                <input type="date" class="form-control" id="start_date" name="start_date" value="{{ event.start_date }}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="end_date">End Date:</label>
+                                <input type="date" class="form-control" id="end_date" name="end_date" value="{{ event.end_date }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="start_time">Start Time:</label>
+                                <input type="text" class="form-control" id="start_time" name="start_time" placeholder="e.g: 00:00">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="end_time">End Time:</label>
+                                <input type="text" class="form-control" id="end_time" name="end_time" placeholder="e.g: 00:00">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="image">Image:</label>
+                                <input type="file" class="form-control" id="image" name="image">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="end_time">Background:</label>
+                                <input type="file" class="form-control" id="background" name="background">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="description">Description:</label>
+                      <textarea class="form-control" rows="5" id="description" name="description">{{ event.description }}</textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="event_type">Event Type:</label>
+                              <select class="form-control" id="event_type" name="event_type">
+                                  {% for event_type in event_types %}
+                                    <option {% if event.category == event_type %} selected {% endif %}>{{ event_type.name }}</option>
+                                  {% endfor %}
+                              </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="event_owner">Event Owner:</label>
+                              <select class="form-control" id="event_owner" name="event_owner">
+                                  {% for event_owner in event_owners %}
+                                    <option {% if event.event_owner == event_owner %} selected {% endif %}>{{ event_owner.name }}</option>
+                                  {% endfor %}
+                              </select>
+                            </div>
+                        </div>
+                    </div>
+                <div class="pull-right"><button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span> Edit Event</button></div>
+                {% csrf_token %}
+                </form>
             </div>
         </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-1">
 
         </div>
     </div>
+<br/><br/>
     {% include 'footer.html' %}
 </div>
 

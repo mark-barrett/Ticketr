@@ -79,7 +79,7 @@
 <td>&euro;{{ ticket.price }}</td>
 <td>{{ ticket.quantity }}</td>
     <td>{{ ticket.quantity_sold }}</td>
-    <td class="col-md-4"><a href="/manage-event/tickets/{{ event.id }}/delete/{{ ticket.id }}" class="btn btn-danger btn-xs" role="button"><span class="glyphicon glyphicon-trash"></span></a> <a href="/manage-event/orders/{{ event.id }}/{{ ticket.id }}">View ticket orders</a></td>
+    <td class="col-md-4"><a href="/manage-event/tickets/{{ event.id }}/delete/{{ ticket.id }}" class="btn btn-danger btn-xs" role="button"><span class="glyphicon glyphicon-trash"></span></a> <a href="/manage-event/orders/{{ event.id }}/{{ ticket.id }}" class="btn btn-success btn-xs">View this tickets orders</a></td>
 </tr>
 {% endfor %}
                 </tbody>

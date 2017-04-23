@@ -58,19 +58,21 @@
                  <table class="table table-condensed table-bordered table-striped">
                 <thead>
                   <tr>
+                    <th>Order Number</th>
                     <th>Ticket</th>
                     <th>Price</th>
                     <th>Ordered By</th>
-                    <th></th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
 {% for order in orders %}
 <tr>
+<td>{{ order.order_number }}</td>
 <td>{{ order.ticket.name|remove_key:"#ENAME-" }}</td>
 <td>&euro;{{ order.ticket.price }}</td>
 <td>{{ order.user.username }}</td>
-<td><a href="/view-order/{{ order.id }}">View</a></td>
+<td><a href="/view-order/{{ order.id }}" class="btn btn-success btn-xs">View Order</a></td>
 </tr>
 {% endfor %}
                 </tbody>
