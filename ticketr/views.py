@@ -1310,7 +1310,7 @@ class ConfirmOrder(View):
 
         # Get the neccessary information
         # If a registration has to take place
-        if request.POST['register']:
+        if not request.user.is_authenticated:
             username = request.POST['username']
             first_name = request.POST['first_name']
             last_name = request.POST['last_name']
@@ -1338,7 +1338,30 @@ class ConfirmOrder(View):
             }
             return HttpResponse(self.template.render(context, request))
         else:
-            pass
+            username = request.user.username
+            first_name = request.POST['first_name']
+            last_name = request.POST['last_name']
+            email_address = request.POST['email_address']
+            ticket = request.POST['ticket']
+            quantity = request.POST['quantity']
+            ticket_price = request.POST['ticket_price']
+            subtotal = request.POST['subtotal']
+            total = request.POST['total']
+
+            user = User.objects.get(username=username)
+            user.first_name = first_name
+            user.last_name = last_name
+            user.save()
+
+            context = {
+                'user': user,
+                'ticket': ticket,
+                'quantity': quantity,
+                'ticket_price': ticket_price,
+                'subtotal': subtotal,
+                'total': total
+            }
+            return HttpResponse(self.template.render(context, request))
 
 
 class EditEvent(View):

@@ -67,7 +67,6 @@
             </div>
              {% if user.is_anonymous %}
                  <form name="register-buy" action="/confirm-order/" method="post">
-
                  <input type="hidden" name="register" value="yes">
                  <input type="hidden" name="ticket" value="{{ ticket.name }}">
                  <input type="hidden" name="quantity" value="{{ quantity }}">
@@ -82,23 +81,23 @@
                             <p><strong>You need to register an account to use Ticketr! Don't worry just pick a password and it will be setup. All your tickets will be saved under your account for you to access. We'll also email you a copy!</strong></p>
                               <div class="form-group">
                                 <label for="username">Username:</label>
-                                <input type="text" class="form-control" id="username" name="username">
+                                <input type="text" class="form-control" id="username" name="username" required="required">
                               </div>
                               <div class="form-group">
                                 <label for="first_name">First Name:</label>
-                                <input type="text" class="form-control" id="first_name" name="first_name">
+                                <input type="text" class="form-control" id="first_name" name="first_name" required="required">
                               </div>
                                                   <div class="form-group">
                                 <label for="last_name">Last Name:</label>
-                                <input type="text" class="form-control" id="last_name" name="last_name">
+                                <input type="text" class="form-control" id="last_name" name="last_name" required="required">
                               </div>
                                                   <div class="form-group">
                                 <label for="email_address">Email address:</label>
-                                <input type="email_address" class="form-control" id="email_address" name="email_address">
+                                <input type="email_address" class="form-control" id="email_address" name="email_address" required="required">
                               </div>
                                                                       <div class="form-group">
                                 <label for="password">Password:</label>
-                                <input type="password" class="form-control" id="password" name="password">
+                                <input type="password" class="form-control" id="password" name="password" required="required">
                               </div>
                         </div>
                     </div>
@@ -106,7 +105,12 @@
                  <input type="submit" class="btn btn-success btn-block" value="Register and Purchase (PayPal)">
                  </form>
              {% else %}
-                 <form name="buy" action="/buy/" method="post">
+                 <form name="buy" action="/confirm-order/" method="post">
+                 <input type="hidden" name="ticket" value="{{ ticket.name }}">
+                 <input type="hidden" name="quantity" value="{{ quantity }}">
+                 <input type="hidden" name="ticket_price" value="{{ ticket.price }}">
+                 <input type="hidden" name="subtotal" value="{{ ticket.price }}">
+                 <input type="hidden" name="total" value="{{ total }}">
                      <div class="panel panel-default">
                       <div class="panel-heading">Account Details</div>
                         <div class="panel-body">
@@ -114,15 +118,15 @@
                             <input type="hidden" name="username" value="{{ user.username }}">
                           <div class="form-group">
                             <label for="first_name">First Name:</label>
-                            <input type="text" class="form-control" id="first_name" value="{{ request.user.first_name }}" name="first_name">
+                            <input type="text" class="form-control" id="first_name" value="{{ request.user.first_name }}" name="first_name" required="required">
                           </div>
                                               <div class="form-group">
                             <label for="last_name">Last Name:</label>
-                            <input type="text" class="form-control" id="last_name" value="{{ request.user.last_name }}" name="last_name">
+                            <input type="text" class="form-control" id="last_name" value="{{ request.user.last_name }}" name="last_name" required="required">
                           </div>
                                               <div class="form-group">
                             <label for="email_address">Email address:</label>
-                            <input type="email_address" class="form-control" id="email_address"  value="{{ request.user.email }}" name="email_address">
+                            <input type="email_address" class="form-control" id="email_address"  value="{{ request.user.email }}" name="email_address" required="required">
                           </div>
                         </div>
                     </div>
