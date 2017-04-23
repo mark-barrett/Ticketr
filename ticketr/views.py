@@ -1308,10 +1308,37 @@ class ConfirmOrder(View):
 
     def post(self, request):
 
-        if request.user.is_authenticated:
-            # Get the neccessary information
-            # If a registration has to take place
-            if request.POST['register']:
+        # Get the neccessary information
+        # If a registration has to take place
+        if request.POST['register']:
+            username = request.POST['username']
+            first_name = request.POST['first_name']
+            last_name = request.POST['last_name']
+            email_address = request.POST['email_address']
+            password = request.POST['password']
+            ticket = request.POST['ticket']
+            quantity = request.POST['quantity']
+            ticket_price = request.POST['ticket_price']
+            subtotal = request.POST['subtotal']
+            total = request.POST['total']
+
+            ## Error check to see if the user already exists.
+
+            # Now we have the details we are going to register the user
+            user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name, email=email_address)
+            user.set_password(password)
+
+            context = {
+                'user' : user,
+                'ticket': ticket,
+                'quantity': quantity,
+                'ticket_price': ticket_price,
+                'subtotal': subtotal,
+                'total': total
+            }
+            return HttpResponse(self.template.render(context, request))
+        else:
+            pass
 
 
 class EditEvent(View):

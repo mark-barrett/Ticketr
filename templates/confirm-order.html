@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <title>Ticketr Confirm Order</title>
+        {% load staticfiles %}
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    </head>
+    <body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+
+            </div>
+            <div class="col-md-4">
+                <div style="padding-top:20%;">
+                    <p class="lead">Confirm Order</p>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <p>
+                                Please confirm your order.<br/>
+                                <br/>
+                                &euro;{{ total }}
+                            </p>
+                        </div>
+                    </div>
+                    <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+                     <input type="hidden" name="cmd" value="_xclick">
+                     <input type="hidden" name="business" value="email@hotmail.com">
+                     <input type="hidden" name="amount" value="{{ total }}">
+                     <input type="hidden" name="item_name" value="{{ ticket }}">
+                     <input type="hidden" name="currency_code" value="EUR">
+                     <input type="hidden" name="cancel_return" value="http://178.62.41.17/cancel/">
+                    <input type="hidden" name="return" value="http://178.62.41.17/my-ticket/">
+                    <input type="hidden" name="notify_url" value="http://178.62.41.17/paypal/">
+                     <input class="btn btn-block btn-success" type="submit" value="Purchase with PayPal">
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-4">
+
+            </div>
+        </div>
+    </div>
+    {% include 'footer.html' %}
+    </body>
+</html>

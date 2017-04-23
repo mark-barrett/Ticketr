@@ -63,5 +63,6 @@ urlpatterns = [
     url(r'^manage-event/invite-codes/(?P<id>[0-9]+)/delete/(?P<invite_code_id>[0-9]+)$', views.DeleteInviteCode.as_view(),
         name='delete-invite-code'),
     url(r'^paypal/', include('paypal.standard.ipn.urls')),
-    url(r'^test/$', views.view_that_asks_for_money, name='ask')
+    url(r'^test/$', views.view_that_asks_for_money, name='ask'),
+    url(r'^confirm-order/$', views.ConfirmOrder.as_view(), name='confirm-order')
 ]
