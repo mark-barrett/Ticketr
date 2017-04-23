@@ -56,5 +56,6 @@ urlpatterns = [
     url(r'^events/$', views.Events.as_view(), name='events'),
     url(r'^test/$', views.view_that_asks_for_money, name='test'),
     url(r'^paypal/', include('paypal.standard.ipn.urls')),
-    url(r'^remove-sale/(?P<order_number>[0-9]+)$', views.RemoveSale.as_view(), name='view-order'),
+    url(r'^remove-sale/(?P<order_number>[0-9]+)$', views.RemoveSale.as_view(), name='remove-sale'),
+    url(r'^delete-event/(?P<event_id>[0-9]+)$', views.DeleteEvent.as_view(), name='delete-event'),
 ]

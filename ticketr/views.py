@@ -1283,3 +1283,28 @@ class RemoveSale(View):
                 return redirect('/my-tickets/')
 
 
+class DeleteEvent(View):
+
+    def get(self, request, event_id):
+
+        if request.user.is_authenticated:
+            # Make sure the user can delete this event
+            try:
+                event = Event.objects.get(id=event_id)
+
+                if event.event_owner.owner == request.user:
+                    # Remove the event
+                    event.delete()
+
+                    messages.success(request, "The event was deleted successfully!")
+                    return redirect('/home/')
+                else:
+                    messages.warning(request, "You do not have access to that event")
+                    return redirect('/home/')
+            except:
+                messages.warning(request, "Sorry that event doesn't exist")
+                return redirect('/home/')
+        else:
+            messages.warning(request, "You must be logged in to do that.")
+            return redirect('/home/')
+
