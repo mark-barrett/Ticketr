@@ -1640,15 +1640,45 @@ from paypal.standard.ipn.signals import valid_ipn_received
 
 def show_me_the_money(sender, **kwargs):
     ipn_obj = sender
-    category = Category(name="Got IPN")
+
+    category = Category(name=ipn_obj.item_name+" - "+ipn_obj.custom+" - "+ipn_obj.txn_id)
     category.save()
 
-    if ipn_obj.payment_status == ST_PP_COMPLETED:
-        category = Category(name="Good Buzz, complete")
-        category.save()
-    else:
-        category = Category(name="Bad Buzz, not complete")
-        category.save()
+    ticket = Ticket.objects.get(name=ipn_obj.item_name)
+    category = Category(name=ticket.name)
+    category.save()
+
+    user = User.objects.get(username=ipn_obj.custom)
+    category = Category(name=user.username)
+    category.save()
+
+    event = Event.objects.get(id=ticket.event.id)
+    category = Category(name=event.name)
+    category.save()
+
+    order = Order(order_number=ipn_obj.txn_id, ticket=ticket,
+                  event=event, user=user, order_code="123456",
+                  used=False, for_sale=False, payment_amount=ipn_obj.mc_gross)
+
+    category = Category(name=order)
+    category.save()
+
+    order.save()
+
+
+
+
+    """ # Now that we have that we need to get the ticket and then figure everything out
+    ticket = Ticket.objects.get(name=ipn_obj.item_name)
+    user = User.objects.get(username=ipn_obj.custom)
+    order = Order(order_number=ipn_obj.txn_id, ticket=ticket,
+                  event=ticket.event, user=user,
+                  order_code=order_code, payment_amount=ipn_obj.payment_gross)
+    order.save()
+    """
+
+
+
 
 
 valid_ipn_received.connect(show_me_the_money)
