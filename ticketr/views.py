@@ -110,6 +110,7 @@ class MyEvents(View):
                 return HttpResponse(self.template_name.render(context, request))
             else:
                 messages.success(request, "You don't have any events yet!")
+                return redirect('/home/')
         else:
             return redirect('/login')
 
@@ -1364,33 +1365,49 @@ class ConfirmOrder(View):
 
             ## Error check to see if the user already exists.
 
-            # Now we have the details we are going to register the user
-            user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name, email=email_address)
-            user.set_password(password)
+            # Try and get a user that has that username, if not then it will continue
+            try:
+                db_user = User.objects.get(username=username)
+                messages.warning(request, "A user with that username already exists.")
+                return redirect('/home/')
+            except:
+                # Now look for that email
+                try:
+                    db_user = User.objects.get(email=email_address)
+                    messages.warning(request, "A user with that email already exists.")
+                    return redirect('/home/')
+                except:
+                    # Now we have the details we are going to register the user
+                    user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name, email=email_address)
+                    user.set_password(password)
 
-            if is_resell:
-                context = {
-                    'user' : user,
-                    'ticket': ticket,
-                    'quantity': quantity,
-                    'ticket_price': ticket_price,
-                    'subtotal': subtotal,
-                    'total': total,
-                    'paypal_email': reseller_paypal_email,
-                    'resell_id': resell_id
-                }
-            else:
-                context = {
-                    'user' : user,
-                    'ticket': ticket,
-                    'quantity': quantity,
-                    'ticket_price': ticket_price,
-                    'subtotal': subtotal,
-                    'total': total,
-                    'paypal_email': organiser_paypal_email,
-                }
+                    user.save()
 
-            return HttpResponse(self.template.render(context, request))
+                    login(request, user)
+
+                    if is_resell:
+                        context = {
+                            'user' : user,
+                            'ticket': ticket,
+                            'quantity': quantity,
+                            'ticket_price': ticket_price,
+                            'subtotal': subtotal,
+                            'total': total,
+                            'paypal_email': reseller_paypal_email,
+                            'resell_id': resell_id
+                        }
+                    else:
+                        context = {
+                            'user' : user,
+                            'ticket': ticket,
+                            'quantity': quantity,
+                            'ticket_price': ticket_price,
+                            'subtotal': subtotal,
+                            'total': total,
+                            'paypal_email': organiser_paypal_email,
+                        }
+
+                    return HttpResponse(self.template.render(context, request))
         else:
             username = request.user.username
             first_name = request.POST['first_name']
@@ -1734,48 +1751,73 @@ from paypal.standard.ipn.signals import valid_ipn_received
 def show_me_the_money(sender, **kwargs):
     ipn_obj = sender
 
-    category = Category(name=ipn_obj.item_name+" - "+ipn_obj.custom+" - "+ipn_obj.txn_id)
-    category.save()
+    # Check if it is a duplicate IPN message
+    try:
+        dup_order = Order.objects.get(order_number=ipn_obj.txn_id)
+    except:
+        ticket = Ticket.objects.get(name=ipn_obj.item_name)
 
-    ticket = Ticket.objects.get(name=ipn_obj.item_name)
-    category = Category(name=ticket.name)
-    category.save()
+        # Need to grab custom value and quantity
+        if ipn_obj.custom.count('+') == 2:
 
-    # Need to grab custom value and quantity
-    username = ipn_obj.custom.rsplit('+', 1)[0]
-    quantity = ipn_obj.custom[ipn_obj.custom.find("+") + 1:].split()[0]
+            data = ipn_obj.custom
 
-    user = User.objects.get(username=username)
-    category = Category(name=user.username)
-    category.save()
+            data.split('+')
 
-    event = Event.objects.get(id=ticket.event.id)
-    category = Category(name=event.name)
-    category.save()
+            # Get the user
+            user = User.objects.get(username=data[0])
 
-    order = Order(order_number=ipn_obj.txn_id, ticket=ticket,
-                  event=event, user=user, order_code=ipn_obj.txn_id,
-                  used=False, for_sale=False, payment_amount=ipn_obj.mc_gross, quantity=quantity)
+            # And the event
+            event = Event.objects.get(id=ticket.event.id)
 
-    category = Category(name=order)
-    category.save()
+            # And the quantity
+            quantity = data[2]
 
-    order.save()
+            # Create the new order
+            order = Order(order_number=ipn_obj.txn_id, ticket=ticket,
+                          event=event, user=user, order_code=ipn_obj.txn_id,
+                          used=False, for_sale=False, payment_amount=ipn_obj.mc_gross, quantity=quantity)
 
-    # Now the order is saved, we must increment the tickets sold on the ticket and decrease tickets available etc.
+            order.save()
 
-    ticket.quantity_sold = ticket.quantity_sold - quantity
-    ticket.save()
+            # Now we have to delete the old order and the resell one
+            resell = ResellList.objects.get(id=data[4])
+
+            # Get rid of the old order
+            old_order = Order.objects.get(id=resell.order.id)
+
+            # Delete
+            resell.delete()
+            old_order.delete()
+
+        else:
+            username = ipn_obj.custom.rsplit('+', 1)[0]
+            quantity = ipn_obj.custom[ipn_obj.custom.find("+") + 1:].split()[0]
+
+            user = User.objects.get(username=username)
+
+            event = Event.objects.get(id=ticket.event.id)
+
+            order = Order(order_number=ipn_obj.txn_id, ticket=ticket,
+                          event=event, user=user, order_code=ipn_obj.txn_id,
+                          used=False, for_sale=False, payment_amount=ipn_obj.mc_gross, quantity=quantity)
 
 
-    """ # Now that we have that we need to get the ticket and then figure everything out
-    ticket = Ticket.objects.get(name=ipn_obj.item_name)
-    user = User.objects.get(username=ipn_obj.custom)
-    order = Order(order_number=ipn_obj.txn_id, ticket=ticket,
-                  event=ticket.event, user=user,
-                  order_code=order_code, payment_amount=ipn_obj.payment_gross)
-    order.save()
-    """
+            order.save()
+
+            # Now the order is saved, we must increment the tickets sold on the ticket and decrease tickets available etc.
+            ticket.quantity_sold = ticket.quantity_sold - quantity
+            ticket.save()
+
+
+        """ # Now that we have that we need to get the ticket and then figure everything out
+        ticket = Ticket.objects.get(name=ipn_obj.item_name)
+        user = User.objects.get(username=ipn_obj.custom)
+        order = Order(order_number=ipn_obj.txn_id, ticket=ticket,
+                      event=ticket.event, user=user,
+                      order_code=order_code, payment_amount=ipn_obj.payment_gross)
+        order.save()
+        """
 
 valid_ipn_received.connect(show_me_the_money)
 invalid_ipn_received.connect(show_me_the_money)
