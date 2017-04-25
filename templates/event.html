@@ -156,9 +156,11 @@
                         <div class="panel panel-primary">
                                 <div class="panel-body">
                                         <div class="pull-right">
-                                        <form name="buy-resell" action="" method="post">
+                                        <form name="buy-resell" action="/buy-ticket/" method="post">
                                 <input type="hidden" name="event_id" value="{{ event.id }}">
-                                <input type="hidden" name="ticket_id" value="{{ resell.id }}">
+                                <input type="hidden" name="ticket_id" value="{{ resell.order.ticket.id }}">
+                                <input type="hidden" name="resell_id" value="{{ resell.id }}">
+                                <input type="hidden" name="reseller_paypal" value="{{ resell.paypal_email }}">
                                 {% csrf_token %}
                             <input type="submit" class="btn btn-success" value="Buy">
                                                                             </form>
@@ -266,9 +268,11 @@
                         <div class="panel panel-primary">
                                 <div class="panel-body">
                                         <div class="pull-right">
-                                        <form name="buy-resell" action="" method="post">
+                                        <form name="buy-resell" action="/buy-ticket/" method="post">
                                 <input type="hidden" name="event_id" value="{{ event.id }}">
-                                <input type="hidden" name="ticket_id" value="{{ resell.id }}">
+                                <input type="hidden" name="ticket_id" value="{{ resell.order.ticket.id }}">
+                                <input type="hidden" name="resell_id" value="{{ resell.id }}">
+                                <input type="hidden" name="reseller_paypal" value="{{ resell.paypal_email }}">
                                 {% csrf_token %}
                             <input type="submit" class="btn btn-success" value="Buy">
                                                                             </form>

@@ -439,9 +439,24 @@ class BuyTicket(View):
     template = loader.get_template('buy-ticket.html')
 
     def post(self, request):
-        event_id = request.POST['event_id']
-        ticket_id = request.POST['ticket_id']
-        ticket_quantity = int(request.POST['ticket_quantity'])
+
+        is_resell = False
+
+        try:
+            resell_id = request.POST['resell_id']
+            event_id = request.POST['event_id']
+            ticket_id = request.POST['ticket_id']
+            reseller = request.POST['reseller_paypal']
+
+            resell_obj = ResellList.objects.get(id=resell_id)
+
+            ticket_quantity = resell_obj.order.quantity
+
+            is_resell = True
+        except:
+            event_id = request.POST['event_id']
+            ticket_id = request.POST['ticket_id']
+            ticket_quantity = int(request.POST['ticket_quantity'])
 
         not_invite_event = False
         valid_invite_code = False
@@ -515,16 +530,30 @@ class BuyTicket(View):
                         subtotal = 0
                         fees = 0
 
-                    context = {
-                        'event': Event.objects.get(id=event_id),
-                        'ticket': ticket,
-                        'token': token,
-                        'subtotal' : total,
-                        'fees' : fees,
-                        'quantity': ticket_quantity,
-                        'total': fees+float(total),
-                        'invite_code': invite_code
-                    }
+                    if is_resell:
+                        context = {
+                            'event': Event.objects.get(id=event_id),
+                            'ticket': ticket,
+                            'token': token,
+                            'subtotal': total,
+                            'fees': fees,
+                            'quantity': ticket_quantity,
+                            'total': fees + float(total),
+                            'invite_code': invite_code,
+                            'resell': resell_obj,
+                            'reseller_paypal': reseller
+                        }
+                    else:
+                        context = {
+                            'event': Event.objects.get(id=event_id),
+                            'ticket': ticket,
+                            'token': token,
+                            'subtotal' : total,
+                            'fees' : fees,
+                            'quantity': ticket_quantity,
+                            'total': fees+float(total),
+                            'invite_code': invite_code
+                        }
                     return HttpResponse(self.template.render(context, request))
                 else:
                     messages.warning(request, "Sorry, that quantity of tickets is not availible")
@@ -875,6 +904,7 @@ class ResellTicket(View):
         price = request.POST['price']
         reason = request.POST['reason']
         order = request.POST['order']
+        paypal_email = request.POST['paypal_email']
 
         # First make sure the user is still logged in
         if request.user.is_authenticated:
@@ -892,7 +922,7 @@ class ResellTicket(View):
                     o.save()
 
                     # Add ticket to the resell list
-                    resell = ResellList(order=o, event=o.event, price=price, reason=reason)
+                    resell = ResellList(order=o, event=o.event, price=price, reason=reason, paypal_email=paypal_email)
                     resell.save()
 
                     messages.success(request, "Your ticket has now been put up for sale and will be listed here below.")
@@ -1309,6 +1339,8 @@ class ConfirmOrder(View):
 
     def post(self, request):
 
+        is_resell = False
+
         # Get the neccessary information
         # If a registration has to take place
         if not request.user.is_authenticated:
@@ -1322,7 +1354,13 @@ class ConfirmOrder(View):
             ticket_price = request.POST['ticket_price']
             subtotal = request.POST['subtotal']
             total = request.POST['total']
-            organiser_paypal_email = request.POST['organiser_paypal_email']
+
+            try:
+                organiser_paypal_email = request.POST['organiser_paypal_email']
+            except:
+                reseller_paypal_email = request.POST['resell_paypal_email']
+                resell_id = request.POST['resell_id']
+                is_resell = True
 
             ## Error check to see if the user already exists.
 
@@ -1330,15 +1368,28 @@ class ConfirmOrder(View):
             user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name, email=email_address)
             user.set_password(password)
 
-            context = {
-                'user' : user,
-                'ticket': ticket,
-                'quantity': quantity,
-                'ticket_price': ticket_price,
-                'subtotal': subtotal,
-                'total': total,
-                'paypal_email': organiser_paypal_email
-            }
+            if is_resell:
+                context = {
+                    'user' : user,
+                    'ticket': ticket,
+                    'quantity': quantity,
+                    'ticket_price': ticket_price,
+                    'subtotal': subtotal,
+                    'total': total,
+                    'paypal_email': reseller_paypal_email,
+                    'resell_id': resell_id
+                }
+            else:
+                context = {
+                    'user' : user,
+                    'ticket': ticket,
+                    'quantity': quantity,
+                    'ticket_price': ticket_price,
+                    'subtotal': subtotal,
+                    'total': total,
+                    'paypal_email': organiser_paypal_email,
+                }
+
             return HttpResponse(self.template.render(context, request))
         else:
             username = request.user.username
@@ -1350,22 +1401,40 @@ class ConfirmOrder(View):
             ticket_price = request.POST['ticket_price']
             subtotal = request.POST['subtotal']
             total = request.POST['total']
-            organiser_paypal_email = request.POST['organiser_paypal_email']
+
+            try:
+                organiser_paypal_email = request.POST['organiser_paypal_email']
+            except:
+                reseller_paypal_email = request.POST['resell_paypal_email']
+                resell_id = request.POST['resell_id']
+                is_resell = True
 
             user = User.objects.get(username=username)
             user.first_name = first_name
             user.last_name = last_name
             user.save()
 
-            context = {
-                'user': user,
-                'ticket': ticket,
-                'quantity': quantity,
-                'ticket_price': ticket_price,
-                'subtotal': subtotal,
-                'total': total,
-                'paypal_email': organiser_paypal_email
-            }
+            if is_resell:
+                context = {
+                    'user' : user,
+                    'ticket': ticket,
+                    'quantity': quantity,
+                    'ticket_price': ticket_price,
+                    'subtotal': subtotal,
+                    'total': total,
+                    'paypal_email': reseller_paypal_email,
+                    'resell_id': resell_id
+                }
+            else:
+                context = {
+                    'user' : user,
+                    'ticket': ticket,
+                    'quantity': quantity,
+                    'ticket_price': ticket_price,
+                    'subtotal': subtotal,
+                    'total': total,
+                    'paypal_email': organiser_paypal_email,
+                }
             return HttpResponse(self.template.render(context, request))
 
 

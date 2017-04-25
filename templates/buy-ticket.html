@@ -26,7 +26,7 @@
                  <strong>Warning!</strong> If you navigate away from this page, your ticket(s) will be released to the general public for sale. This may prevent you from getting a ticket, especially if the event sells out. The tickets will be released once the timer runs out aswell.
             </div><br/>
             <div class="panel panel-default">
-              <div class="panel-heading">Buy Ticket(s)</div>
+              <div class="panel-heading">Buy Ticket(s) {% if resell %}- You are buying a resold ticket {% endif %} </div>
               <div class="panel-body">
                     <table class="table">
                         <thead>
@@ -73,8 +73,13 @@
                  <input type="hidden" name="ticket_price" value="{{ ticket.price }}">
                  <input type="hidden" name="subtotal" value="{{ ticket.price }}">
                  <input type="hidden" name="total" value="{{ total }}">
-                 <input type="hidden" name="organiser_paypal_email" value="{{ ticket.event.event_owner.paypal_email }}">
 
+                     {% if resell %}
+                         <input type="hidden" name="resell_paypal_email" value="{{ resell.paypal_email }}">
+                         <input type="hidden" name="resell_id" value="{{ resell.id }}">
+                     {% else %}
+                        <input type="hidden" name="organiser_paypal_email" value="{{ ticket.event.event_owner.paypal_email }}">
+                     {% endif %}
 
                      <div class="panel panel-default">
                       <div class="panel-heading">Register an account</div>
@@ -112,7 +117,13 @@
                  <input type="hidden" name="ticket_price" value="{{ ticket.price }}">
                  <input type="hidden" name="subtotal" value="{{ ticket.price }}">
                  <input type="hidden" name="total" value="{{ total }}">
-                 <input type="hidden" name="organiser_paypal_email" value="{{ ticket.event.event_owner.paypal_email }}">
+
+                     {% if resell %}
+                         <input type="hidden" name="resell_paypal_email" value="{{ resell.paypal_email }}">
+                         <input type="hidden" name="resell_id" value="{{ resell.id }}">
+                     {% else %}
+                        <input type="hidden" name="organiser_paypal_email" value="{{ ticket.event.event_owner.paypal_email }}">
+                     {% endif %}
 
                      <div class="panel panel-default">
                       <div class="panel-heading">Account Details</div>
