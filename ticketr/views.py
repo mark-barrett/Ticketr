@@ -91,6 +91,9 @@ class MyTickets(View):
                 'tickets' : Order.objects.all().filter(user=request.user)
             }
             return HttpResponse(self.template_name.render(context, request))
+        else:
+            messages.warning(request, "You must be logged in to access this")
+            return redirect('/home/')
 
 
 class MyEvents(View):
@@ -899,6 +902,7 @@ class ResellTicket(View):
                 else:
                     return redirect('index')
         else:
+            messages.warning(request, "You must login to re-sell your ticket")
             return redirect('login')
 
     def post(self, request, order_id):
@@ -940,8 +944,13 @@ class ResellTicket(View):
 class SellTicket(View):
 
     def get(self, request):
-        messages.success(request, "Please select a ticket you want to resell below")
-        return redirect('/my-tickets')
+
+        if request.user.is_authenticated:
+            messages.success(request, "Please select a ticket you want to resell below")
+            return redirect('/my-tickets')
+        else:
+            messages.warning(request, "You must be logged in to access this")
+            return redirect('/home')
 
 
 class DiscountCodes(View):
@@ -1341,6 +1350,8 @@ class ConfirmOrder(View):
     def post(self, request):
 
         is_resell = False
+        is_valid_code = False
+        discount_code = ""
 
         # Get the neccessary information
         # If a registration has to take place
@@ -1355,6 +1366,18 @@ class ConfirmOrder(View):
             ticket_price = request.POST['ticket_price']
             subtotal = request.POST['subtotal']
             total = request.POST['total']
+
+            try:
+                discount_code = request.POST['discount_code']
+                try:
+                    db_discount_code = DiscountCode.objects.get(code=discount_code)
+                    total = float(total) - ((float(total) / 100) * float(db_discount_code.discount))
+                except:
+                    messages.warning(request, "Not valid discount code")
+                    return redirect('/home/')
+            except:
+                discount = False
+
 
             try:
                 organiser_paypal_email = request.POST['organiser_paypal_email']
@@ -1418,6 +1441,18 @@ class ConfirmOrder(View):
             ticket_price = request.POST['ticket_price']
             subtotal = request.POST['subtotal']
             total = request.POST['total']
+
+            try:
+                discount_code = request.POST['discount_code']
+
+                try:
+                    db_discount_code = DiscountCode.objects.get(code=discount_code)
+                    total = float(total) - ((float(total) / 100) * float(db_discount_code.discount))
+                except:
+                    messages.warning(request, "Not valid discount code")
+                    return redirect('/home/')
+            except:
+                discount = False
 
             try:
                 organiser_paypal_email = request.POST['organiser_paypal_email']

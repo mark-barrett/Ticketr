@@ -85,6 +85,10 @@
                       <div class="panel-heading">Register an account</div>
                         <div class="panel-body">
                             <p><strong>You need to register an account to use Ticketr! Don't worry just pick a password and it will be setup. All your tickets will be saved under your account for you to access. We'll also email you a copy!</strong></p>
+                            <div class="form-group">
+                                    <label for="discount_code">Discount Code:</label>
+                                    <input class="form-control" id="discount_code" type="text" name="discount_code">
+                              </div>
                               <div class="form-group">
                                 <label for="username">Username:</label>
                                 <input type="text" class="form-control" id="username" name="username" required="required">
@@ -128,6 +132,10 @@
                      <div class="panel panel-default">
                       <div class="panel-heading">Account Details</div>
                         <div class="panel-body">
+                            <div class="form-group">
+                                    <label for="discount_code">Discount Code:</label>
+                                    <input class="form-control" id="discount_code" type="text" name="discount_code">
+                              </div>
                             <p>Username:<br/>{{ user.username }} <small>Not you? <a href="logout">(Logout)</a></small>
                             <input type="hidden" name="username" value="{{ user.username }}">
                           <div class="form-group">
