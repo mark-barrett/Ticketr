@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="426b2ace-27a3-42ae-9b0a-5eb4752dd27f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/my-tickets.html" afterPath="$PROJECT_DIR$/templates/my-tickets.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ticketr/urls.py" afterPath="$PROJECT_DIR$/ticketr/urls.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ticketr/views.py" afterPath="$PROJECT_DIR$/ticketr/views.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -78,11 +75,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ticketr/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="95">
-              <caret line="1760" column="42" lean-forward="false" selection-start-line="1760" selection-start-column="42" selection-end-line="1760" selection-end-column="42" />
+            <state relative-caret-position="345">
+              <caret line="1779" column="0" lean-forward="true" selection-start-line="1779" selection-start-column="0" selection-end-line="1779" selection-end-column="0" />
               <folding>
                 <element signature="e#0#27#0" expanded="true" />
               </folding>
@@ -114,7 +111,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="urls.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ticketr/urls.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="302">
@@ -234,8 +231,8 @@
         <option value="$PROJECT_DIR$/templates/buy-ticket.html" />
         <option value="$PROJECT_DIR$/templates/confirm-order.html" />
         <option value="$PROJECT_DIR$/templates/my-tickets.html" />
-        <option value="$PROJECT_DIR$/ticketr/views.py" />
         <option value="$PROJECT_DIR$/ticketr/urls.py" />
+        <option value="$PROJECT_DIR$/ticketr/views.py" />
       </list>
     </option>
   </component>
@@ -1080,21 +1077,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ticketr/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="1760" column="42" lean-forward="false" selection-start-line="1760" selection-start-column="42" selection-end-line="1760" selection-end-column="42" />
-          <folding>
-            <element signature="e#0#27#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ticketr/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="302">
           <caret line="56" column="51" lean-forward="false" selection-start-line="56" selection-start-column="51" selection-end-line="56" selection-end-column="51" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ticketr/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="1779" column="0" lean-forward="true" selection-start-line="1779" selection-start-column="0" selection-end-line="1779" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#27#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

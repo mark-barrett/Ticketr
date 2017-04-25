@@ -1760,18 +1760,13 @@ def show_me_the_money(sender, **kwargs):
         # Need to grab custom value and quantity
         if ipn_obj.custom.count('+') == 2:
 
-            data = ipn_obj.custom
-
-            data.split('+')
+            split_username, quantity, resell = ipn_obj.custom.split('+')
 
             # Get the user
-            user = User.objects.get(username=data[0])
+            user = User.objects.get(username=split_username)
 
             # And the event
             event = Event.objects.get(id=ticket.event.id)
-
-            # And the quantity
-            quantity = data[2]
 
             # Create the new order
             order = Order(order_number=ipn_obj.txn_id, ticket=ticket,
@@ -1781,7 +1776,7 @@ def show_me_the_money(sender, **kwargs):
             order.save()
 
             # Now we have to delete the old order and the resell one
-            resell = ResellList.objects.get(id=data[4])
+            resell = ResellList.objects.get(id=resell)
 
             # Get rid of the old order
             old_order = Order.objects.get(id=resell.order.id)
