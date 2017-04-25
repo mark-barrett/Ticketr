@@ -31,7 +31,7 @@
                      <input type="hidden" name="cancel_return" value="http://178.62.41.17/cancel/">
                      <input type="hidden" name="return" value="http://178.62.41.17/my-tickets/">
                      <input type="hidden" name="notify_url" value="http://178.62.41.17/paypal/">
-                     <input type="hidden" name="custom" value="{{ request.user.username }}">
+                     <input type="hidden" name="custom" value="{{ request.user.username }}+{{ quantity }}">
                      <input class="btn btn-block btn-success" type="submit" value="Purchase with PayPal">
                     </form>
                 </div>

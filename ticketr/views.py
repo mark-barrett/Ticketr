@@ -1611,6 +1611,16 @@ class DeleteInviteCode(View):
             return redirect('login')
 
 
+class PaymentSuccessful(View):
+
+    def get(self, request):
+        template = loader.get_template('payment-successful.html')
+        context = {
+            'order': Order.objects.filter(user=request.user).latest('order_code')
+        }
+        return HttpResponse(template.render(context, request))
+
+
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from paypal.standard.forms import PayPalPaymentsForm
@@ -1657,15 +1667,13 @@ def show_me_the_money(sender, **kwargs):
     category.save()
 
     order = Order(order_number=ipn_obj.txn_id, ticket=ticket,
-                  event=event, user=user, order_code="123456",
+                  event=event, user=user, order_code=ipn_obj.txn_id,
                   used=False, for_sale=False, payment_amount=ipn_obj.mc_gross)
 
     category = Category(name=order)
     category.save()
 
     order.save()
-
-
 
 
     """ # Now that we have that we need to get the ticket and then figure everything out
@@ -1676,10 +1684,6 @@ def show_me_the_money(sender, **kwargs):
                   order_code=order_code, payment_amount=ipn_obj.payment_gross)
     order.save()
     """
-
-
-
-
 
 valid_ipn_received.connect(show_me_the_money)
 invalid_ipn_received.connect(show_me_the_money)

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ticketr - My Payment Successful</title>
+    {% load staticfiles %}
+    {% load ticket_extras %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+</head>
+<body>
+ {% include 'menu.html' %}
+     {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" style="margin-bottom: 0;">
+                <p class="text-center lead" style="color: white;">{{ message }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+ <div class="container">
+<div class="row">
+  <div class="col-md-1"></div>
+  <div class="col-md-10"><h2><span class="glyphicon glyphicon-ok" style="color: green;"></span> Payment Successful</h2>
+  <hr/>
+    <p class="lead">Awesome {{ request.user.first_name }}, you are going to {{ order.event.name }}!</p>
+      <p>It may take a few moments for your order to show up in your tickets section. Don't worry, the payment was successful,
+      we are just waiting for a response from PayPal.<br/><br/>
+      Here is your order details:</p>
+      <table class="table table-striped">
+          <thead>
+            <tr>
+                <th>Order Number</th>
+                <th>Ticket</th>
+                <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+                <td>{{ order.order_number }}</td>
+                <td>{{ order.ticket.name|remove_key:"#ENAME-" }}</td>
+                <td>&euro;{{ order.payment_amount }}</td>
+            </tr>
+          </tbody>
+      </table>
+  </div>
+  <div class="col-md-1"></div>
+</div>
+             {% include 'footer.html' %}
+ </div>
+</body>
+</html>

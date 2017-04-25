@@ -106,6 +106,7 @@ class Order(models.Model):
     for_sale = models.BooleanField(default=False)
     qrcode = models.FileField(upload_to='qrcode', blank=True, null=True)
     payment_amount = models.DecimalField(decimal_places=2, max_digits=6)
+    quantity = models.IntegerField()
 
     def __str__(self):
         return self.order_number
