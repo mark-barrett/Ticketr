@@ -1621,6 +1621,15 @@ class PaymentSuccessful(View):
         return HttpResponse(template.render(context, request))
 
 
+class PaymentCancelled(View):
+
+    def get(self, request):
+        template = loader.get_template('payment-cancelled.html')
+        context = {
+        }
+        return HttpResponse(template.render(context, request))
+
+
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from paypal.standard.forms import PayPalPaymentsForm
@@ -1658,7 +1667,11 @@ def show_me_the_money(sender, **kwargs):
     category = Category(name=ticket.name)
     category.save()
 
-    user = User.objects.get(username=ipn_obj.custom)
+    # Need to grab custom value and quantity
+    username = ipn_obj.custom.rsplit('+', 1)[0]
+    quantity = ipn_obj.custom[ipn_obj.custom.find("+") + 1:].split()[0]
+
+    user = User.objects.get(username=username)
     category = Category(name=user.username)
     category.save()
 
@@ -1668,7 +1681,7 @@ def show_me_the_money(sender, **kwargs):
 
     order = Order(order_number=ipn_obj.txn_id, ticket=ticket,
                   event=event, user=user, order_code=ipn_obj.txn_id,
-                  used=False, for_sale=False, payment_amount=ipn_obj.mc_gross)
+                  used=False, for_sale=False, payment_amount=ipn_obj.mc_gross, quantity=quantity)
 
     category = Category(name=order)
     category.save()

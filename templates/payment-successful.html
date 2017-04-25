@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ticketr - My Payment Successful</title>
+    <title>Ticketr - Payment Successful</title>
     {% load staticfiles %}
     {% load ticket_extras %}
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
@@ -30,6 +30,7 @@
             <tr>
                 <th>Order Number</th>
                 <th>Ticket</th>
+                <th>Number of Tickets</th>
                 <th>Total</th>
             </tr>
           </thead>
@@ -37,10 +38,17 @@
             <tr>
                 <td>{{ order.order_number }}</td>
                 <td>{{ order.ticket.name|remove_key:"#ENAME-" }}</td>
+                <td>{{ order.quantity }}</td>
                 <td>&euro;{{ order.payment_amount }}</td>
             </tr>
           </tbody>
       </table>
+      <br/>
+      You can now view your ticket in the <i>"My Tickets"</i> section below:</br><br/>
+      <a href="/my-tickets/" class="btn btn-success">Go to My Tickets</a>
+      <br/><br/>
+      {% if order.quantity > 1 %}<strong>It looks like you bought more than one ticket. Please note the one ticket (and QR Code)
+          represents the total quantity of tickets bought</strong>{% endif %}
   </div>
   <div class="col-md-1"></div>
 </div>

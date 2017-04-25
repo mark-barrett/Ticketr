@@ -65,5 +65,6 @@ urlpatterns = [
     url(r'^paypal/', include('paypal.standard.ipn.urls')),
     url(r'^test/$', views.view_that_asks_for_money, name='ask'),
     url(r'^confirm-order/$', views.ConfirmOrder.as_view(), name='confirm-order'),
-    url(r'^payment-successful/$', views.PaymentSuccessful.as_view(), name='payment-successful')
+    url(r'^payment-successful/$', views.PaymentSuccessful.as_view(), name='payment-successful'),
+    url(r'^payment-cancelled/$', views.PaymentCancelled.as_view(), name='payment-cancelled'),
 ]

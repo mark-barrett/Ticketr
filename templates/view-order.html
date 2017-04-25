@@ -32,6 +32,8 @@
                 <strong>Ticket:</strong> {{ order.ticket.name|remove_key:"#ENAME-" }}<br/>
                 <strong>Payment Method: </strong> PayPal<br/>
                 <strong>Payment Amount: </strong> &euro; {{ order.payment_amount }}<br/><br/>
+            {% if order.quantity > 1 %}<strong>It looks like you bought more than one ticket. Please note the one ticket (and QR Code)
+          represents the total quantity of tickets bought</strong>{% endif %}<br/><br/>
                 {% if order.user == request.user %}<a class="btn btn-success" href="/download-ticket/{{ order.order_number }}">Download Ticket PDF</a>{% endif %}
             </p>
         </div>
