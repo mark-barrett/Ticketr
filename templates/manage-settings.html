@@ -58,9 +58,9 @@
                     <div class="form-group">
                       <label for="event_privacy">Event Privacy:</label>
                       <select class="form-control" id="event_privacy" name="privacy">
-                          <option value="Public" {% if event.privacy == "Public" %} selected {% endif %}>Public - List your event for anybody to see on the Ticketr website.</option>
-                          <option value="Private" {% if event.privacy == "Private" %} selected {% endif %}>Private - Do not list this event. Only people with a link can view.</option>
-                          <option value="Invite Only"{% if event.privacy == "Invite" %} selected {% endif %}>Invite Only - Only people who have an invite code can buy tickets.</option>
+                          <option value="Public" {% if "Public" in event.privacy %} selected {% endif %}>Public - List your event for anybody to see on the Ticketr website.</option>
+                          <option value="Private" {% if "Private" in event.privacy %} selected {% endif %}>Private - Do not list this event. Only people with a link can view.</option>
+                          <option value="Invite Only"{% if "Invite" in event.privacy %} selected {% endif %}>Invite Only - Only people who have an invite code can buy tickets.</option>
                       </select>
                     </div>
                     <div class="form-group">

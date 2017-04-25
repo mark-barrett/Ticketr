@@ -73,6 +73,7 @@
                  <input type="hidden" name="ticket_price" value="{{ ticket.price }}">
                  <input type="hidden" name="subtotal" value="{{ ticket.price }}">
                  <input type="hidden" name="total" value="{{ total }}">
+                 <input type="hidden" name="organiser_paypal_email" value="{{ ticket.event.event_owner.paypal_email }}">
 
 
                      <div class="panel panel-default">
@@ -111,6 +112,8 @@
                  <input type="hidden" name="ticket_price" value="{{ ticket.price }}">
                  <input type="hidden" name="subtotal" value="{{ ticket.price }}">
                  <input type="hidden" name="total" value="{{ total }}">
+                 <input type="hidden" name="organiser_paypal_email" value="{{ ticket.event.event_owner.paypal_email }}">
+
                      <div class="panel panel-default">
                       <div class="panel-heading">Account Details</div>
                         <div class="panel-body">

@@ -30,6 +30,7 @@ class EventOwner(models.Model):
     facebook = models.CharField(max_length=64)
     owner = models.ForeignKey(User)
     image = models.FileField()
+    paypal_email = models.CharField(max_length=128)
 
     def __str__(self):
         return self.name
@@ -120,6 +121,7 @@ class ResellList(models.Model):
     event = models.ForeignKey(Event)
     price = models.DecimalField(decimal_places=2, max_digits=6)
     reason = models.TextField()
+    paypal_email = models.CharField(max_length=128)
 
     def __str__(self):
         return self.order.order_number

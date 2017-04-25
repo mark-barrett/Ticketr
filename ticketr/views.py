@@ -315,6 +315,7 @@ class CreateOrganiserView(View):
         website = request.POST['website']
         facebook = request.POST['facebook']
         image = request.FILES['image']
+        paypal_email = request.POST['paypal_email']
 
         # save the uploaded file inside that folder.
         folder = '/home/django/django_project/media/images/organiser_profiles'
@@ -330,7 +331,7 @@ class CreateOrganiserView(View):
         fout.close()
 
         eo = EventOwner(name=name, description=description, website=website, facebook=facebook, image=request.FILES['image'].name,
-                        owner=request.user)
+                        owner=request.user, paypal_email=paypal_email)
 
         eo.save()
 
@@ -1321,6 +1322,7 @@ class ConfirmOrder(View):
             ticket_price = request.POST['ticket_price']
             subtotal = request.POST['subtotal']
             total = request.POST['total']
+            organiser_paypal_email = request.POST['organiser_paypal_email']
 
             ## Error check to see if the user already exists.
 
@@ -1334,7 +1336,8 @@ class ConfirmOrder(View):
                 'quantity': quantity,
                 'ticket_price': ticket_price,
                 'subtotal': subtotal,
-                'total': total
+                'total': total,
+                'paypal_email': organiser_paypal_email
             }
             return HttpResponse(self.template.render(context, request))
         else:
@@ -1347,6 +1350,7 @@ class ConfirmOrder(View):
             ticket_price = request.POST['ticket_price']
             subtotal = request.POST['subtotal']
             total = request.POST['total']
+            organiser_paypal_email = request.POST['organiser_paypal_email']
 
             user = User.objects.get(username=username)
             user.first_name = first_name
@@ -1359,7 +1363,8 @@ class ConfirmOrder(View):
                 'quantity': quantity,
                 'ticket_price': ticket_price,
                 'subtotal': subtotal,
-                'total': total
+                'total': total,
+                'paypal_email': organiser_paypal_email
             }
             return HttpResponse(self.template.render(context, request))
 
@@ -1687,6 +1692,11 @@ def show_me_the_money(sender, **kwargs):
     category.save()
 
     order.save()
+
+    # Now the order is saved, we must increment the tickets sold on the ticket and decrease tickets available etc.
+
+    ticket.quantity_sold = ticket.quantity_sold - quantity
+    ticket.save()
 
 
     """ # Now that we have that we need to get the ticket and then figure everything out

@@ -114,7 +114,8 @@ class CreateOrganiserProfileForm(forms.ModelForm):
     website = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     facebook = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     image = forms.FileField()
+    paypal_email = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
 
     class Meta:
         model = EventOwner
-        fields = ['name', 'description', 'website', 'facebook', 'image']
+        fields = ['name', 'description', 'website', 'facebook', 'image', 'paypal_email']
