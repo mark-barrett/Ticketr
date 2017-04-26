@@ -66,17 +66,17 @@
                     <div class="form-group">
                       <label for="resell">Would you like event goers to be able to re-sell their tickets on Ticketr?</label>
                       <select class="form-control" id="resell" name="resell">
-                            <option value="Yes" {% if event.resell == "Yes" %} selected {% endif %}>Yes! - I want to allow event goers to re-sell their tickets</option>
-                            <option value="No" {% if event.resell == "No" %} selected {% endif %}>No! - I do not want event goers to be able to re-sell tickets</option>
+                            <option value="Yes" {% if "Yes" in event.resell %} selected {% endif %}>Yes! - I want to allow event goers to re-sell their tickets</option>
+                            <option value="No" {% if "No" in event.resell%} selected {% endif %}>No! - I do not want event goers to be able to re-sell tickets</option>
                       </select>
                     </div>
                     <div class="form-group">
                       <label for="resell_when">If so, when should they be able to sell them?</label>
                       <select class="form-control" id="resell_when" name="resell_when">
-                            <option value="No">I choose no above</option>
-                              <option value="Anytime">Allow event goers to re-sell tickets at anytime</option>
-                              <option value="Sold Out">Allow event goers to re-sell tickets once the event has sold out</option>
-                              <option value="Amount">Allow event goers to re-sell after a certain amount of tickets have been sold.</option>
+                            <option value="No" {% if "no" in event.resell_when %} selected {% endif %}>I choose no above</option>
+                              <option value="Anytime" {% if "anytime" in event.resell_when %} selected {% endif %}>Allow event goers to re-sell tickets at anytime</option>
+                              <option value="Sold Out" {% if "sold" in event.resell_when %} selected {% endif %} >Allow event goers to re-sell tickets once the event has sold out</option>
+                              <option value="Amount" {% if "amount" in event.resell_when %} selected {% endif %}>Allow event goers to re-sell after a certain amount of tickets have been sold.</option>
                       </select>
                     </div>
                     <div class="form-group">

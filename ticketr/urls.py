@@ -67,4 +67,5 @@ urlpatterns = [
     url(r'^confirm-order/$', views.ConfirmOrder.as_view(), name='confirm-order'),
     url(r'^payment-successful/$', views.PaymentSuccessful.as_view(), name='payment-successful'),
     url(r'^payment-cancelled/$', views.PaymentCancelled.as_view(), name='payment-cancelled'),
+    url(r'^view-checkins/(?P<event_id>[0-9]+)$', views.ViewCheckins.as_view(), name='view-checkins')
 ]

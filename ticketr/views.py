@@ -1157,6 +1157,9 @@ class ApiValidateTicket(View):
     def post(self, request):
         # Firstly we need to get the posted data
         order_code = request.POST['order_code']
+        username = request.POST['username']
+
+        user = User.objects.get(username=username)
 
         # Response dictionary
         response = {}
@@ -1165,23 +1168,30 @@ class ApiValidateTicket(View):
             # Get the user object
             order = Order.objects.get(order_code=order_code)
 
-            # Check to see if the ticket has not been used
-            if order.used == False and order.for_sale == False:
-                response['success'] = True
-                response['user'] = order.user.username
-                response['order_number'] = order.order_number
+            if order.event.event_owner.owner == user:
 
-                order.used = True
-                order.save()
+                # Check to see if the ticket has not been used
+                if order.used == False and order.for_sale == False:
+                    response['success'] = True
+                    response['user'] = order.user.username
+                    response['order_number'] = order.order_number
 
-                return JsonResponse(response)
-            elif order.used == True:
+                    order.used = True
+                    order.save()
+
+                    return JsonResponse(response)
+                elif order.used == True:
+                    response['success'] = False
+                    response['reason'] = "Ticket already used"
+                    return JsonResponse(response)
+                elif order.for_sale == True:
+                    response['success'] = False
+                    response['reason'] = "Ticket is up for sale"
+                    return JsonResponse(response)
+
+            else:
                 response['success'] = False
-                response['reason'] = "Ticket already used"
-                return JsonResponse(response)
-            elif order.for_sale == True:
-                response['success'] = False
-                response['reason'] = "Ticket is up for sale"
+                response['reason'] = "This user cannot check this in"
                 return JsonResponse(response)
 
         except:
@@ -1445,12 +1455,13 @@ class ConfirmOrder(View):
             try:
                 discount_code = request.POST['discount_code']
 
-                try:
-                    db_discount_code = DiscountCode.objects.get(code=discount_code)
-                    total = float(total) - ((float(total) / 100) * float(db_discount_code.discount))
-                except:
-                    messages.warning(request, "Not valid discount code")
-                    return redirect('/home/')
+                if discount_code:
+                    try:
+                        db_discount_code = DiscountCode.objects.get(code=discount_code)
+                        total = float(total) - ((float(total) / 100) * float(db_discount_code.discount))
+                    except:
+                        messages.warning(request, "Not valid discount code")
+                        return redirect('/home/')
             except:
                 discount = False
 
@@ -1622,6 +1633,30 @@ class GuestList(View):
                 messages.warning(request, "Event does not exist")
                 return redirect('/manage-events/')
 
+
+class ViewCheckins(View):
+
+    def get(self, request, event_id):
+
+        if request.user.is_authenticated:
+            template = loader.get_template('view-checkins.html')
+            # Try get the event
+            try:
+                event = Event.objects.get(id=event_id)
+
+                # Check to see if the user has access to this event
+                if event.event_owner.owner == request.user:
+                    context = {
+                        'checkins': Order.objects.all().filter(event=event, used=True),
+                        'event': event
+                    }
+
+                    return HttpResponse(template.render(context, request))
+
+            except:
+                messages.warning(request, "Event does not exist")
+                return redirect('/manage-events/')
+
 class ManageSettings(View):
 
     def get(self, request, event_id):
@@ -1742,7 +1777,7 @@ class PaymentSuccessful(View):
     def get(self, request):
         template = loader.get_template('payment-successful.html')
         context = {
-            'order': Order.objects.filter(user=request.user).latest('order_code')
+            'order': Order.objects.filter(user=request.user).order_by('-id')[0]
         }
         return HttpResponse(template.render(context, request))
 

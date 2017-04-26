@@ -26,7 +26,7 @@
         </div>
         {% endif %}
             <p>
-            Order Number: {{ order.order_number }} for {{ order.payment_amount }} on {{ order.order_date }}<br/>
+            Order Number: {{ order.order_number }} for {{ order.payment_amount }}<br/>
                 <strong>Event:</strong> <br/>{{ order.event.name }}<br/>
                 {{ order.event.start_date }} @ {{ order.event.start_time }} - {{ order.event.end_date }} @ {{ order.event.end_time }}<br/>
                 <strong>Ticket:</strong> {{ order.ticket.name|remove_key:"#ENAME-" }}<br/>
