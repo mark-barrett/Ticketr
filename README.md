@@ -7,7 +7,9 @@ Ticketr is a ticket sales platform for any type of event, it allows Event Owners
 
 
 <img src="http://i.imgur.com/lDkJPBz.png" alt="" height="40" style="max-width:100%;">
-- ** User registration and logging in ** : Authentication of the user upon login. When user logs in a session is set which is used throughout the website to check and see if the user is authenticated.
+- __User Registration and Logging In__: Authentication of the user upon login. When user logs in a session is set which is used throughout the website to check and see if the user is authenticated.
+
+** User registration and logging in ** : Authentication of the user upon login. When user logs in a session is set which is used throughout the website to check and see if the user is authenticated.
 - ** Organiser Profiles ** : Allow users to make an organiser profile which allows them to list their event on the site. The event has many fields like a time and date, description and image. Event owner can create tickets to their event, choose a price, its name, and also the total quantity of these tickets available.
 - ** Event Visibility ** : Allow the event to be public, private or invite only. Events that are public, allow anyone to buy a ticket, and are listed on the Ticketr site. Private events are the same however they are not listed on the site. You must have the URL to access that event. Finally, an invite only event is listed but a user can only buy ticket(s) if they have a preset invite code set by the event organiser.
 - ** Ticket Purchasing (PayPal) ** : Users can purchase tickets for events, with all payments being handled through PayPal. When being bought, Ticketr will POST to PayPal, when the payment goes through, PayPal will send a response in the form of a HTTP POST (Instant Payment Notification), which is caught by my IPN listener which takes it and generates a new order for the user. The order includes a QR code and some other transaction information.
