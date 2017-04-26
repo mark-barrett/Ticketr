@@ -1,3 +1,7 @@
+![alt tag](http://i.imgur.com/ncD8vag.png)
+
+![alt tag](http://i.imgur.com/bfuSZyI.png)
+
 Live @: http://178.62.41.17
 
 ![alt tag](http://i.imgur.com/VgxvuF9.png)
@@ -52,3 +56,4 @@ The API was written with Python in the Django project too. It provides multiple 
 ![alt tag](http://i.imgur.com/XwhwIaC.png)
 
 I really enjoyed making Ticketr. It gave me a chance to learn a brand new language on my own, and also allowed me to become more familiar with how REST api's work. How HTTP requests are sent and recieved, and ultimately it has helped my understanding of OOP. I'm happy I choose this because it let me mix two different applications (web app and android app) together, even though they are written in different languages. It allowed me to find out how applications like this commnunicate with eachother and how information is sent around the web.
+
