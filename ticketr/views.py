@@ -1379,12 +1379,14 @@ class ConfirmOrder(View):
 
             try:
                 discount_code = request.POST['discount_code']
-                try:
-                    db_discount_code = DiscountCode.objects.get(code=discount_code)
-                    total = float(total) - ((float(total) / 100) * float(db_discount_code.discount))
-                except:
-                    messages.warning(request, "Not valid discount code")
-                    return redirect('/home/')
+
+                if discount_code:
+                    try:
+                        db_discount_code = DiscountCode.objects.get(code=discount_code)
+                        total = float(total) - ((float(total) / 100) * float(db_discount_code.discount))
+                    except:
+                        messages.warning(request, "Not valid discount code")
+                        return redirect('/home/')
             except:
                 discount = False
 
